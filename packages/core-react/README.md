@@ -1,77 +1,130 @@
-## app.js
+
+> Server rendering engine 缩写为 **sre** 即服务器端渲染引擎，为React + koa技术栈提供轻量级封装的服务端渲染骨架工具。
+
+## 工程目录
+框架默认配置属性`rootDir`默认为根目录下`web`，pages下是页面组件入口，比如`list`页面，目录结构为`list/index.js`
 ```
+└── web
+    └── pages
+        └── list
+            ├── index.jsx
+            └── list.scss
+```
+
+## 页面组件
+```ts
+import React from 'react';
+type typeProps = {
+    ListData :[string]
+}
+export default function (props:typeProps){
+     const {ListData} = props;
+    return (
+        <div className="list" style={{textAlign: 'center'}}>
+            <h3>列表</h3>
+            <ul>
+                {ListData.map((item,value)=>{
+                    return (
+                        <li key={value}>
+                           <div className="item">{item}</div>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>
+    )
+}
+```
+
+## 在Koa中使用
+```js
+// app.js
 const Koa = require('koa');
 const srejs = require('@srejs/react');
 const app = new Koa();
-new srejs(app); // srejs服务端渲染基于koa封装，开启ssr时需传入koa实例对象
+// srejs服务端渲染基于koa封装，开启ssr时需传入koa实例对象
+const Srejs = new srejs(app，process.env.NODE_ENV != 'production',false,{
+    ssr: true, // 开启服务端渲染
+    cache: false, // 开启缓存
+    rootDir: 'web', // 工程根文件夹目录名称
+    rootNode: 'app', // 客户端渲染挂载根元素ID
+}); 
+
+app.use(async (ctx,next)=>{
+    if(ctx.path==="/list"){
+       const html = await Sre.render(ctx,'list',{ListData:['item1','item2','item3','item4',]},{ssr:true,cache:true}); 
+       ctx.type = 'text/html';
+       ctx.body = html;
+    }else{
+        await next();
+    }
+})
+
 app.listen(8001);
-
 ```
 
-## package.json
+## srejs实例化参数说明
+```ts
+type TssrOptions = {
+    ssr: boolean;
+    cache?: boolean;
+};
+
+type TcoreOptions = {
+    ssr?: boolean; // 开启服务端渲染
+    cache?: boolean; // 开启缓存
+    rootDir?: string; // 工程根文件夹目录名称
+    rootNode?: string; // 客户端渲染挂载根元素ID
+};
+
+declare class Srejs {
+    /**
+     *
+     * @param app koa实例
+     * @param dev 默认true,将改写process.env.NODE_ENV为development
+     * @param defaultRouter 使用默认路由 默认true
+     * @param options 框架配置属性
+     */
+    constructor(app: Koa, dev?: boolean, defaultRouter?: boolean, options?: TcoreOptions);
+    /**
+     *
+     * @param ctx
+     * @param viewName 页面组件名称
+     * @param initProps 初始化props
+     * @param options 局部属性
+     */
+    async render(ctx: Koa.Context, viewName: string, initProps?: object, options?: TssrOptions): string;
+} 
 ```
+
+## package.json命令
+```js
 "scripts": {
-    "start":"node app.js", // 启动
     "build":"npx srejs build" // 生产环境部署前预编译构建
 },
 
 ```
 
-## 工程目录
-框架默认配置属性`rootDir`默认为根目录下`web`，pages目录下必须为项目文件夹，项目名不能命名为`index`
-```
-└── web
-    └── pages
-        └── demo
-            ├── index.js 
-            └── demo.scss
-```
 
-## 开发预览
-srejs采用多入口配置，web/pages下按照文件夹项目进行项目代码隔离，无论客户端还是服务端渲染均使用项目文件夹名称进行路由匹配。`eg:localhost:8001/index` 访问项目`index`. 
+## 配置文件
+> 除了在初始化srejs实例时通过最后一位options参数传递，srejs将会自动扫描项目根目录`config/ssr.config.js`，配置文件格式如下：
 
-
-# 服务端渲染预取数据
-> 服务端渲染预初始化数据，通过静态方法**getInitialProps**函数调用接口返回。
-```js
-APP.getInitialProps = async (ctx,query,pathname) => {
-        //...
-        return { count: 1 }
-    }
-```
-
-客户端通过组件的props获取服务端数据,**getInitialProps**return返回的属性会挂载到组件的props上
 
 ```js
-let APP = props => {
-    const [count, setCount] = useState(props.count);
-    return (
-        <div>
-            <span>Coweunt: {count}</span>
-        </div>
-    );
-};
-```
-props除了挂载我们getInitialProps的返回值外，还会挂载url中的的pathname和query，可通过全局对象`window.__SSR_DATA__`访问服务端预渲染返回的初始化数据。
-
-
-# 高级配置
-
-## `ssr.config.js`
-可在config/ssr.config.js下对我们的项目进行相关配置。
-```
 module.exports = {
-    ssr: true, // 全局开启服务端渲染
-    cache: true, // 全局使用服务端渲染缓存 第一次ssr,再次采用缓存，适用与存静态资源或者所有人访问的页面都是一样的工程
-    staticPages: [], // 纯静态页面组件 执行一次服务端渲染，之后采用缓存html
-    rootDir:'web', // 配置客户端根目录
-    prefixCDN:'/', // 构建后静态资源CDN地址前缀
-    prefixRouter: '', // 页面路由前缀
+    ssr: true, // 开启服务端渲染
+    cache: false, // 开启缓存
+    rootDir: 'web', // 工程根文件夹目录名称
+    rootNode: 'app', // 客户端渲染挂载根元素ID
 }
 ```
 
 # 更多
-- [Pages和页面组件](./../../doc/page-router.md)
-- [使用tsx](./../../doc/typescript.md)
-- [SEO](./../../doc/htmlTemplate.md)
-- [自定义webpack](./../../doc/webpackconfig.md)
+- [页面组件和路由](./../../doc/page-router.md)
+- [支持js,tsx](./../../doc/typescript.md)
+- [html配置](./../../doc/htmlTemplate.md)
+- [数据获取](./../../doc/initprops.md)
+<!-- - [自定义webpack](./../../doc/webpackconfig.md) -->
+
+## 谁在使用
+ - [umajs-react-ssr](https://github.com/Umajs/umajs-react-ssr)
