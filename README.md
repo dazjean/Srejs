@@ -1,6 +1,7 @@
 
+> Server rendering engine 缩写为 **sre** 即服务器端渲染引擎，为React，Vue提供轻量级封装的服务端渲染骨架工具。
 
-## 工程目录要求
+## 工程目录
 框架默认配置属性`rootDir`默认为根目录下`web`，pages下是页面组件入口，比如`list`页面，目录结构为`list/index.js`
 ```
 └── web
@@ -117,3 +118,5 @@ module.exports = {
     rootNode: 'app', // 客户端渲染挂载根元素ID
 }
 ```
+## 谁在使用
+ - [umajs-react-ssr](https://github.com/Umajs/umajs-react-ssr)
