@@ -1,0 +1,66 @@
+//sass style
+//-------------------------------                     
+$baseFontSize:      32px !default;
+
+
+// pixels to rems 
+@function pxToRem($px) {
+    @return $px / $baseFontSize * 1rem;
+}
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+header,
+img
+{
+margin: 0;
+padding: 0;
+font-family: '微软雅黑';
+}
+html,body,#app{
+    height: 100%;
+    width: 100%;
+    font-size: 16px;
+    overflow-y: auto;
+}
+
+.list{
+    width: 100%;
+    height: 100%;
+    margin: 0 auto; /*水平居中*/
+    position: relative;
+    top: 50%; /*偏移*/
+    transform: translateY(-50%);
+    background-size: auto;
+    background-position-y: pxToRem(70px);
+    font-weight: bold;
+    font-size: $baseFontSize;
+    li{
+        background-color: #f9f1f1;
+        border: #bdbbbb 1px solid;
+        margin: 5px;
+    }
+    .item{
+        color:#03a9f4;
+    }
+}

@@ -1,0 +1,24 @@
+{
+  "name": "root",
+  "private": true,
+  "scripts": {
+    "init": "del -f packages/*/node_modules && del -f packages/*/lib && lerna bootstrap",
+    "prepublish": "npm run test && lerna run lint && lerna run build",
+    "publish": "lerna publish",
+    "postinstall": "npx checker-init && npm run init && npm run linkReact && npm run linkReactDom && npm run linkReactRouter && npm run link",
+    "linkReact": "cd packages/core-react/node_modules/react && yarn link",
+    "linkReactDom": "cd packages/core-react/node_modules/react-dom && yarn link",
+    "linkReactRouter": "cd packages/core-react/node_modules/react-router-dom && yarn link",
+    "link": "yarn link react react-dom react-router-dom",
+    "lint": "eslint packages/*/src --fix"
+  },
+  "devDependencies": {
+    "commit-msg-checker": "^1.0.7",
+    "del-cli": "^3.0.1",
+    "lerna": "^4.0.0"
+  },
+  "dependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.26.0"
+  }
+}
