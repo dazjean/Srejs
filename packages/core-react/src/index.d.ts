@@ -19,7 +19,7 @@ declare class Srejs {
      *
      * @param app koa实例
      * @param dev 默认true,将改写process.env.NODE_ENV为development
-     * @param defaultRouter 使用默认路由 默认true
+     * @param defaultRouter 使用默认路由 默认false
      * @param options 框架配置属性
      */
     constructor(app: Koa, dev?: boolean, defaultRouter?: boolean, options?: TcoreOptions);

@@ -60,18 +60,22 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
                     use: {
                         loader: 'babel-loader',
                         options: {
-                          presets: ["@babel/preset-react","@babel/preset-env","@babel/preset-typescript"],
-                          plugins: [
-                            "@babel/plugin-syntax-jsx",
-                            [
-                              "@babel/plugin-transform-runtime",
-                              { "helpers": false, "regenerator": true }
+                            presets: [
+                                '@babel/preset-react',
+                                '@babel/preset-env',
+                                '@babel/preset-typescript'
                             ],
-                            "@babel/plugin-transform-modules-commonjs",
-                            "@babel/plugin-proposal-class-properties"
-                          ]
+                            plugins: [
+                                '@babel/plugin-syntax-jsx',
+                                [
+                                    '@babel/plugin-transform-runtime',
+                                    { helpers: false, regenerator: true }
+                                ],
+                                '@babel/plugin-transform-modules-commonjs',
+                                '@babel/plugin-proposal-class-properties'
+                            ]
                         }
-                      },
+                    },
                     exclude: /node_modules/
                 },
                 {

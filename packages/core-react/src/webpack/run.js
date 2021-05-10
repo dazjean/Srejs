@@ -6,7 +6,7 @@ import Logger from './../log';
 
 class Webpack {
     /**
-     * 
+     *
      * @param {*} pages 支持单独文件构建编译 默认true编译全部web页面组件
      * @param {*} dev 开发环境
      * @param {*} server 服务端编译模式

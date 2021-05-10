@@ -11,7 +11,7 @@ import HotReload from './webpack/hot-reload';
 import WatchPage from './watch';
 import Logger from './log';
 import { EntryList } from './webpack/entry';
-import tools, { clientDir, SSRKEY ,parseQuery} from './tools';
+import tools, { clientDir, SSRKEY, parseQuery } from './tools';
 
 export default class Srejs {
     /**
@@ -63,7 +63,7 @@ export default class Srejs {
     }
     /**
      * 注册默认路由
-     * @param {*} page 
+     * @param {*} page
      */
     addRouter(page) {
         var rePath = new RegExp('^/' + page + '(/?.*)'); // re为/^\d+bl$
@@ -76,7 +76,7 @@ export default class Srejs {
     }
     /**
      * koa中间件拦截页面组件默认的路由，eg:web/pages/index/index.ts 映射为/index
-     * @returns 
+     * @returns
      */
     middleware() {
         const self = this;
@@ -98,9 +98,9 @@ export default class Srejs {
     }
     /**
      * 初始化koa请求上下文
-     * @param {*} ctx 
-     * @param {*} viewName 
-     * @param {*} options 
+     * @param {*} ctx
+     * @param {*} viewName
+     * @param {*} options
      */
     setContext(ctx, viewName, options = {}) {
         let { prefixRouter } = this.options;
@@ -131,8 +131,8 @@ export default class Srejs {
 
     /**
      * 返回客户端ssr结果
-     * @param {*} ctx 
-     * @param {*} html 
+     * @param {*} ctx
+     * @param {*} html
      */
     renderHtml(ctx, html) {
         sendHTML(ctx, html, { generateEtags: true });

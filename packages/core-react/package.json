@@ -14,7 +14,9 @@
 	"keywords": [
 		"ssr",
 		"react",
-		"srejs"
+		"@umajs/plugin-react-ssr",
+		"umajs-react-ssr",
+		"@srejs"
 	],
 	"bin": {
 		"sre": "./bin/index.js",
@@ -34,9 +36,9 @@
 		"access": "public"
 	},
 	"bugs": {
-		"url": "https://github.com:dazjean/srejs/issues"
+		"url": "https://github.com/dazjean/srejs/issues"
 	},
-	"homepage": "https://github.com:dazjean/srejs#readme",
+	"homepage": "https://github.com/dazjean/srejs#readme",
 	"license": "MIT",
 	"dependencies": {
 		"@babel/cli": "^7.7.7",
@@ -48,7 +50,6 @@
 		"@babel/preset-react": "^7.7.4",
 		"@babel/preset-typescript": "^7.12.1",
 		"@babel/runtime": "^7.7.7",
-		"@umajs/logger": "^0.1.1",
 		"autodll-webpack-plugin": "^0.4.2",
 		"autoprefixer": "^9.7.3",
 		"babel-loader": "^8.0.6",

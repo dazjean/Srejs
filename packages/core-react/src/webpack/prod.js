@@ -6,7 +6,7 @@ function getProconfig(page, isServer) {
 
     let buildConfig = Object.assign({}, config, {
         devtool: false,
-        mode:'production',
+        mode: 'production',
         plugins: [...getPlugin(config.entry, isServer)]
     });
     return buildConfig;

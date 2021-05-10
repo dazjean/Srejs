@@ -18,7 +18,7 @@ const defaultOptions = {
     rootNode: 'app', // 客户端渲染挂载根元素ID
     log: true, // 开发环境日志
     prefixCDN: '/', // 构建后静态资源CDN地址前缀
-    prefixRouter: '', // 页面路由前缀 默认/page  添加后前缀后访问方式为 /prefixUrl/page
+    prefixRouter: '' // 页面路由前缀 默认/page  添加后前缀后访问方式为 /prefixUrl/page
 };
 let coreOptions = null;
 
