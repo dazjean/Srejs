@@ -29,7 +29,14 @@
 		"type": "git",
 		"url": "git@github.com:dazjean/srejs.git"
 	},
-	"author": "dazjean",
+	"publishConfig": {
+		"registry": "http://registry.npmjs.org",
+		"access": "public"
+	  },
+	"bugs": {
+	"url": "https://github.com:dazjean/srejs/issues"
+	},
+	"homepage": "https://github.com:dazjean/srejs#readme",
 	"license": "MIT",
 	"dependencies": {
 		"@babel/cli": "^7.7.7",
