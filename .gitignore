@@ -3,3 +3,4 @@ lib
 dist
 .ssr
 packages/app/.DS_Store
+.DS_Store
