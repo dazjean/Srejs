@@ -43,9 +43,14 @@ function getPlugin(entryObj) {
             hash: false, //为静态资源生成hash值
             chunks: [pathname], //需要引入的chunk，不配置就会引入所有页面的资源
             minify: {
-                //压缩HTML文件
-                removeComments: true, //移除HTML中的注释
-                collapseWhitespace: false //删除空白符与换行符
+                removeComments: true,
+                collapseWhitespace: false,
+                keepClosingSlash: true,
+                removeComments: true,
+                removeRedundantAttributes: true,
+                removeScriptTypeAttributes: true,
+                removeStyleLinkTypeAttributes: true,
+                useShortDoctype: true
             }
         };
         webpackPlugin.push(new HTMLWebpackPlugin(conf));

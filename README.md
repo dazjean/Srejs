@@ -1,6 +1,5 @@
-<h1 align="center"> Srejs </h1>
 <div align="center">
-  <img src="" width="300" />
+  <img src="./doc/Srejs.jpeg" width="300" />
 </div>
 <br />
 
