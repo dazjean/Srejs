@@ -1,5 +1,21 @@
+<h1 align="center"> Srejs </h1>
+<div align="center">
+  <img src="" width="300" />
+</div>
+<br />
 
-> Server rendering engine 缩写为 **sre** 即服务器端渲染引擎，为React，Vue提供轻量级封装的服务端渲染骨架工具。
+<div align="center">
+  <strong>Server rendering engine, abbreviated as srejs, is the server-side rendering engine. It provides the simplest and most flexible react and Vue lightweight server-side rendering skeleton tool for each node development framework, and supports the use in any koa framework.</strong>
+</div>
+<br />
+<div align="center">
+<a href="https://npmcharts.com/compare/@srejs/react" target="_blank"><img src="https://img.shields.io/npm/dt/@srejs/react" alt="download"></a>
+<a href="https://github.com/dazjean/Srejs" target="_blank"><img src="https://img.shields.io/npm/l/vue.svg" alt="License"></a>
+<a href="https://github.com/dazjean/Srejs" target="_blank"><img src="https://img.shields.io/badge/node-%3E=10-green.svg" alt="Node"></a>
+</div>
+<br />
+
+> Server rendering engine 缩写为 Srejs, 即服务器端渲染引擎，为各个node开发框架提供最简单，最灵活的React，Vue轻量级服务端渲染骨架工具，支持在任何koa框架中使用。
 
 ## 工程目录
 框架默认配置属性`rootDir`默认为根目录下`web`，pages下是页面组件入口，比如`list`页面，目录结构为`list/index.js`
@@ -7,8 +23,8 @@
 └── web
     └── pages
         └── list
-            ├── index.jsx
-            └── list.scss
+            ├── index.tsx
+            └── index.scss
 ```
 
 ## 页面组件
