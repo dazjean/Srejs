@@ -1,13 +1,13 @@
 import Koa from 'koa';
 import srejs from '@srejs/react';
 const app = new Koa();
-const Sre = new srejs(app, process.env.NODE_ENV != 'production', false);
+const Sre = new srejs(app, process.env.NODE_ENV != 'production', false, {});
 
 const ListData = ['item0', 'item1', 'item2', 'item3'];
 
 app.use(async (ctx, next) => {
     if (ctx.path === '/') {
-        const html = await Sre.render(ctx, 'index', { title: '介绍' });
+        const html = await Sre.render(ctx, 'index', { title: '介绍' }, { ssr: true });
         ctx.type = 'text/html';
         ctx.body = html;
     } else if (ctx.path === '/serverList') {
@@ -27,8 +27,8 @@ app.use(async (ctx, next) => {
         );
         ctx.type = 'text/html';
         ctx.body = html;
-    } else if (ctx.path === '/cssModules') {
-        const html = await Sre.render(ctx, 'cssModules', { msg: 'srejs!' });
+    } else if (ctx.path === '/modules') {
+        const html = await Sre.render(ctx, 'modules', { msg: 'srejs!' });
         ctx.type = 'text/html';
         ctx.body = html;
     } else if (ctx.path === '/redux') {

@@ -1,6 +1,7 @@
 import { serverDir } from '../tools';
 import { getBaseconfig } from './base';
 import combine from './combine';
+import ExtractTextPlugin from 'mini-css-extract-plugin';
 
 function getServerconfig(page) {
     let baseConfig = getBaseconfig(page, true);
@@ -14,78 +15,6 @@ function getServerconfig(page) {
             globalObject: 'this', //webpack4之后如果umd构建在浏览器和node环境中均可使用需要设置成this
             filename: '[name].js', //打包后输出文件的文件名
             path: serverDir //打包后的文件存放的地方
-        },
-        module: {
-            rules: [
-                {
-                    test: /\.(js|mjs|jsx|ts|tsx)$/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true,
-                            cacheCompression: false,
-                            presets: [
-                                '@babel/preset-react',
-                                '@babel/preset-env',
-                                '@babel/preset-typescript'
-                            ],
-                            plugins: [
-                                '@babel/plugin-syntax-jsx',
-                                [
-                                    '@babel/plugin-transform-runtime',
-                                    { helpers: false, regenerator: true }
-                                ],
-                                '@babel/plugin-transform-modules-commonjs',
-                                '@babel/plugin-proposal-class-properties'
-                            ]
-                        }
-                    },
-                    exclude: /node_modules/
-                },
-                {
-                    test: /\.css$/,
-                    use: [
-                        {
-                            loader: 'css-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.scss$/,
-                    use: [
-                        {
-                            loader: 'css-loader'
-                        },
-                        {
-                            loader: 'sass-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.less$/,
-                    use: [
-                        {
-                            loader: 'css-loader'
-                        },
-                        {
-                            loader: 'less-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.(png|jpg|jpeg|gif|svg)$/,
-                    use: [
-                        {
-                            loader: 'url-loader',
-                            options: {
-                                name: '[hash:8].[name].[ext]',
-                                limit: 8192,
-                                outputPath: 'images/'
-                            }
-                        }
-                    ]
-                }
-            ]
         },
         externals: {
             react: {
@@ -107,7 +36,11 @@ function getServerconfig(page) {
                 commonjs2: 'react-router-dom'
             }
         },
-        plugins: []
+        plugins: [
+            new ExtractTextPlugin({
+                filename: `[name].css`
+            })
+        ]
     };
     return combine(config, true);
 }

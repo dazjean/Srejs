@@ -1,13 +1,13 @@
-import ExtractTextPlugin from 'mini-css-extract-plugin';
 import webpack from 'webpack';
 import path from 'path';
+import { loaderRules } from './loader';
 import { getPlugin } from './plugin';
 import { getEntry } from './entry';
 import combine from './combine';
 import tools, { getCoreConfig } from '../tools';
 
 const clientPath = path.join(process.cwd() + '/dist/client');
-const { prefixCDN, cssModule, lessModule, scssModule } = getCoreConfig();
+const { prefixCDN } = getCoreConfig();
 const rootDir = tools.getOptions('rootDir');
 const srcPath = path.join(process.cwd() + `/${rootDir}`);
 
@@ -27,18 +27,6 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
         tempObj = entryObj;
         pluginsObj = [...getPlugin(entryObj, isServer)];
     }
-
-    const possLoader = {
-        loader: 'postcss-loader',
-        options: {
-            postcssOptions: {
-                plugins: [
-                    require('autoprefixer')({ overrideBrowserslist: ['last 2 versions'] }),
-                    !tools.isDev() ? require('cssnano') : null
-                ]
-            }
-        }
-    };
 
     const config = {
         devtool: tools.isDev() ? 'eval-source-map' : false,
@@ -68,100 +56,7 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
             entrypoints: false
         },
         module: {
-            rules: [
-                {
-                    test: /\.(js|mjs|jsx|ts|tsx)$/,
-                    use: {
-                        loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true,
-                            cacheCompression: false,
-                            presets: [
-                                '@babel/preset-react',
-                                '@babel/preset-env',
-                                '@babel/preset-typescript'
-                            ],
-                            plugins: [
-                                '@babel/plugin-syntax-jsx',
-                                [
-                                    '@babel/plugin-transform-runtime',
-                                    { helpers: false, regenerator: true }
-                                ],
-                                '@babel/plugin-transform-modules-commonjs',
-                                '@babel/plugin-proposal-class-properties'
-                            ]
-                        }
-                    },
-                    exclude: /node_modules/
-                },
-                {
-                    test: /\.css$/,
-                    use: [
-                        'css-hot-loader',
-                        ExtractTextPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                url: true,
-                                modules: cssModule
-                            }
-                        },
-                        possLoader,
-                        {
-                            loader: 'sass-loader' // 兼容历史方案，老版本css和scss一样的配置
-                        }
-                    ]
-                },
-                {
-                    test: /\.scss$/,
-                    use: [
-                        'css-hot-loader',
-                        ExtractTextPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                url: true,
-                                modules: scssModule
-                            }
-                        },
-                        possLoader,
-                        {
-                            loader: 'sass-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.less$/,
-                    use: [
-                        'css-hot-loader',
-                        ExtractTextPlugin.loader,
-                        {
-                            loader: 'css-loader',
-                            options: {
-                                url: true,
-                                modules: lessModule
-                            }
-                        },
-                        possLoader,
-                        {
-                            loader: 'less-loader'
-                        }
-                    ]
-                },
-                {
-                    test: /\.(png|jpg|jpeg|gif|svg)$/,
-                    use: [
-                        {
-                            loader: 'url-loader',
-                            options: {
-                                name: '[hash:8].[name].[ext]',
-                                limit: 8192,
-                                outputPath: 'images/'
-                            }
-                        }
-                    ]
-                }
-            ]
+            rules: loaderRules()
         },
         devServer: {
             contentBase: srcPath,

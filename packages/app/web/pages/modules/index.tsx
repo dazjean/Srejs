@@ -1,13 +1,13 @@
-import './index.less';
+import style from './index.module.less';
 import React from 'react';
 type typeProps = {
     msg: string;
 };
 export default function (props: typeProps) {
     return (
-        <div className="ts-demo">
+        <div className={style.home}>
             <p>css modules</p>
-            <pre>{props.msg}</pre>
+            <pre className={style.text}>{props.msg}</pre>
         </div>
     );
 }

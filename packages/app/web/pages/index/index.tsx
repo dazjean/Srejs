@@ -6,7 +6,7 @@ type typeProps = {
 export default function (props: typeProps) {
     const { title } = props;
     return (
-        <div className="ts-demo" style={{ textAlign: 'center' }}>
+        <div className="home" style={{ textAlign: 'center' }}>
             <br />
             <br />
             <p className="title">{title}</p>
@@ -27,7 +27,7 @@ export default function (props: typeProps) {
                     <a href="/redux">4.useRedux</a>
                 </li>
                 <li>
-                    <a href="/cssModules">5.css-modules</a>
+                    <a href="/modules">5.css modules</a>
                 </li>
             </ul>
             <p className="footer">
