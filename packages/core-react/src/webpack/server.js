@@ -5,9 +5,9 @@ import combine from './combine';
 function getServerconfig(page) {
     let baseConfig = getBaseconfig(page, true);
     let config = {
-        devtool: false,
-        mode: 'production',
-        entry: baseConfig.entry, //类别入口文件
+        ...baseConfig,
+        watch: true,
+        target: 'node',
         output: {
             publicPath: '/',
             libraryTarget: 'umd',
@@ -22,6 +22,8 @@ function getServerconfig(page) {
                     use: {
                         loader: 'babel-loader',
                         options: {
+                            cacheDirectory: true,
+                            cacheCompression: false,
                             presets: [
                                 '@babel/preset-react',
                                 '@babel/preset-env',
@@ -105,7 +107,6 @@ function getServerconfig(page) {
                 commonjs2: 'react-router-dom'
             }
         },
-        resolve: baseConfig.resolve,
         plugins: []
     };
     return combine(config, true);

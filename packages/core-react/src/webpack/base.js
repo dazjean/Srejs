@@ -40,8 +40,8 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
         }
     };
 
-    let config = {
-        devtool: tools.isDev() ? 'cheap-module-eval-source-map' : false,
+    const config = {
+        devtool: tools.isDev() ? 'eval-source-map' : false,
         mode: tools.isDev() ? 'development' : 'production',
         entry: {
             ...tempObj
@@ -53,6 +53,20 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
             filename: `[name].js?v=[hash]`, //打包后输出文件的文件名
             path: clientPath //打包后的文件存放的地方
         },
+        stats: {
+            publicPath: false,
+            performance: false,
+            env: false,
+            depth: false,
+            colors: true,
+            assets: true,
+            cachedAssets: false,
+            children: false,
+            chunks: false,
+            modules: false,
+            warnings: false,
+            entrypoints: false
+        },
         module: {
             rules: [
                 {
@@ -60,6 +74,8 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
                     use: {
                         loader: 'babel-loader',
                         options: {
+                            cacheDirectory: true,
+                            cacheCompression: false,
                             presets: [
                                 '@babel/preset-react',
                                 '@babel/preset-env',
@@ -157,12 +173,12 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
             modules: [path.resolve(__dirname, '../../node_modules'), 'node_modules'],
             extensions: ['.js', '.jsx', '.ts', '.tsx', '.css', '.scss', '.less'],
             alias: {
+                '@': srcPath,
                 components: srcPath + '/components',
                 images: srcPath + '/images',
-                mock: srcPath + '/mock',
-                skin: srcPath + '/skin',
-                utils: srcPath + '/utils',
-                config: srcPath + '/config'
+                react: require.resolve('react'),
+                'react-dom': require.resolve('react-dom'),
+                'react-router-dom': require.resolve('react-router-dom') // 避免多实例
             }
         }
     };

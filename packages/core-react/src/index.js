@@ -2,13 +2,13 @@
  * @Author: zhang dajia * @Date: 2018-11-05 14:16:25
  * @Last Modified by: zhang dajia
  * @Last Modified time: 2020-12-01 19:53:25
- * @Last  description: srejs-core
+ * @Last  description: srejs/react
  */
 import send from 'koa-send';
 import { sendHTML } from './send-html';
-import { renderServerStatic } from './render-server-static';
+import { render as ReactRender } from './render';
 import HotReload from './webpack/hot-reload';
-import WatchPage from './watch';
+import Webpack from './webpack/index';
 import Logger from './log';
 import { EntryList } from './webpack/entry';
 import tools, { clientDir, SSRKEY, parseQuery } from './tools';
@@ -31,7 +31,7 @@ export default class Srejs {
         }
         this.dev = dev;
         this.options = tools.setOptions(options);
-        this.hotReload();
+        this.hmr();
         this.serverStatic();
         defaultRouter && this.usePageRouter();
     }
@@ -85,7 +85,7 @@ export default class Srejs {
                 const regRouter = self.routes[i];
                 if (regRouter.test(ctx.path)) {
                     self.setContext(ctx);
-                    const document = await renderServerStatic(ctx);
+                    const document = await ReactRender(ctx);
                     if (!document) {
                         return next();
                     }
@@ -125,7 +125,7 @@ export default class Srejs {
      */
     async render(ctx, viewName, initProps, options) {
         this.setContext(ctx, viewName, options);
-        const html = await renderServerStatic(ctx, initProps);
+        const html = await ReactRender(ctx, initProps);
         return html;
     }
 
@@ -141,10 +141,10 @@ export default class Srejs {
     /**
      * 开发环境时HMR热更新
      */
-    hotReload() {
+    hmr() {
         if (this.dev) {
             new HotReload(this.app);
-            new WatchPage(this.app);
+            new Webpack(true, true, true).run(); // 启动时只提取构建服务端所需资源
         }
     }
 }
