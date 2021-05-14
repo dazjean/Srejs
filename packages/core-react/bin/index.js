@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 var commander = require('commander'); //可以自动的解析命令和参数，用于处理用户输入的命令
-
 commander
     .version('0.0.1')
     .option('-d, --dev [page]', '启动客户端渲染开发模式')
@@ -14,6 +13,8 @@ commander.command('build [page]').action((page = true) => {
     } else if (page == 'false') {
         process.env.NODE_ENV = 'development';
         page = JSON.parse(page);
+    } else {
+        process.env.NODE_ENV = 'production';
     }
     build(page);
 });
@@ -21,11 +22,7 @@ commander.command('build [page]').action((page = true) => {
 // 开发环境启动
 commander.command('dev [page]').action((page = true) => {
     const { dev } = require('../lib/dev');
-    if (page == 'true') {
-        process.env.NODE_ENV = 'production';
-    } else if (page == 'false') {
-        process.env.NODE_ENV = 'development';
-    }
+    process.env.NODE_ENV = 'development';
     dev(page);
 });
 

@@ -2,9 +2,9 @@ import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import { loadGetInitialProps } from './get-static-props';
+import { loadGetInitialProps } from './initialProps';
 import { EntryList } from './webpack/entry';
-import webPack from './webpack/run';
+import webPack from './webpack';
 import tools, { clientDir, serverDir, cacheDir, SSRKEY } from './tools';
 import Logger from './log';
 
@@ -33,7 +33,7 @@ const writeFile = async (path, Content) => {
  * @param  {string} page html文件名称
  * @return {promise}
  */
-export const render = (page) => {
+export const readPageHtml = (page) => {
     return new Promise((resolve, reject) => {
         let viewUrl = `${clientDir}/${page}/${page}.html`;
         fs.readFile(viewUrl, 'utf8', (err, data) => {
@@ -73,7 +73,7 @@ const writeFileHander = (cacheDir, cacheUrl, Content) => {
     });
 };
 
-export const checkDistJsmodules = async (page) => {
+export const checkModules = async (page) => {
     let jspath = `${serverDir}/${page}/${page}.js`;
     let jsClientdir = `${clientDir}/${page}`;
     if (!fs.existsSync(jspath)) {
@@ -93,14 +93,15 @@ export const checkDistJsmodules = async (page) => {
  * @param {*} ctx
  * @param {*} next
  */
-export const renderServerDynamic = async (ctx, initProps, ssr = true) => {
+export const renderServer = async (ctx, initProps, ssr = true) => {
     const context = {};
+    let props = {};
     var { page, query } = ctx[SSRKEY];
     if (!EntryList.has(page)) {
         return false;
     }
     let App = {};
-    let jspath = await checkDistJsmodules(page);
+    let jspath = await checkModules(page);
     try {
         // eslint-disable-next-line no-undef
         if (tools.isDev()) {
@@ -115,7 +116,7 @@ export const renderServerDynamic = async (ctx, initProps, ssr = true) => {
         );
         Logger.error(error.stack);
     }
-    let props = ssr && (await loadGetInitialProps(App, ctx));
+    ssr && (await loadGetInitialProps(App, ctx));
     if (typeof initProps === 'object') {
         props = Object.assign(props || {}, initProps);
     }
@@ -143,7 +144,7 @@ export const renderServerDynamic = async (ctx, initProps, ssr = true) => {
         ctx.response.end();
     } else {
         // 加载 index.html 的内容
-        let data = await render(page);
+        let data = await readPageHtml(page);
         //进行xss过滤
         for (let key in query) {
             if (query[key] instanceof Array) {
@@ -178,20 +179,20 @@ export const renderServerDynamic = async (ctx, initProps, ssr = true) => {
  * 获取服务端渲染直出资源
  * @param {*} ctx
  */
-export const renderServerStatic = async (ctx, initProps) => {
+export const render = async (ctx, initProps) => {
     let page = ctx[SSRKEY].page;
     let { cache, ssr } = ctx[SSRKEY].options;
     return new Promise(async (resolve) => {
         if (!ssr) {
             // 客户端渲染模式
-            resolve(await renderServerDynamic(ctx, initProps, false));
+            resolve(await renderServer(ctx, initProps, false));
         }
 
         let ssrCacheDir = `${cacheDir}${ctx.url}/`;
         let ssrCacheUrl = `${cacheDir}${ctx.url}/${page}.html`;
         if (tools.isDev() || !cache) {
             // ssr无缓存模式，适用每次请求都是动态渲染页面场景
-            resolve(await renderServerDynamic(ctx, initProps, true));
+            resolve(await renderServer(ctx, initProps, true));
         } else {
             if (fs.existsSync(ssrCacheUrl)) {
                 // ssr缓存模式，执行一次ssr 第二次直接返回缓存后的html静态资源
@@ -199,7 +200,7 @@ export const renderServerStatic = async (ctx, initProps) => {
                 resolve(rs);
             } else {
                 // ssr缓存模式,首次执行
-                let document = await renderServerDynamic(ctx, initProps, true);
+                let document = await renderServer(ctx, initProps, true);
                 resolve(document);
                 process.nextTick(() => {
                     writeFileHander(ssrCacheDir, ssrCacheUrl, document); //异步写入服务器缓存目录

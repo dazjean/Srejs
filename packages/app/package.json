@@ -5,7 +5,9 @@
   "private": true,
   "main": "app.js",
   "scripts": {
-    "build": "srejs build"
+    "build": "srejs build",
+    "start": "node  start.js",
+    "dev": "srejs dev"
   },
   "dependencies": {
     "@babel/core": "^7.14.0",

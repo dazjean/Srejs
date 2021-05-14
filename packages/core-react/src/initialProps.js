@@ -7,28 +7,21 @@ export function getDisplayName(Component) {
         : Component.displayName || Component.name || 'Unknown';
 }
 export async function loadGetInitialProps(App, ctx) {
+    if (!App.getInitialProps) {
+        return {};
+    }
     if (tools.isDev()) {
         if (App.prototype && App.prototype.getInitialProps) {
             const message = `"${getDisplayName(
                 App
-            )}.getInitialProps(ctx ,query,pathname)" is defined as an instance method - visit https://err.sh/zeit/next.js/get-initial-props-as-an-instance-method for more information.`;
+            )}.getInitialProps(ctx ,query,pathname)" is defined as an instance method`;
             throw new Error(message);
         }
     }
     // when npm run output ctx is null
     ctx = ctx || {};
 
-    // when called from _app `ctx` is nested in `ctx`
     const res = ctx.res || (ctx.ctx && ctx.ctx.res);
-
-    if (!App.getInitialProps) {
-        if (ctx.ctx && ctx.Component) {
-            return {
-                pageProps: await loadGetInitialProps(ctx.Component, ctx.ctx)
-            };
-        }
-        return {};
-    }
 
     const props = await App.getInitialProps(
         ctx,

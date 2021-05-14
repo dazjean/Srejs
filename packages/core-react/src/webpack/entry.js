@@ -24,7 +24,8 @@ export function getEntry(page) {
 function initPropsInject(page) {
     try {
         const rootDir = tools.getOptions('rootDir');
-        let data = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
+        const rootNode = tools.getOptions('rootNode');
+        let data = fs.readFileSync(path.join(__dirname, '..', 'entry.tpl'), 'utf8');
         let entryName = false;
         const entrysFileList = [
             'index.js',
@@ -49,6 +50,7 @@ function initPropsInject(page) {
                 `require('../${rootDir}/pages/${page}/${entryName}')`
             );
             data = data.replace('__SSR_DATA__pathname', page);
+            data = data.replace('$rootNode$', rootNode);
             let exists = fs.existsSync(tempDir);
             if (!exists) {
                 fs.mkdirSync(tempDir);

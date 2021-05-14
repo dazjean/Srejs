@@ -24,7 +24,7 @@
 	},
 	"scripts": {
 		"build": "babel src  --out-dir lib  --copy-files",
-		"start": "babel src --watch  --out-dir lib  --source-maps inline",
+		"start": "babel src --watch  --out-dir lib  --source-maps inline --copy-files",
 		"prepublish": "npm run build"
 	},
 	"repository": {
