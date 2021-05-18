@@ -1,5 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+
 import { loaderRules } from './loader';
 import { getPlugin } from './plugin';
 import { getEntry } from './entry';
@@ -31,6 +33,9 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
     const config = {
         devtool: tools.isDev() ? 'eval-source-map' : false,
         mode: tools.isDev() ? 'development' : 'production',
+        optimization: {
+            minimizer: [new CssMinimizerPlugin()]
+        },
         entry: {
             ...tempObj
         }, //类别入口文件

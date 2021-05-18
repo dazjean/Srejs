@@ -1,7 +1,7 @@
 
 > Server rendering engine 缩写为 **sre** 即服务器端渲染引擎，为React + koa技术栈提供轻量级封装的服务端渲染骨架工具。
 
-## 工程目录
+## 目录
 框架默认配置属性`rootDir`默认为根目录下`web`，pages下是页面组件入口，比如`list`页面，目录结构为`list/index.js`
 ```
 └── web
@@ -37,6 +37,8 @@ export default function (props:typeProps){
 ```
 
 ## 在Koa中使用
+> Srejs支持在koa中间件中使用，通过此能力我们可以对任何基于Koa的开发框架进行插件封装，比如`Umajs`,`egg`,`nest`,推荐使用[`@umajs/plugin-react-ssr`](https://github.com/Umajs/plugin-react-ssr#readme)提供的解决方案。后续也会发布针对`egg`,`nest`使用的插件。
+
 ```js
 // app.js
 const Koa = require('koa');
@@ -105,12 +107,11 @@ declare class Srejs {
 
 ```
 
-
 ## 配置文件
-> 除了在初始化srejs实例时通过最后一位options参数传递，srejs将会自动扫描项目根目录`config/ssr.config.js`，配置文件格式如下：
-
+> 除了在初始化`Srejs`实例时通过最后一位`options`参数传递，`Srejs`将会自动扫描项目根目录`config/ssr.config.js`，配置文件格式如下：
 
 ```js
+// config/ssr.config.js
 module.exports = {
     ssr: true, // 开启服务端渲染
     cache: false, // 开启缓存
@@ -119,12 +120,12 @@ module.exports = {
 }
 ```
 
-# 更多
+## 更多
 - [页面组件和路由](./../../doc/page-router.md)
-- [支持js,tsx](./../../doc/typescript.md)
-- [html配置](./../../doc/htmlTemplate.md)
 - [数据获取](./../../doc/initprops.md)
-<!-- - [自定义webpack](./../../doc/webpackconfig.md) -->
+- [typescript](./../../doc/typescript.md)
+- [css-modules](./../../doc/cssModules.md)
+- [自定义html](./../../doc/htmlTemplate.md)
 
 ## 谁在使用
  - [umajs-react-ssr](https://github.com/Umajs/umajs-react-ssr)
