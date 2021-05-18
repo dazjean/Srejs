@@ -1,0 +1,58 @@
+{
+  "name": "app",
+  "version": "0.0.2",
+  "description": "umajs+srejs+react-redux",
+  "author": "dazjean",
+  "license": "ISC",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Umajs/Uma.git"
+  },
+  "scripts": {
+    "lint": "eslint src --ext .ts",
+    "lint-w": "esw src --clear --color -w --ext .ts",
+    "dev": "ts-node-dev --respawn src/app.ts",
+    "start": "run-p dev lint-w",
+    "prebuild": "npm run lint",
+    "build": "tsc",
+    "preprod": "npm run build",
+    "prod": "node app/app.js --production"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.5.1",
+    "@umajs/core": "^1.1.2",
+    "@umajs/plugin-react-ssr": "^1.0.3",
+    "@umajs/router": "^1.1.2",
+    "koa": "^2.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.48",
+    "@types/koa-views": "^2.0.3",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "eslint": "^7.0.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-typescript": "^0.14.0",
+    "eslint-watch": "^6.0.1",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^8.2.0",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.2.2"
+  }
+}
