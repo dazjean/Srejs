@@ -12,13 +12,13 @@ export const SSRKEY = Symbol('SSR');
 
 const newOptionsPath = path.resolve(process.cwd(), './config/ssr.config.js');
 const defaultOptions = {
-    ssr: true, // 开启服务端渲染
-    cache: false, // 开启缓存
-    rootDir: 'web', // 工程根文件夹目录名称
-    rootNode: 'app', // 客户端渲染挂载根元素ID
-    log: true, // 开发环境日志
+    ssr: true, // 全局开启服务端渲染
+    cache: false, //  全局使用服务端渲染缓存
+    rootDir: 'web', // 客户端页面组件根文件夹
+    rootNode: 'app', // 客户端页面挂载根元素ID
     prefixCDN: '/', // 构建后静态资源CDN地址前缀
-    prefixRouter: '' // 页面路由前缀 默认/page  添加后前缀后访问方式为 /prefixUrl/page
+    prefixRouter: '', // 默认页面路由前缀(在defaultRouter设置为true时有效)
+    log: true // 开发环境日志
 };
 let coreOptions = null;
 

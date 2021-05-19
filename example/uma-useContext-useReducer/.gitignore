@@ -1,0 +1,14 @@
+.idea
+.cache
+node_modules
+.DS_Store
+dist
+lib
+app
+/node_modules
+.history/
+logs/
+yarn-error.log
+yarn.lock
+package-lock.json
+.ssr/

@@ -1,0 +1,61 @@
+{
+  "name": "app",
+  "version": "0.0.2",
+  "description": "umajs-react-ssr",
+  "author": "dazjean",
+  "license": "ISC",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib",
+    "index.d.ts"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Umajs/Uma.git"
+  },
+  "scripts": {
+    "fix:src": "npx eslint src --fix --ext .ts",
+    "fix:web": "npx eslint web --fix --ext .tsx",
+    "start": "ts-node-dev --respawn src/app.ts",
+    "build": "tsc && srejs build",
+    "fix": "npm run fix:src && npm run fix:web",
+    "postinstall": "npm run fix && npm run build",
+    "preprod": "npm run build",
+    "prod": "node app/app.js --production"
+  },
+  "dependencies": {
+    "@umajs/core": "^1.2.1",
+    "@umajs/plugin-react-ssr": "^1.0.3",
+    "@umajs/router": "^1.2.2",
+    "koa": "^2.11.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.0.48",
+    "@types/react": "^17.0.5",
+    "@types/react-dom": "^17.0.4",
+    "@types/react-router-dom": "^5.1.7",
+    "@typescript-eslint/eslint-plugin": "^4.22.1",
+    "@typescript-eslint/parser": "^4.22.1",
+    "eslint": "^7.26.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-react": "^7.23.2",
+    "eslint-plugin-react-hooks": "^4.2.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.3.0",
+    "ts-node": "^8.2.0",
+    "ts-node-dev": "^1.0.0-pre.32",
+    "typescript": "^3.2.2"
+  }
+}

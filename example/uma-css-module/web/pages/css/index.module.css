@@ -1,0 +1,19 @@
+.home{
+    background-color: black;
+    color: #ffffff;
+    font-size: 16px;
+    text-align: center;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+.title{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.des{
+    font-size: 18px;
+}

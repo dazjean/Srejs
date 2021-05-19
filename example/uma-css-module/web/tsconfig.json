@@ -1,0 +1,30 @@
+// 此文件用于IED开发环境web目录下ts类型检测校验，不影响构建
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "inlineSourceMap":true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "stripInternal": true,
+    "pretty": true,
+    "declaration": false,
+    "strict": true,
+    "noEmit": true,
+    "baseUrl": "./",
+    "strictNullChecks": true,
+    "esModuleInterop": true,
+    "jsx": "react",
+    "paths": {
+      "@/*": ["./*"] // 此处映射是相对于"baseUrl"
+    }
+  },
+  "include": [
+    "."
+  ]
+}
+
