@@ -7,11 +7,7 @@ import DetailData from '../mock/detail';
 export default class Index extends BaseController {
     @Path()
     index() {
-        return Result.reactView(
-            'index',
-            { indexData: ListData },
-            { cache: false },
-        );
+        return Result.reactView('index', { indexData: ListData }, { cache: true });
     }
 
     @Path('/detail/:id')
