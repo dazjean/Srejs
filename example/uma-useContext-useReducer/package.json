@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "@umajs/core": "^1.2.1",
-    "@umajs/plugin-react-ssr": "^1.0.4",
+    "@umajs/plugin-react-ssr": "^1.0.5",
     "@umajs/plugin-views": "^2.0.1-alpha.0",
     "@umajs/router": "^1.2.2",
     "koa": "^2.11.0",
