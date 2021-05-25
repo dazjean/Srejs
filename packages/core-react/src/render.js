@@ -188,26 +188,28 @@ export const render = async (ctx, initProps) => {
     return new Promise(async (resolve) => {
         if (!ssr) {
             // 客户端渲染模式
-            resolve(await renderServer(ctx, initProps, false));
+            return resolve(await renderServer(ctx, initProps, false));
         }
 
         let ssrCacheDir = `${cacheDir}${ctx.url}/`;
         let ssrCacheUrl = `${cacheDir}${ctx.url}/${page}.html`;
         if (tools.isDev() || !cache) {
             // ssr无缓存模式，适用每次请求都是动态渲染页面场景
-            resolve(await renderServer(ctx, initProps, true));
+            return resolve(await renderServer(ctx, initProps, true));
         } else {
             if (fs.existsSync(ssrCacheUrl)) {
                 // ssr缓存模式，执行一次ssr 第二次直接返回缓存后的html静态资源
                 let rs = fs.createReadStream(ssrCacheUrl, 'utf-8');
-                resolve(rs);
+
+                return resolve(rs);
             } else {
                 // ssr缓存模式,首次执行
                 let document = await renderServer(ctx, initProps, true);
-                resolve(document);
                 process.nextTick(() => {
                     writeFileHander(ssrCacheDir, ssrCacheUrl, document); //异步写入服务器缓存目录
                 });
+
+                return resolve(document);
             }
         }
     });
