@@ -116,7 +116,10 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         );
         Logger.error(error.stack);
     }
-    ssr && (await loadGetInitialProps(App, ctx));
+    // 静态方法只在ssr模式下在node服务端被调用。
+    if (ssr) {
+        props = await loadGetInitialProps(App, ctx);
+    }
     if (typeof initProps === 'object') {
         props = Object.assign(props || {}, initProps);
     }
