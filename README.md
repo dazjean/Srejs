@@ -106,7 +106,7 @@ app.listen(8001);
 ```ts
 type TssrOptions = {
     ssr: boolean; // 开启服务端渲染
-    cache?: boolean; / 开启缓存
+    cache?: boolean; // 开启缓存
 };
 
 type TcoreOptions = {
