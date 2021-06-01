@@ -1,6 +1,7 @@
 import webpack from 'webpack';
 import path from 'path';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
 
 import { loaderRules } from './loader';
 import { getPlugin } from './plugin';
@@ -34,7 +35,32 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
         devtool: tools.isDev() ? 'eval-source-map' : false,
         mode: tools.isDev() ? 'development' : 'production',
         optimization: {
-            minimizer: [new CssMinimizerPlugin()]
+            minimize: tools.isDev() ? false : true,
+            minimizer: [
+                new CssMinimizerPlugin(),
+                new TerserPlugin({ extractComments: false, parallel: true, cache: true })
+            ],
+            splitChunks: {
+                chunks: 'async',
+                minSize: 30000,
+                maxSize: 0,
+                minChunks: 1,
+                maxAsyncRequests: 5,
+                maxInitialRequests: 3,
+                automaticNameDelimiter: '~',
+                name: true,
+                cacheGroups: {
+                    vendors: {
+                        test: /[\\/]node_modules[\\/]/,
+                        priority: -10
+                    },
+                    default: {
+                        minChunks: 2,
+                        priority: -20,
+                        reuseExistingChunk: true
+                    }
+                }
+            }
         },
         entry: {
             ...tempObj
