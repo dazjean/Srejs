@@ -77,8 +77,10 @@
 		"terser-webpack-plugin": "^4.2.3",
 		"url-loader": "^4.1.1",
 		"webpack": "^4.35.0",
+		"webpack-bundle-analyzer": "^4.4.2",
 		"webpack-dev-server": "^3.7.2",
-		"webpack-hot-middleware": "^2.25.0"
+		"webpack-hot-middleware": "^2.25.0",
+		"webpack-node-externals": "^3.0.0"
 	},
 	"gitHead": "de066123d8736d4a989485a0b5fb30712c5c1607"
 }

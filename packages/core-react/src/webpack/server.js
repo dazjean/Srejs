@@ -1,10 +1,15 @@
-import { serverDir } from '../tools';
+import tools, { serverDir, cwd } from '../tools';
 import { getBaseconfig } from './base';
 import combine from './combine';
 import ExtractTextPlugin from 'mini-css-extract-plugin';
+import nodeExternals from 'webpack-node-externals';
 
 function getServerconfig(page) {
     let baseConfig = getBaseconfig(page, true);
+    let additionalModuleDirs = [cwd + '/node_modules'];
+    if (tools.isDev()) {
+        additionalModuleDirs.push(cwd);
+    }
     let config = {
         ...baseConfig,
         watch: true,
@@ -16,26 +21,9 @@ function getServerconfig(page) {
             filename: '[name].js', //打包后输出文件的文件名
             path: serverDir //打包后的文件存放的地方
         },
-        externals: {
-            react: {
-                amd: 'react',
-                root: 'React',
-                commonjs: 'react',
-                commonjs2: 'react'
-            },
-            'react-dom': {
-                amd: 'react-dom',
-                root: 'ReactDOM',
-                commonjs: 'react-dom',
-                commonjs2: 'react-dom'
-            },
-            'react-router-dom': {
-                amd: 'react-router-dom',
-                root: 'ReactRouterDom',
-                commonjs: 'react-router-dom',
-                commonjs2: 'react-router-dom'
-            }
-        },
+        externals: [
+            nodeExternals({ allowlist: [/\.(?!(?:jsx?|json)$).{1,5}$/i], additionalModuleDirs })
+        ],
         plugins: [
             new ExtractTextPlugin({
                 filename: `[name].css`

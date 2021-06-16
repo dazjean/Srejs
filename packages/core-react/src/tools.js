@@ -1,13 +1,14 @@
 import fs from 'fs';
-import path from 'path';
+import path, { join } from 'path';
 import { parse as parseUrl } from 'url';
 
-export const tempDir = path.join(process.cwd() + '/.ssr');
-export const cacheDir = path.join(process.cwd() + '/.ssr/cache');
-export const outPutDir = path.join(process.cwd() + '/.ssr/output');
-export const serverDir = path.join(process.cwd() + '/dist/server');
-export const clientDir = path.join(process.cwd() + '/dist/client');
-export const webpackConfigPath = path.join(process.cwd() + './webpack.config.js');
+export const tempDir = join(process.cwd() + '/.ssr');
+export const cacheDir = join(process.cwd() + '/.ssr/cache');
+export const outPutDir = join(process.cwd() + '/.ssr/output');
+export const serverDir = join(process.cwd() + '/dist/server');
+export const clientDir = join(process.cwd() + '/dist/client');
+export const webpackConfigPath = join(process.cwd() + './webpack.config.js');
+export const cwd = process.cwd();
 export const SSRKEY = Symbol('SSR');
 
 const newOptionsPath = path.resolve(process.cwd(), './config/ssr.config.js');

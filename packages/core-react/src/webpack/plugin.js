@@ -2,6 +2,7 @@ import HTMLWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'mini-css-extract-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import path from 'path';
 import fs from 'fs';
 import tools, { getEntryDir } from '../tools';
@@ -80,6 +81,9 @@ function getPlugin(entryObj) {
             filename: `[name].css?v=[hash]`
         })
     );
+    if (process.argv.indexOf('analyzer') > -1) {
+        webpackPlugin.push(new BundleAnalyzerPlugin());
+    }
     return webpackPlugin;
 }
 module.exports = {

@@ -44,6 +44,10 @@ app.use(async (ctx, next) => {
         const html = await Sre.render(ctx, 'detail', { detail: { text: ListData[n || 0] } });
         ctx.type = 'text/html';
         ctx.body = html;
+    } else if (ctx.path === '/antd') {
+        const html = await Sre.render(ctx, 'ruleHistoryList');
+        ctx.type = 'text/html';
+        ctx.body = html;
     } else {
         await next();
     }
