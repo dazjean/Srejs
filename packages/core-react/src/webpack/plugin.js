@@ -81,7 +81,7 @@ function getPlugin(entryObj) {
             filename: `[name].css?v=[hash]`
         })
     );
-    if (process.argv.indexOf('analyzer') > -1) {
+    if (process.argv.indexOf('--analyzer') > -1) {
         webpackPlugin.push(new BundleAnalyzerPlugin());
     }
     return webpackPlugin;
