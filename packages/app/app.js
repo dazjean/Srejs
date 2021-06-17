@@ -7,7 +7,16 @@ const ListData = ['item0', 'item1', 'item2', 'item3'];
 
 app.use(async (ctx, next) => {
     if (ctx.path === '/') {
-        const html = await Sre.render(ctx, 'index', { title: '介绍' }, { ssr: true });
+        const html = await Sre.render(
+            ctx,
+            'index',
+            {
+                title: '介绍',
+                keywords: 'srejs react ssr',
+                description: '简单好用的服务端渲染引擎工具！'
+            },
+            { ssr: true }
+        );
         ctx.type = 'text/html';
         ctx.body = html;
     } else if (ctx.path === '/serverList') {

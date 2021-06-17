@@ -174,6 +174,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
                 }
              </script>`
         );
+        document = renderDocumentHead(document, props);
         return document;
     }
 };
@@ -213,4 +214,36 @@ export const render = async (ctx, initProps) => {
             }
         }
     });
+};
+/**
+ * 从initprops中读取title,keyworkds desription写入到html中
+ * @param {*} html
+ * @param {*} initProps
+ */
+const renderDocumentHead = (document, initProps) => {
+    let resStr = '';
+    ['title', 'keywords', 'description'].forEach((key) => {
+        if (initProps[key]) {
+            if (key == 'title') {
+                resStr = `<title>${initProps[key]}</title>`;
+                document = document.replace(/<title>.*<\/title>/, resStr);
+            } else {
+                let reg = new RegExp(
+                    `<meta\\s+name=[\\"']${key}[\\"'].*?content=[\\"']([\\S\\s]*?)[\\"'].*?[\\/]?>`
+                );
+                resStr = `<meta name="${key}" content="${initProps[key]}">`;
+                if (document.match(reg)) {
+                    //replace
+                    document = document.replace(reg, resStr);
+                } else {
+                    //add
+                    document = document.replace(
+                        '<title>',
+                        `<meta name="${key}" content="${initProps[key]}">\r\n    <title>`
+                    );
+                }
+            }
+        }
+    });
+    return document;
 };
