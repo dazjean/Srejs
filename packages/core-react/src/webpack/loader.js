@@ -25,8 +25,20 @@ const getCssLoader = () => {
     };
 };
 
-export const loaderRules = () => {
+export const loaderRules = (isServer = false) => {
     const cssLoader = getCssLoader();
+    let envOptions = {
+        modules: false
+    };
+    if (!isServer) {
+        Object.assign(envOptions, {
+            corejs: {
+                version: 3.8,
+                proposals: true
+            },
+            useBuiltIns: 'usage'
+        });
+    }
     return [
         {
             test: /\.(js|mjs|jsx|ts|tsx)$/,
@@ -37,13 +49,12 @@ export const loaderRules = () => {
                     cacheCompression: false,
                     presets: [
                         '@babel/preset-react',
-                        '@babel/preset-env',
+                        ['@babel/preset-env', envOptions],
                         '@babel/preset-typescript'
                     ],
                     plugins: [
                         '@babel/plugin-syntax-jsx',
                         ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
-                        '@babel/plugin-transform-modules-commonjs',
                         '@babel/plugin-proposal-class-properties'
                     ]
                 }

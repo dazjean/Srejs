@@ -20,9 +20,9 @@ export default class Webpack {
     }
     getWebpackConfig(page) {
         if (this.dev) {
-            return getDevconfig(page, true);
+            return getDevconfig(page, false);
         } else {
-            return getProconfig(page, true);
+            return getProconfig(page, false);
         }
     }
     async run() {

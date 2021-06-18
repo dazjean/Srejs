@@ -35,6 +35,7 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
         devtool: tools.isDev() ? 'eval-source-map' : false,
         mode: tools.isDev() ? 'development' : 'production',
         optimization: {
+            usedExports: true,
             minimize: tools.isDev() ? false : true,
             minimizer: [
                 new CssMinimizerPlugin(),
@@ -66,7 +67,7 @@ function getBaseconfig(page, isServer = false, hotReload = false) {
             entrypoints: false
         },
         module: {
-            rules: loaderRules()
+            rules: loaderRules(isServer)
         },
         devServer: {
             contentBase: srcPath,

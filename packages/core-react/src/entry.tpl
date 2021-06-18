@@ -29,4 +29,4 @@ inBrowser &&
         </Router>,
         document.getElementById(`${rootNode}`)
     );
-module.exports = hot(App);
+export default hot(App);

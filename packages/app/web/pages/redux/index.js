@@ -2,4 +2,4 @@
 import './redux.scss';
 import APP from './page/UseState01';
 
-module.exports = APP;
+export default APP;

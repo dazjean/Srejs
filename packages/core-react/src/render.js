@@ -4,6 +4,7 @@ import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { loadGetInitialProps } from './initialProps';
 import { EntryList } from './webpack/entry';
+import { DevMiddlewareFileSystem } from './webpack/hot-reload';
 import webPack from './webpack';
 import tools, { clientDir, serverDir, cacheDir, SSRKEY } from './tools';
 import Logger from './log';
@@ -34,15 +35,20 @@ const writeFile = async (path, Content) => {
  * @return {promise}
  */
 export const readPageHtml = (page) => {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let viewUrl = `${clientDir}/${page}/${page}.html`;
-        fs.readFile(viewUrl, 'utf8', (err, data) => {
-            if (err) {
-                reject(err);
-            } else {
-                resolve(data);
-            }
-        });
+        if (!tools.isDev()) {
+            fs.readFile(viewUrl, 'utf8', (err, htmlString) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(htmlString);
+                }
+            });
+        } else {
+            let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
+            resolve(htmlString);
+        }
     });
 };
 
@@ -81,7 +87,7 @@ export const checkModules = async (page) => {
         let compiler = new webPack(page, tools.isDev(), true);
         await compiler.run();
     }
-    if (!fs.existsSync(jsClientdir)) {
+    if (!fs.existsSync(jsClientdir) && !tools.isDev()) {
         //客户端代码打包
         let compiler = new webPack(page, tools.isDev());
         await compiler.run();
@@ -108,6 +114,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
             delete require.cache[require.resolve(jspath)];
         }
         App = require(jspath);
+        App = App.default ? App.default : App;
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(

@@ -29,7 +29,7 @@ function loadPluginHtml(page) {
     }
 }
 
-function getPlugin(entryObj) {
+function getPlugin(entryObj, isServer) {
     let pages = Object.keys(entryObj);
     // https://github.com/mzgoddard/hard-source-webpack-plugin/issues/416
     let webpackPlugin = [new HardSourceWebpackPlugin()];
@@ -43,45 +43,48 @@ function getPlugin(entryObj) {
             test: /mini-css-extract-plugin[\\/]dist[\\/]loader/
         })
     );
-    pages.forEach(function (pathname) {
-        let entryName = pathname.split('/')[0];
-        let template_local = loadPluginHtml(entryName);
-        let conf = {
-            filename: entryName + '/' + entryName + '.html', //生成的html存放路径，相对于path
-            template: template_local, //html模板路径
-            title: entryName,
-            inject: true, //js插入的位置，true/'head'/'body'/false
-            hash: false, //为静态资源生成hash值
-            chunks: [pathname], //需要引入的chunk，不配置就会引入所有页面的资源
-            minify: {
-                minifyCSS: true,
-                minifyJS: true,
-                collapseWhitespace: true,
-                keepClosingSlash: true,
-                removeComments: true,
-                removeRedundantAttributes: true,
-                removeScriptTypeAttributes: true,
-                removeStyleLinkTypeAttributes: true,
-                useShortDoctype: true
-            }
-        };
-        webpackPlugin.push(new HTMLWebpackPlugin(conf));
-    });
-    webpackPlugin.push(
-        new AutoDllPlugin({
-            inject: true,
-            filename: '[name].js',
-            entry: {
-                vendor: ['react', 'react-dom', 'react-router-dom']
-            }
-        })
-    );
+    !isServer &&
+        pages.forEach(function (pathname) {
+            let entryName = pathname.split('/')[0];
+            let template_local = loadPluginHtml(entryName);
+            let conf = {
+                filename: entryName + '/' + entryName + '.html', //生成的html存放路径，相对于path
+                template: template_local, //html模板路径
+                title: entryName,
+                inject: true, //js插入的位置，true/'head'/'body'/false
+                hash: false, //为静态资源生成hash值
+                chunks: [pathname], //需要引入的chunk，不配置就会引入所有页面的资源
+                minify: {
+                    minifyCSS: true,
+                    minifyJS: true,
+                    collapseWhitespace: true,
+                    keepClosingSlash: true,
+                    removeComments: true,
+                    removeRedundantAttributes: true,
+                    removeScriptTypeAttributes: true,
+                    removeStyleLinkTypeAttributes: true,
+                    useShortDoctype: true
+                }
+            };
+            webpackPlugin.push(new HTMLWebpackPlugin(conf));
+        });
+    if (!isServer) {
+        webpackPlugin.push(
+            new AutoDllPlugin({
+                inject: true,
+                filename: '[name].js',
+                entry: {
+                    vendor: ['react', 'react-dom', 'react-router-dom']
+                }
+            })
+        );
+    }
     webpackPlugin.push(
         new ExtractTextPlugin({
-            filename: `[name].css?v=[hash]`
+            filename: '[name].css' + (!isServer ? '?v=[hash]' : '')
         })
     );
-    if (process.argv.indexOf('--analyzer') > -1) {
+    if (process.argv.indexOf('--analyzer') > -1 && !isServer) {
         webpackPlugin.push(new BundleAnalyzerPlugin());
     }
     return webpackPlugin;

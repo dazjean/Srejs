@@ -1,8 +1,7 @@
+import nodeExternals from 'webpack-node-externals';
 import tools, { serverDir, cwd } from '../tools';
 import { getBaseconfig } from './base';
 import combine from './combine';
-import ExtractTextPlugin from 'mini-css-extract-plugin';
-import nodeExternals from 'webpack-node-externals';
 
 function getServerconfig(page) {
     let baseConfig = getBaseconfig(page, true);
@@ -23,13 +22,8 @@ function getServerconfig(page) {
         },
         externals: [
             nodeExternals({ allowlist: [/\.(?!(?:jsx?|json)$).{1,5}$/i], additionalModuleDirs })
-        ],
-        plugins: [
-            new ExtractTextPlugin({
-                filename: `[name].css`
-            })
         ]
     };
     return combine(config, true);
 }
-module.exports = getServerconfig;
+export default getServerconfig;
