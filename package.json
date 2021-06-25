@@ -5,6 +5,7 @@
     "init": "del -f packages/*/node_modules && del -f packages/*/lib && lerna bootstrap",
     "prepublish": "npm run test && lerna run lint && lerna run build",
     "publish": "lerna publish",
+    "watch":"lerna run watch",
     "postinstall": "npm run lint && npx checker-init && npm run init && npm run linkReact && npm run linkReactDom && npm run linkReactRouter && cd packages/app && npm run link",
     "linkReact": "cd packages/core-react/node_modules/react && yarn link",
     "linkReactDom": "cd packages/core-react/node_modules/react-dom && yarn link",

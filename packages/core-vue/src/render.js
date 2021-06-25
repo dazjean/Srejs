@@ -1,10 +1,12 @@
 import fs from 'fs';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
+import { createRenderer, createBundleRenderer } from 'vue-server-renderer';
 import common, { clientDir, serverDir, cacheDir, SSRKEY, Logger } from '@srejs/common';
-import { loadGetInitialProps } from './initialProps';
-import { DevMiddlewareFileSystem, getEntryList, WebpackReact as webPack } from '@srejs/webpack';
+// import { loadGetInitialProps } from './initialProps';
+import {
+    VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
+    getVueEntryList,
+    WebpackVue as webPack
+} from '@srejs/webpack';
 
 /**
  * 写入文件,存在则覆盖
@@ -97,90 +99,94 @@ export const checkModules = async (page) => {
  * @param {*} next
  */
 export const renderServer = async (ctx, initProps, ssr = true) => {
-    const context = {};
-    let props = {};
+    const context = { url: ctx.req.url };
+    let props = {
+        title: '',
+        meta: ''
+    };
     var { page, query } = ctx[SSRKEY];
-    if (!getEntryList().has(page)) {
+    if (!getVueEntryList().has(page)) {
         return false;
     }
-    let App = {};
+    let createApp;
     let jspath = await checkModules(page);
     try {
         // eslint-disable-next-line no-undef
         if (common.isDev()) {
             delete require.cache[require.resolve(jspath)];
         }
-        App = require(jspath);
-        App = App.default ? App.default : App;
+        createApp = require(jspath);
+        createApp = createApp.default ? createApp.default : createApp;
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
-            `srejs: ${page} Remove browser feature keywords such as windows/location from the react component, 
+            `srejs: ${page} Remove browser feature keywords such as windows/location from the vue component, 
             or move into the real component didmount lifecycle for use`
         );
         Logger.error(error.stack);
-    }
-    // 静态方法只在ssr模式下在node服务端被调用。
-    if (ssr) {
-        props = await loadGetInitialProps(App, ctx);
     }
     if (typeof initProps === 'object') {
         props = Object.assign(props || {}, initProps);
     }
     let Html = '';
-    let location = ctx.url.split(page)[1];
     if (ssr) {
         try {
-            Html = ReactDOMServer.renderToString(
-                <StaticRouter location={location || '/'} context={context}>
-                    <App page={page} path={ctx[SSRKEY].path} query={query} {...props} />
-                </StaticRouter>
-            );
+            const App = await createApp(context);
+            Html = await renderTostring(App, { ...context, ...props }, page);
         } catch (error) {
             Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + error.stack);
             Logger.warn(
-                `srejs: ${page} Remove browser feature keywords such as windows/location from the react component, 
+                `srejs: ${page} Remove browser feature keywords such as windows/location from the vue component, 
                 or move into the real component didmount lifecycle for use`
             );
         }
     }
-    if (context.url) {
-        ctx.response.writeHead(301, {
-            Location: context.url
-        });
-        ctx.response.end();
-    } else {
-        // 加载 index.html 的内容
-        let data = await readPageHtml(page);
-        //进行xss过滤
-        for (let key in query) {
-            if (query[key] instanceof Array) {
-                query[key] = query[key].map((item) => {
-                    return filterXss(item);
-                });
-            } else {
-                query[key] = filterXss(query[key]);
-            }
+    let document = renderDocumentHead(Html, props);
+    // // 加载 index.html 的内容
+    // let data = await readPageHtml(page);
+    //进行xss过滤
+    for (let key in query) {
+        if (query[key] instanceof Array) {
+            query[key] = query[key].map((item) => {
+                return filterXss(item);
+            });
+        } else {
+            query[key] = filterXss(query[key]);
         }
-        let rootNode = ctx[SSRKEY].options.rootNode;
-        let replaceReg = new RegExp(`<div id="${rootNode}"><\/div>`);
-        // 把渲染后的 React HTML 插入到 div 中
-        let document = data.replace(
-            replaceReg,
-            `<div id="${rootNode}">${Html}</div>
-             <script>var __SSR_DATA__ = 
-                {
-                    initProps:${JSON.stringify(props || {})},
-                    page: "${page}",
-                    path:"${ctx[SSRKEY].path}",
-                    query:${JSON.stringify(query || {})},
-                    options:${JSON.stringify(ctx[SSRKEY].options || {})}
-                }
-             </script>`
-        );
-        document = renderDocumentHead(document, props);
-        return document;
     }
+    let rootNode = ctx[SSRKEY].options.rootNode;
+    let replaceReg = new RegExp(`<div id="${rootNode}"><\/div>`);
+    // 注入__SSR_DATA__
+    document = document.replace(
+        replaceReg,
+        `<div id="${rootNode}"></div>
+         <script>var __SSR_DATA__ =
+            {
+                initProps:${JSON.stringify(props || {})},
+                page: "${page}",
+                path:"${ctx[SSRKEY].path}",
+                query:${JSON.stringify(query || {})},
+                options:${JSON.stringify(ctx[SSRKEY].options || {})}
+            }
+         </script>`
+    );
+    return document;
+};
+
+const renderTostring = async (App, context, page) => {
+    const temp = await readPageHtml(page);
+    const renderer = createRenderer({
+        template: temp
+    });
+    return new Promise((resove, reject) => {
+        renderer.renderToString(App, context, (err, html) => {
+            if (err) {
+                reject(err);
+                return;
+            }
+            resove(html);
+        });
+    });
 };
 
 /**

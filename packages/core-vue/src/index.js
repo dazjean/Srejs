@@ -1,8 +1,8 @@
 import send from 'koa-send';
 import common, { clientDir, SSRKEY, parseQuery, Logger } from '@srejs/common';
-import { Hotwebpack, getEntryList, WebpackReact } from '@srejs/webpack';
+import { VueHotWebpack, getVueEntryList, WebpackVue } from '@srejs/webpack';
 import { sendHTML } from './send-html';
-import { render as ReactRender } from './render';
+import { render as VueRender } from './render';
 
 export default class Srejs {
     /**
@@ -28,7 +28,7 @@ export default class Srejs {
     }
 
     async usePageRouter() {
-        getEntryList().forEach((page) => {
+        getVueEntryList().forEach((page) => {
             this.addRouter(page);
         });
         this.app.use(this.middleware());
@@ -76,7 +76,7 @@ export default class Srejs {
                 const regRouter = self.routes[i];
                 if (regRouter.test(ctx.path)) {
                     self.setContext(ctx);
-                    const document = await ReactRender(ctx);
+                    const document = await VueRender(ctx);
                     if (!document) {
                         return next();
                     }
@@ -116,7 +116,7 @@ export default class Srejs {
      */
     async render(ctx, viewName, initProps, options) {
         this.setContext(ctx, viewName, options);
-        const html = await ReactRender(ctx, initProps);
+        const html = await VueRender(ctx, initProps);
         return html;
     }
 
@@ -134,8 +134,8 @@ export default class Srejs {
      */
     hmr() {
         if (this.dev) {
-            new Hotwebpack(this.app);
-            new WebpackReact(true, true, true).run(); // 启动时只提取构建服务端所需资源
+            new VueHotWebpack(this.app);
+            new WebpackVue(true, true, true).run(); // 启动时只提取构建服务端所需资源
         }
     }
 }
