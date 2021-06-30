@@ -4,8 +4,13 @@ const inBrowser = typeof window !== 'undefined'
 const isDev = process.env.NODE_ENV !== 'production'
 const rootNode = '$rootNode$';
 if(inBrowser){
+  const root = document.getElementById(`${rootNode}`);
+  if (!root) {
+      let rootDom = document.createElement('div');
+      rootDom.id = `${rootNode}`;
+      document.body.prepend(rootDom);
+  }
   const { app, router, store={} } = createApp()
-  
   // prime the store with server-initialized state.
   // the state is determined during SSR and inlined in the page markup.
   if (window.__INITIAL_STATE__) {
@@ -63,9 +68,18 @@ if(inBrowser){
 export default context => {
     return new Promise((resolve, reject) => {
       const s = isDev && Date.now()
-      const { app, router, store } = createApp()
+      const { app, router, store={} } = createApp()
       if(router){
-          const { url } = context
+          let { url } = context
+          const { options } = router;
+          const { base } = options;
+          if(base){
+            const validBase = new RegExp('^/.*/$').test(base);
+            if(!validBase){
+              return reject({error:'应用的基路径名称前后应该包括路径斜杠标识。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"'});
+            }
+            url = url.replace(base,'/');
+          }
           const { fullPath } = router.resolve(url).route
       
           if (fullPath !== url) {

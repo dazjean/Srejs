@@ -14,7 +14,7 @@ if (inBrowser) {
     if (!root) {
         let rootDom = document.createElement('div');
         rootDom.id = `${rootNode}`;
-        document.body.appendChild(rootDom);
+        document.body.prepend(rootDom);
     }
 }
 inBrowser &&

@@ -3,25 +3,33 @@
       <div class="home">
         {{ message }}
       </div>
-       <p class="example">
-        全局样式
+      <p class="scoped">
+        style scoped
+      </p>
+      <p class="less">
+        style scoped lang=less
+      </p>
+      <p class="import-css">
+        import  from './index.less';
       </p>
       <p :class="$style.red">
-        This should be red use style module type 
+        style module
       </p>
-       <!-- <p :class="$styles.module">
-        This should be red use index.module.less
-      </p> -->
+       <p :class="styles.module">
+        import styles from './index.module.less';
+      </p>
   </div>
 </template>
 
 <script>
-  // import styles from './index.module.less';
+  import  './index.less';
+  import styles from './index.module.less';
   export default {
     name: 'home',
     data () {
 		return {
-			'message' : 'hello word!',
+			'message' : 'hello word!!!',
+      styles
 		}
     },
   }
@@ -80,7 +88,11 @@ a
   margin-right 10px
   display inline-block
   vertical-align middle
-
+#app
+ text-align: center;
+.home
+  font-size 36px
+  color red
 .view
   max-width 800px
   margin 0 auto
@@ -106,21 +118,23 @@ a
       display none
 </style>
 <style lang="less" scoped>
-  .home{
+  .less{
     color: red;
-    font-size: 26px;
+    font-size: 36px;
   }
 </style>
 
 <style scoped>
-.example {
+.scoped {
   color: red;
+  font-size: 36px;
 }
 </style>
 
-<style module>
+<style  module>
 .red {
   color: red;
+  font-size: 36px;
 }
 .bold {
   font-weight: bold;

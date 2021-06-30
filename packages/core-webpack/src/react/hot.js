@@ -22,7 +22,9 @@ export class Hotwebpack {
     webpackDevMiddleware() {
         let _devMiddleware = devMiddleware(this.complier, {
             publicPath: '/',
-            quiet: true
+            noInfo: true,
+            quiet: true,
+            index: false //不响应根路径请求 避免和页面组件路由冲突
         });
         DevMiddlewareFileSystem = _devMiddleware.fileSystem;
         this.app.use(_devMiddleware);

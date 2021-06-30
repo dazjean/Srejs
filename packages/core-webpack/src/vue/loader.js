@@ -19,14 +19,34 @@ const getCssLoader = () => {
         options: {
             url: true,
             modules: {
+                localIdentName: '[local]_[hash:base64:5]',
                 auto: /\.module\.\w+$/i //https://github.com/webpack-contrib/css-loader#auto 通过文件格式来区分开启cssmodule 默认第三方组件库就不要使用css module
             }
         }
     };
 };
 
+const getCssModuleLoader = () => {
+    return {
+        loader: 'css-loader',
+        options: {
+            modules: {
+                localIdentName: '[local]_[hash:base64:5]'
+            }
+        }
+    };
+};
+
+const getCommonLoader = () => {
+    const commonDevLoader = ['vue-style-loader'];
+    const commonProdLoader = [ExtractTextPlugin.loader];
+    return common.isDev() ? commonDevLoader : commonProdLoader;
+};
+
 export const loaderRules = (isServer = false) => {
     const cssLoader = getCssLoader();
+    const cssModuleLoader = getCssModuleLoader();
+    const commonLoader = getCommonLoader();
     let envOptions = {
         modules: false
     };
@@ -39,6 +59,7 @@ export const loaderRules = (isServer = false) => {
             useBuiltIns: 'usage'
         });
     }
+
     return [
         {
             test: /\.vue$/,
@@ -72,41 +93,49 @@ export const loaderRules = (isServer = false) => {
         },
         {
             test: /\.css$/,
-            use: [
-                'vue-style-loader',
-                'css-hot-loader',
-                ExtractTextPlugin.loader,
-                cssLoader,
-                possLoader
+            oneOf: [
+                {
+                    resourceQuery: /module/,
+                    use: [...commonLoader, cssModuleLoader, possLoader]
+                },
+                {
+                    use: [...commonLoader, cssLoader, possLoader]
+                }
             ]
         },
         {
             test: /\.styl(us)?$/,
-            use: ['vue-style-loader', 'css-loader', 'stylus-loader']
+            oneOf: [
+                {
+                    resourceQuery: /module/,
+                    use: [...commonLoader, cssModuleLoader, possLoader, 'stylus-loader']
+                },
+                {
+                    use: [...commonLoader, cssLoader, possLoader, 'stylus-loader']
+                }
+            ]
         },
         {
             test: /\.scss$/,
-            use: [
-                'vue-style-loader',
-                'css-hot-loader',
-                ExtractTextPlugin.loader,
-                cssLoader,
-                possLoader,
+            oneOf: [
                 {
-                    loader: 'sass-loader'
+                    resourceQuery: /module/,
+                    use: [...commonLoader, cssModuleLoader, possLoader, 'sass-loader']
+                },
+                {
+                    use: [...commonLoader, cssLoader, possLoader, 'sass-loader']
                 }
             ]
         },
         {
             test: /\.less$/,
-            use: [
-                'vue-style-loader',
-                'css-hot-loader',
-                ExtractTextPlugin.loader,
-                cssLoader,
-                possLoader,
+            oneOf: [
                 {
-                    loader: 'less-loader'
+                    resourceQuery: /module/,
+                    use: [...commonLoader, cssModuleLoader, possLoader, 'less-loader']
+                },
+                {
+                    use: [...commonLoader, cssLoader, possLoader, 'less-loader']
                 }
             ]
         },

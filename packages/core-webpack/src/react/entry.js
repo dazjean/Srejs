@@ -82,5 +82,8 @@ export function initEntry() {
 }
 
 export function getEntryList() {
+    if (EntryList.size == 0) {
+        initEntry();
+    }
     return EntryList;
 }

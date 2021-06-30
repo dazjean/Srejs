@@ -134,11 +134,8 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
             const App = await createApp(context);
             Html = await renderTostring(App, { ...context, ...props }, page);
         } catch (error) {
-            Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + error.stack);
-            Logger.warn(
-                `srejs: ${page} Remove browser feature keywords such as windows/location from the vue component, 
-                or move into the real component didmount lifecycle for use`
-            );
+            Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + JSON.stringify(error));
+            Html = await readPageHtml(page);
         }
     }
     let document = renderDocumentHead(Html, props);

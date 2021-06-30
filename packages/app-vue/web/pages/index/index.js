@@ -1,20 +1,20 @@
 import App from './App.vue';
 import Vue from 'vue';
 import Router from 'vue-router';
-// import About from './about.vue';
-// import Home from './home.vue';
+import About from './about.vue';
+import Home from './home.vue';
 
 Vue.use(Router);
 
 // route-level code splitting
-const About = () => import('./about.vue');
-const Home = () => import('./home.vue');
+// const About = () => import('./about.vue');
+// const Home = () => import('./home.vue');
 
 export function createRouter() {
     return new Router({
         mode: 'history',
         fallback: false,
-        base: 'index',
+        base: '/index/',
         scrollBehavior: () => ({ y: 0 }),
         routes: [
             { path: '/about', component: About },

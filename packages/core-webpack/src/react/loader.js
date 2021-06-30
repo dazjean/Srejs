@@ -68,34 +68,16 @@ export const loaderRules = (isServer = false) => {
                 ExtractTextPlugin.loader,
                 cssLoader,
                 possLoader,
-                {
-                    loader: 'sass-loader' // 兼容历史方案，老版本css和scss一样的配置
-                }
+                'sass-loader' // 兼容历史方案，老版本css和scss一样的配置
             ]
         },
         {
             test: /\.scss$/,
-            use: [
-                'css-hot-loader',
-                ExtractTextPlugin.loader,
-                cssLoader,
-                possLoader,
-                {
-                    loader: 'sass-loader'
-                }
-            ]
+            use: ['css-hot-loader', ExtractTextPlugin.loader, cssLoader, possLoader, 'sass-loader']
         },
         {
             test: /\.less$/,
-            use: [
-                'css-hot-loader',
-                ExtractTextPlugin.loader,
-                cssLoader,
-                possLoader,
-                {
-                    loader: 'less-loader'
-                }
-            ]
+            use: ['css-hot-loader', ExtractTextPlugin.loader, cssLoader, possLoader, 'less-loader']
         },
         {
             test: /\.(png|jpg|jpeg|gif|svg)$/,
