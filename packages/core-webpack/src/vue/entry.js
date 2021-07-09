@@ -25,7 +25,7 @@ function createEntry(page) {
     try {
         const rootDir = getOptions('rootDir');
         const rootNode = getOptions('rootNode');
-        let data = fs.readFileSync(path.join(__dirname, './', 'entry.tpl'), 'utf8');
+        let data = fs.readFileSync(path.join(__dirname, './', 'tempEntry.js'), 'utf8');
         let entryName = false;
         const entrysFileList = [
             'index.js',
@@ -45,16 +45,17 @@ function createEntry(page) {
         });
 
         if (exists && entryName) {
-            data = data.replace('$injectApp$', `'../${rootDir}/pages/${page}/${entryName}'`);
+            data = data.replace('$injectApp$', `../${rootDir}/pages/${page}/${entryName}`);
             data = data.replace('__SSR_DATA__pathname', page);
             data = data.replace('$rootNode$', rootNode);
             let exists = fs.existsSync(tempDir);
             if (!exists) {
                 fs.mkdirSync(tempDir);
             }
-            if (!fs.existsSync(`${tempDir}/${page}.js`)) {
-                fs.writeFileSync(`${tempDir}/${page}.js`, data);
-            }
+            // if (!fs.existsSync(`${tempDir}/${page}.js`)) {
+            //     fs.writeFileSync(`${tempDir}/${page}.js`, data);
+            // }
+            fs.writeFileSync(`${tempDir}/${page}.js`, data);
             return true;
         } else {
             return false;

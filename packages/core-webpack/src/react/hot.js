@@ -1,13 +1,13 @@
 import { devMiddleware, hotMiddleware } from 'koa-webpack-middleware';
 import webpack from 'webpack';
 import * as fs from 'fs';
-import { getBaseconfig } from './base.js';
+import { getDevConfig } from './dev';
 export let DevMiddlewareFileSystem = fs;
 
 export class Hotwebpack {
-    constructor(app) {
+    constructor(app, page = true) {
         this.app = app;
-        this.webpackConfig = getBaseconfig(process.argv.splice(2)[0] || 0, false, true);
+        this.webpackConfig = getDevConfig(page, false, true);
         this.complier = webpack(this.webpackConfig);
         this.webpackDevMiddleware();
         this.webpackHotMiddleware();

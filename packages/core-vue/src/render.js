@@ -1,7 +1,7 @@
 import fs from 'fs';
-import { createRenderer, createBundleRenderer } from 'vue-server-renderer';
+import { createRenderer } from 'vue-server-renderer';
 import common, { clientDir, serverDir, cacheDir, SSRKEY, Logger } from '@srejs/common';
-// import { loadGetInitialProps } from './initialProps';
+import serialize from 'serialize-javascript';
 import {
     VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
     getVueEntryList,
@@ -36,7 +36,7 @@ const writeFile = async (path, Content) => {
 export const readPageHtml = (page) => {
     return new Promise(async (resolve, reject) => {
         let viewUrl = `${clientDir}/${page}/${page}.html`;
-        if (!common.isDev()) {
+        const readFileSync = () => {
             fs.readFile(viewUrl, 'utf8', (err, htmlString) => {
                 if (err) {
                     reject(err);
@@ -44,22 +44,18 @@ export const readPageHtml = (page) => {
                     resolve(htmlString);
                 }
             });
+        };
+        if (common.isDev()) {
+            try {
+                let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
+                resolve(htmlString);
+            } catch (error) {
+                readFileSync();
+            }
         } else {
-            let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
-            resolve(htmlString);
+            readFileSync();
         }
     });
-};
-
-const filterXss = (str) => {
-    var s = '';
-    s = str.replace(/&/g, '&amp;');
-    s = s.replace(/</g, '&lt;');
-    s = s.replace(/>/g, '&gt;');
-    s = s.replace(/ /g, '&nbsp;');
-    s = s.replace("'", '&#39;');
-    s = s.replace('"', '&quot;');
-    return s;
 };
 
 const writeFileHander = (cacheDir, cacheUrl, Content) => {
@@ -98,12 +94,8 @@ export const checkModules = async (page) => {
  * @param {*} ctx
  * @param {*} next
  */
-export const renderServer = async (ctx, initProps, ssr = true) => {
-    const context = { url: ctx.req.url };
-    let props = {
-        title: '',
-        meta: ''
-    };
+export const renderServer = async (ctx, initProps = {}, ssr = true) => {
+    let context = { url: ctx.req.url };
     var { page, query } = ctx[SSRKEY];
     if (!getVueEntryList().has(page)) {
         return false;
@@ -126,54 +118,47 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         Logger.error(error.stack);
     }
     if (typeof initProps === 'object') {
-        props = Object.assign(props || {}, initProps);
+        context = Object.assign(
+            {
+                title: '',
+                meta: ''
+            },
+            context,
+            initProps
+        );
     }
+    context.ssrData = {
+        page,
+        path: ctx[SSRKEY].path,
+        query,
+        options: ctx[SSRKEY].options
+    };
     let Html = '';
     if (ssr) {
         try {
             const App = await createApp(context);
-            Html = await renderTostring(App, { ...context, ...props }, page);
+            Html = await renderTostring(App, context, page);
         } catch (error) {
             Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + JSON.stringify(error));
-            Html = await readPageHtml(page);
+            Html = await readPageString(page, context);
         }
+    } else {
+        Html = await readPageString(page, context);
     }
-    let document = renderDocumentHead(Html, props);
-    // // 加载 index.html 的内容
-    // let data = await readPageHtml(page);
-    //进行xss过滤
-    for (let key in query) {
-        if (query[key] instanceof Array) {
-            query[key] = query[key].map((item) => {
-                return filterXss(item);
-            });
-        } else {
-            query[key] = filterXss(query[key]);
-        }
-    }
-    let rootNode = ctx[SSRKEY].options.rootNode;
-    let replaceReg = new RegExp(`<div id="${rootNode}"><\/div>`);
-    // 注入__SSR_DATA__
-    document = document.replace(
-        replaceReg,
-        `<div id="${rootNode}"></div>
-         <script>var __SSR_DATA__ =
-            {
-                initProps:${JSON.stringify(props || {})},
-                page: "${page}",
-                path:"${ctx[SSRKEY].path}",
-                query:${JSON.stringify(query || {})},
-                options:${JSON.stringify(ctx[SSRKEY].options || {})}
-            }
-         </script>`
-    );
+    let document = renderDocumentHead(Html, context);
+
     return document;
 };
 
+const readPageString = async (page, context) => {
+    let temp = await readPageHtml(page);
+    return injectScriptInitProps(temp, context);
+};
+
 const renderTostring = async (App, context, page) => {
-    const temp = await readPageHtml(page);
+    const template = await readPageString(page, context);
     const renderer = createRenderer({
-        template: temp
+        template
     });
     return new Promise((resove, reject) => {
         renderer.renderToString(App, context, (err, html) => {
@@ -186,6 +171,27 @@ const renderTostring = async (App, context, page) => {
     });
 };
 
+const injectScriptInitProps = (temp, context) => {
+    const contents = temp.split('<!--vue-ssr-outlet-->');
+    if (contents.length == 1) {
+        console.error('srejs:警告！自定义html文件中请在body下追加<!--vue-ssr-outlet-->占位符！');
+    }
+    const data = Object.assign({}, context);
+    const ssrData = data.ssrData;
+    delete data.state;
+    delete data.ssrData;
+    delete context.ssrData;
+    ssrData.initProps = data;
+
+    return (
+        contents[0] +
+        '<!--vue-ssr-outlet-->' +
+        '<script>window.__SSR_DATA__=' +
+        serialize(ssrData, { isJSON: true }) +
+        '</script>' +
+        contents[1]
+    );
+};
 /**
  * 获取服务端渲染直出资源
  * @param {*} ctx

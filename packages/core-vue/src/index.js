@@ -134,8 +134,9 @@ export default class Srejs {
      */
     hmr() {
         if (this.dev) {
-            new VueHotWebpack(this.app);
-            new WebpackVue(true, true, true).run(); // 启动时只提取构建服务端所需资源
+            const page = process.argv.splice(2)[0] || true;
+            new VueHotWebpack(this.app, page);
+            new WebpackVue(page, true, true).run(); // 启动时只提取构建服务端所需资源
         }
     }
 }

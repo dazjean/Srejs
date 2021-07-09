@@ -25,7 +25,7 @@ function createEntry(page) {
     try {
         const rootDir = getOptions('rootDir');
         const rootNode = getOptions('rootNode');
-        let data = fs.readFileSync(path.join(__dirname, './', 'entry.tpl'), 'utf8');
+        let data = fs.readFileSync(path.join(__dirname, './', 'tempEntry.js'), 'utf8');
         let entryName = false;
         const entrysFileList = [
             'index.js',
@@ -46,7 +46,7 @@ function createEntry(page) {
 
         if (exists && entryName) {
             data = data.replace(
-                '$injectApp$',
+                "'$injectApp$'",
                 `require('../${rootDir}/pages/${page}/${entryName}')`
             );
             data = data.replace('__SSR_DATA__pathname', page);

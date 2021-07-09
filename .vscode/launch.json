@@ -11,7 +11,8 @@
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "start"
+                "start",
+                "index"
             ],
             "port": 9229,
             "skipFiles": [
@@ -41,7 +42,7 @@
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "start"
+                "start",
             ],
             "port": 9229,
             "skipFiles": [

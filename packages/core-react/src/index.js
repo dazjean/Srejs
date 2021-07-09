@@ -134,8 +134,9 @@ export default class Srejs {
      */
     hmr() {
         if (this.dev) {
-            new Hotwebpack(this.app);
-            new WebpackReact(true, true, true).run(); // 启动时只提取构建服务端所需资源
+            const page = process.argv.splice(2)[0] || true;
+            new Hotwebpack(this.app, page);
+            new WebpackReact(page, true, true).run(); // 启动时只提取构建服务端所需资源
         }
     }
 }

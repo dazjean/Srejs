@@ -1,5 +1,10 @@
 <template>
   <div id = "app">
+      -------服务端初始化数据-------
+      <h1>{{title}}</h1>
+      <p> {{ say }}</p>
+      <p> {{ msg }}</p>
+      -------服务端初始化数据-------
       <div class="home">
         {{ message }}
       </div>
@@ -26,10 +31,13 @@
   import styles from './index.module.less';
   export default {
     name: 'home',
+    props:['title'],
     data () {
 		return {
 			'message' : 'hello word!!!',
-      styles
+      styles,
+      'say':this.$store.state.say,
+      'msg':this.$store.state.msg
 		}
     },
   }

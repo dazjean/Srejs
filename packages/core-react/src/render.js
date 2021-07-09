@@ -34,7 +34,7 @@ const writeFile = async (path, Content) => {
 export const readPageHtml = (page) => {
     return new Promise(async (resolve, reject) => {
         let viewUrl = `${clientDir}/${page}/${page}.html`;
-        if (!common.isDev()) {
+        const readFileSync = () => {
             fs.readFile(viewUrl, 'utf8', (err, htmlString) => {
                 if (err) {
                     reject(err);
@@ -42,9 +42,16 @@ export const readPageHtml = (page) => {
                     resolve(htmlString);
                 }
             });
+        };
+        if (common.isDev()) {
+            try {
+                let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
+                resolve(htmlString);
+            } catch (error) {
+                readFileSync();
+            }
         } else {
-            let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
-            resolve(htmlString);
+            readFileSync();
         }
     });
 };

@@ -1,17 +1,18 @@
 {
-    "presets":[[
-        "@babel/env",
-        {
-          "targets": {
-            "browsers": ["last 2 versions", "ie >= 7"]
-          }
+  "presets":["@babel/react",[
+      "@babel/env",
+      {
+        "targets": {
+          "browsers": ["last 2 versions", "ie >= 7"]
         }
-      ]],
-      "plugins": [
-        [
-          "@babel/plugin-transform-runtime",
-          { "helpers": false, "regenerator": true }
-        ],
-        "@babel/plugin-transform-modules-commonjs"
-      ]
+      }
+    ]],
+  "plugins": [
+    [
+      "@babel/plugin-transform-runtime",
+      { "helpers": false, "regenerator": true }
+    ],
+    "@babel/plugin-transform-modules-commonjs"
+  ],
+  "ignore":["src/vue/tempEntry.js","src/react/tempEntry.js"]
 }
