@@ -1,5 +1,7 @@
 <template>
   <div id = "app">
+    <img :src="imgUrl" alt="">
+    <br>
       -------服务端初始化数据-------
       <h1>{{title}}</h1>
       <p> {{ say }}</p>
@@ -29,6 +31,7 @@
 <script>
   import  './index.less';
   import styles from './index.module.less';
+  import imgUrl from "@/images/srejs.png";
   export default {
     name: 'home',
     props:['title'],
@@ -37,7 +40,8 @@
 			'message' : 'hello word!!!',
       styles,
       'say':this.$store.state.say,
-      'msg':this.$store.state.msg
+      'msg':this.$store.state.msg,
+      imgUrl
 		}
     },
   }

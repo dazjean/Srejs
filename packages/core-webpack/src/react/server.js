@@ -3,7 +3,7 @@ import common, { serverDir, cwd } from '@srejs/common';
 import { getBaseconfig } from './base';
 import combine from './combine';
 
-function getServerconfig(page) {
+export function getServerconfig(page) {
     let baseConfig = getBaseconfig(page, true);
     let additionalModuleDirs = [cwd + '/node_modules'];
     if (common.isDev()) {
@@ -26,4 +26,3 @@ function getServerconfig(page) {
     };
     return combine(config, true);
 }
-export default getServerconfig;

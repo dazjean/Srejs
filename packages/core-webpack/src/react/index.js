@@ -1,7 +1,7 @@
 import webpack from 'webpack';
 import { getProconfig } from './prod';
 import { getDevConfig } from './dev';
-import serverConfig from './server';
+import { getServerconfig } from './server';
 import { Logger } from '@srejs/common';
 
 export class Webpack {
@@ -15,7 +15,7 @@ export class Webpack {
         this.page = pages;
         this.dev = dev;
         this.Compiler = webpack(
-            server ? serverConfig(this.page) : this.getWebpackConfig(this.page)
+            server ? getServerconfig(this.page) : this.getWebpackConfig(this.page)
         );
     }
     getWebpackConfig(page) {

@@ -55,6 +55,7 @@ export const loaderRules = (isServer = false) => {
                     plugins: [
                         '@babel/plugin-syntax-jsx',
                         ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
+                        '@babel/plugin-transform-modules-commonjs',
                         '@babel/plugin-proposal-class-properties'
                     ]
                 }

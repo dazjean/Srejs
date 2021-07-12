@@ -12,7 +12,10 @@
       "@babel/plugin-transform-runtime",
       { "helpers": false, "regenerator": true }
     ],
-    "@babel/plugin-transform-modules-commonjs"
+    ["@babel/plugin-transform-modules-commonjs", {
+      "allowTopLevelThis": true,
+      "importInterop":"node"
+    }]
   ],
   "ignore":["src/vue/tempEntry.js","src/react/tempEntry.js"]
 }
