@@ -11,8 +11,8 @@ type TcoreOptions = {
     cache?: boolean; // 开启缓存
     rootDir?: string; // 工程根文件夹目录名称
     rootNode?: string; // 客户端渲染挂载根元素ID
-    prefixCDN: string, // 构建后静态资源CDN地址前缀
-    prefixRouter: string, // 默认页面路由前缀(在defaultRouter设置为true时有效)
+    prefixCDN?: string, // 构建后静态资源CDN地址前缀
+    prefixRouter?: string, // 默认页面路由前缀(在defaultRouter设置为true时有效)
     log?:boolean // 开发环境日志输出
 };
 

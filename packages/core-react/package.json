@@ -14,11 +14,14 @@
 	"keywords": [
 		"ssr",
 		"react",
+		"react-ssr",
 		"@umajs/plugin-react-ssr",
 		"umajs-react-ssr",
-		"@srejs"
+		"@srejs",
+		"nextjs"
 	],
 	"bin": {
+		"ssr": "./bin/index.js",
 		"sre": "./bin/index.js",
 		"srejs": "./bin/index.js"
 	},

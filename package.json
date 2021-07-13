@@ -24,5 +24,8 @@
   "dependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^7.26.0"
+  },
+  "msgChecker":{
+    "check":false
   }
 }

@@ -1,7 +1,7 @@
 {
     "parser": "babel-eslint",
     "plugins": [
-      "react","prettier","react-hooks"
+      "prettier"
     ],
     "parserOptions": {
       "ecmaVersion":6,
@@ -32,9 +32,6 @@
       "no-trailing-spaces": [1, { "skipBlankLines": true }],
       "no-unreachable": 1,
       "no-alert": 0,
-      "react/jsx-uses-react": 1,
-      "react/jsx-uses-vars": 1,
-      "react-hooks/rules-of-hooks": "error",
       "prettier/prettier":["error",{
         "printWidth": 100,
         "tabWidth": 4,
