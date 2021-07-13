@@ -19,6 +19,7 @@ const getCssLoader = () => {
         options: {
             url: true,
             modules: {
+                localIdentName: '[local]_[hash:base64:5]',
                 auto: /\.module\.\w+$/i //https://github.com/webpack-contrib/css-loader#auto 通过文件格式来区分开启cssmodule 默认第三方组件库就不要使用css module
             }
         }

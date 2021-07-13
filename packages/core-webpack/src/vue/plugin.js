@@ -75,7 +75,7 @@ function getPlugin(entryObj, isServer) {
                 inject: true,
                 filename: '[name].js',
                 entry: {
-                    vendor: ['vue', 'vue-router']
+                    vendor: ['vue', 'vue-router', 'vuex']
                 }
             })
         );
