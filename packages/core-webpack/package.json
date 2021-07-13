@@ -1,6 +1,6 @@
 {
 	"name": "@srejs/webpack",
-	"version": "0.0.0",
+	"version": "1.0.0-alpha.0",
 	"description": "@srejs/react是一个轻量级服务端渲染骨架工具，为koa社区的nodejs开发框架提供具有服务端渲染能力的工具包，使得类似umajs类的web开发框架可以更方便实现前后端同构的服务端渲染能力。特点：轻量级，模板式调用页面进行服务端渲染，不限制后端路由。",
 	"main": "lib/index.js",
 	"directories": {
@@ -40,7 +40,7 @@
 	"dependencies": {
 		"@babel/preset-typescript": "^7.12.1",
 		"@babel/runtime": "^7.7.7",
-		"@srejs/common": "^0.0.0",
+		"@srejs/common": "^1.0.0-alpha.0",
 		"autodll-webpack-plugin": "^0.4.2",
 		"autoprefixer": "^9.7.3",
 		"babel-loader": "^8.0.6",
@@ -60,8 +60,8 @@
 		"postcss-loader": "^4.0.4",
 		"react-hot-loader": "^4.12.20",
 		"sass-loader": "^7.2.0",
-		"stylus": "^0.54.8",
 		"style-loader": "^0.12.4",
+		"stylus": "^0.54.8",
 		"stylus-loader": "^4.3.3",
 		"terser-webpack-plugin": "^4.2.3",
 		"url-loader": "^4.1.1",
