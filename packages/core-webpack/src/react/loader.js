@@ -93,6 +93,18 @@ export const loaderRules = (isServer = false) => {
                     }
                 }
             ]
+        },
+        {
+            test: /\.(eot|woff|woff2|ttf)(\?.*)?$/,
+            use: [
+                {
+                    loader: 'url-loader',
+                    options: {
+                        name: '[hash:8].[name].[ext]',
+                        outputPath: 'fonts/'
+                    }
+                }
+            ]
         }
     ];
 };

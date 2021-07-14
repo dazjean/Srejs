@@ -81,7 +81,7 @@ function getPlugin(entryObj, isServer) {
     }
     webpackPlugin.push(
         new ExtractTextPlugin({
-            filename: '[name].css' + (!isServer ? '?v=[hash]' : '')
+            filename: '[name].css' + (!isServer ? '?v=[hash:8]' : '')
         })
     );
     if (process.argv.indexOf('--analyzer') > -1 && !isServer) {

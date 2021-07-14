@@ -82,7 +82,7 @@ function getPlugin(entryObj, isServer) {
     }
     webpackPlugin.push(
         new ExtractTextPlugin({
-            filename: '[name].css' + (!isServer ? '?v=[hash]' : '')
+            filename: '[name].css' + (!isServer ? '?v=[hash:8]' : '')
         })
     );
     webpackPlugin.push(new VueLoaderPlugin());
