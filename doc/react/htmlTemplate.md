@@ -27,7 +27,7 @@
 
 ## 自定义模板文件命名规则
 为满足业务引入第三方脚本也提供了以下方式自定义html模板。
-- `src/pages/xxx/index.html`（局部页面生效）
-- `src/index.html`（全局生效）
+- `web/pages/xxx/index.html`（局部页面生效）
+- `web/index.html`（全局生效）
 
-**优先级**`src/pages/xxx/index.html` > `src/index.html`
+**优先级**`web/pages/xxx/index.html` > `web/index.html`
