@@ -3,7 +3,7 @@
 import './index.scss';
 //引入组件
 import React, { Component } from 'react';
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -56,7 +56,7 @@ export default class APP extends Component {
                     <Route exact path="/" component={Home} />
                     <Route exact path="/about" component={About} />
                     <Route exact path="/about/:msg" component={About} />
-                    <Route component={Home} />
+                    <Redirect path="*" to="/about" />
                 </Switch>
             </div>
         );

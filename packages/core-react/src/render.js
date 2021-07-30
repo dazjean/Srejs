@@ -152,10 +152,10 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         }
     }
     if (context.url) {
-        ctx.response.writeHead(301, {
-            Location: context.url
+        ctx.res.writeHead(301, {
+            Location: page + context.url
         });
-        ctx.response.end();
+        ctx.res.end();
     } else {
         // 加载 index.html 的内容
         let data = await readPageHtml(page);
