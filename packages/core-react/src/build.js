@@ -1,4 +1,4 @@
-import Webpack from './webpack/index';
+import { WebpackReact } from '@srejs/webpack';
 export const build = async (page = true) => {
-    Webpack.build(page);
+    WebpackReact.build(page);
 };

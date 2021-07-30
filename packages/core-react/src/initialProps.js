@@ -1,5 +1,4 @@
-import tools, { SSRKEY } from './tools';
-import Logger from './log';
+import common, { SSRKEY, Logger } from '@srejs/common';
 
 export function getDisplayName(Component) {
     return typeof Component === 'string'
@@ -10,7 +9,7 @@ export async function loadGetInitialProps(App, ctx) {
     if (!App.getInitialProps) {
         return {};
     }
-    if (tools.isDev()) {
+    if (common.isDev()) {
         if (App.prototype && App.prototype.getInitialProps) {
             const message = `"${getDisplayName(
                 App
@@ -40,7 +39,7 @@ export async function loadGetInitialProps(App, ctx) {
         throw new Error(message);
     }
 
-    if (tools.isDev()) {
+    if (common.isDev()) {
         if (Object.keys(props).length === 0 && !ctx.ctx) {
             Logger.warn(
                 `${getDisplayName(

@@ -2,12 +2,9 @@ import fs from 'fs';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
+import common, { clientDir, serverDir, cacheDir, SSRKEY, Logger } from '@srejs/common';
 import { loadGetInitialProps } from './initialProps';
-import { EntryList } from './webpack/entry';
-import { DevMiddlewareFileSystem } from './webpack/hot-reload';
-import webPack from './webpack';
-import tools, { clientDir, serverDir, cacheDir, SSRKEY } from './tools';
-import Logger from './log';
+import { DevMiddlewareFileSystem, getEntryList, WebpackReact as webPack } from '@srejs/webpack';
 
 /**
  * 写入文件,存在则覆盖
@@ -37,7 +34,7 @@ const writeFile = async (path, Content) => {
 export const readPageHtml = (page) => {
     return new Promise(async (resolve, reject) => {
         let viewUrl = `${clientDir}/${page}/${page}.html`;
-        if (!tools.isDev()) {
+        const readFileSync = () => {
             fs.readFile(viewUrl, 'utf8', (err, htmlString) => {
                 if (err) {
                     reject(err);
@@ -45,9 +42,16 @@ export const readPageHtml = (page) => {
                     resolve(htmlString);
                 }
             });
+        };
+        if (common.isDev()) {
+            try {
+                let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
+                resolve(htmlString);
+            } catch (error) {
+                readFileSync();
+            }
         } else {
-            let htmlString = DevMiddlewareFileSystem.readFileSync(viewUrl, 'utf-8');
-            resolve(htmlString);
+            readFileSync();
         }
     });
 };
@@ -84,12 +88,12 @@ export const checkModules = async (page) => {
     let jsClientdir = `${clientDir}/${page}`;
     if (!fs.existsSync(jspath)) {
         //服务端代码打包
-        let compiler = new webPack(page, tools.isDev(), true);
+        let compiler = new webPack(page, common.isDev(), true);
         await compiler.run();
     }
-    if (!fs.existsSync(jsClientdir) && !tools.isDev()) {
+    if (!fs.existsSync(jsClientdir) && !common.isDev()) {
         //客户端代码打包
-        let compiler = new webPack(page, tools.isDev());
+        let compiler = new webPack(page, common.isDev());
         await compiler.run();
     }
     return jspath;
@@ -103,14 +107,14 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     const context = {};
     let props = {};
     var { page, query } = ctx[SSRKEY];
-    if (!EntryList.has(page)) {
+    if (!getEntryList().has(page)) {
         return false;
     }
     let App = {};
     let jspath = await checkModules(page);
     try {
         // eslint-disable-next-line no-undef
-        if (tools.isDev()) {
+        if (common.isDev()) {
             delete require.cache[require.resolve(jspath)];
         }
         App = require(jspath);
@@ -140,6 +144,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
                 </StaticRouter>
             );
         } catch (error) {
+            ctx[SSRKEY].options.ssr = false;
             Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + error.stack);
             Logger.warn(
                 `srejs: ${page} Remove browser feature keywords such as windows/location from the react component, 
@@ -148,10 +153,10 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         }
     }
     if (context.url) {
-        ctx.response.writeHead(301, {
-            Location: context.url
+        ctx.res.writeHead(301, {
+            Location: page + context.url
         });
-        ctx.response.end();
+        ctx.res.end();
     } else {
         // 加载 index.html 的内容
         let data = await readPageHtml(page);
@@ -201,7 +206,7 @@ export const render = async (ctx, initProps) => {
 
         let ssrCacheDir = `${cacheDir}${ctx.url}/`;
         let ssrCacheUrl = `${cacheDir}${ctx.url}/${page}.html`;
-        if (tools.isDev() || !cache) {
+        if (common.isDev() || !cache) {
             // ssr无缓存模式，适用每次请求都是动态渲染页面场景
             return resolve(await renderServer(ctx, initProps, true));
         } else {

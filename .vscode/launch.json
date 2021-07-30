@@ -7,7 +7,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "start app",
+            "name": "start react",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
@@ -22,7 +22,7 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "srejs build",
+            "name": "react build",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
@@ -33,6 +33,51 @@
                 "<node_internals>/**"
             ],
             "cwd": "${workspaceRoot}/packages/app",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "start vue",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "start",
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${workspaceRoot}/packages/app-vue",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "vue build",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "build"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${workspaceRoot}/packages/app-vue",
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "vue dev",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "dev"
+            ],
+            "port": 9229,
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${workspaceRoot}/packages/app-vue",
         },
     ]
 }

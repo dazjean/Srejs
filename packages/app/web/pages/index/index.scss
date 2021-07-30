@@ -74,7 +74,7 @@ html,body,#app{
     position: relative;
     top: 50%; /*偏移*/
     transform: translateY(-50%);
-    background-image: url('images/srejs.png');
+    background-image: url('@/images/srejs.png');
     background-size: auto;
     background-position: top;
     background-repeat: no-repeat;

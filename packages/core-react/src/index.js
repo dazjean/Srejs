@@ -1,17 +1,8 @@
-/*
- * @Author: zhang dajia * @Date: 2018-11-05 14:16:25
- * @Last Modified by: zhang dajia
- * @Last Modified time: 2020-12-01 19:53:25
- * @Last  description: srejs/react
- */
 import send from 'koa-send';
+import common, { clientDir, SSRKEY, parseQuery, Logger } from '@srejs/common';
+import { Hotwebpack, getEntryList, WebpackReact } from '@srejs/webpack';
 import { sendHTML } from './send-html';
 import { render as ReactRender } from './render';
-import HotReload from './webpack/hot-reload';
-import Webpack from './webpack/index';
-import Logger from './log';
-import { EntryList } from './webpack/entry';
-import tools, { clientDir, SSRKEY, parseQuery } from './tools';
 
 export default class Srejs {
     /**
@@ -30,14 +21,14 @@ export default class Srejs {
             process.env.NODE_ENV = 'production';
         }
         this.dev = dev;
-        this.options = tools.setOptions(options);
+        this.options = common.setOptions(options);
         this.hmr();
         this.serverStatic();
         defaultRouter && this.usePageRouter();
     }
 
     async usePageRouter() {
-        EntryList.forEach((page) => {
+        getEntryList().forEach((page) => {
             this.addRouter(page);
         });
         this.app.use(this.middleware());
@@ -143,8 +134,9 @@ export default class Srejs {
      */
     hmr() {
         if (this.dev) {
-            new HotReload(this.app);
-            new Webpack(true, true, true).run(); // 启动时只提取构建服务端所需资源
+            const page = process.argv.splice(2)[0] || true;
+            new Hotwebpack(this.app, page);
+            new WebpackReact(page, true, true).run(); // 启动时只提取构建服务端所需资源
         }
     }
 }

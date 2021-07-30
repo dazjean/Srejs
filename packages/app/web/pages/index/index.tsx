@@ -1,5 +1,7 @@
 import './index.scss';
 import React from 'react';
+import srejsLogo from '@/images/srejs.png';
+const commonjsLogo = require('@/images/srejs.png').default;
 type typeProps = {
     title: string;
 };
@@ -33,6 +35,12 @@ export default function (props: typeProps) {
             <p className="footer">
                 <a href="https://github.com/dazjean/srejs">https://github.com/dazjean/srejs</a>
             </p>
+            <span style={{ display: 'inline-block' }}>
+                <img src={srejsLogo} />
+            </span>
+            <span style={{ display: 'inline-block' }}>
+                <img src={commonjsLogo} />
+            </span>
         </div>
     );
 }

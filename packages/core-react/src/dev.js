@@ -1,9 +1,7 @@
-import webpack from 'webpack';
-import webpackDevServer from 'webpack-dev-server';
-import { getDevconfig } from './webpack/dev';
+import { getDevConfig, Webpack, WebpackDevServer } from '@srejs/webpack';
 export const dev = (page = true) => {
-    let webpackConfig = getDevconfig(page);
-    const compiler = webpack(webpackConfig);
+    let webpackConfig = getDevConfig(page);
+    const compiler = Webpack(webpackConfig);
     const devServerOptions = Object.assign(
         {},
         {
@@ -14,7 +12,7 @@ export const dev = (page = true) => {
         },
         webpackConfig.devServer
     );
-    const server = new webpackDevServer(compiler, devServerOptions);
+    const server = new WebpackDevServer(compiler, devServerOptions);
 
     server.listen(devServerOptions.port, '127.0.0.1', () => {
         console.log('srejs:Starting server on http://localhost:' + devServerOptions.port);

@@ -4,3 +4,4 @@ dist
 .ssr
 packages/app/.DS_Store
 .DS_Store
+packages-lock.json
