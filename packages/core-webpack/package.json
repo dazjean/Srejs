@@ -45,7 +45,7 @@
 		"@babel/preset-react": "^7.14.5",
 		"@babel/preset-typescript": "^7.12.1",
 		"@babel/runtime": "^7.7.7",
-		"@srejs/common": "^1.0.0-alpha.0",
+		"@srejs/common": "^1.0.0",
 		"autodll-webpack-plugin": "^0.4.2",
 		"autoprefixer": "^9.7.3",
 		"babel-loader": "^8.0.6",

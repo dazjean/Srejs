@@ -45,7 +45,7 @@
 	"homepage": "https://github.com/dazjean/srejs#readme",
 	"license": "MIT",
 	"dependencies": {
-		"@srejs/common": "^1.0.0-alpha.0",
+		"@srejs/common": "^1.0.0",
 		"@srejs/webpack": "^1.0.0",
 		"etag": "^1.8.1",
 		"fresh": "^0.5.2",
