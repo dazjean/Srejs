@@ -144,6 +144,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
                 </StaticRouter>
             );
         } catch (error) {
+            ctx[SSRKEY].options.ssr = false;
             Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + error.stack);
             Logger.warn(
                 `srejs: ${page} Remove browser feature keywords such as windows/location from the react component, 

@@ -16,9 +16,9 @@ if (inBrowser) {
         rootDom.id = `${rootNode}`;
         document.body.prepend(rootDom);
     }
-}
-inBrowser &&
-    ReactDom.hydrate(
+    const ssr = window.__SSR_DATA__?.options?.ssr;
+    const Render = ssr ? ReactDom.hydrate : ReactDom.render;
+    Render(
         <Router basename="/__SSR_DATA__pathname">
             <App
                 {...window.__SSR_DATA__.initProps}
@@ -29,4 +29,6 @@ inBrowser &&
         </Router>,
         document.getElementById(`${rootNode}`)
     );
+}
+
 export default hot(App);
