@@ -4,7 +4,6 @@ import { getEntryDir, getRootDir } from '@srejs/common';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
-import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { VueLoaderPlugin } from 'vue-loader';
 
@@ -35,18 +34,7 @@ function loadPluginHtml(page) {
 
 function getPlugin(entryObj, isServer) {
     let pages = Object.keys(entryObj);
-    // https://github.com/mzgoddard/hard-source-webpack-plugin/issues/416
-    let webpackPlugin = [new HardSourceWebpackPlugin()];
-    webpackPlugin.push(
-        new HardSourceWebpackPlugin.ExcludeModulePlugin({
-            // HardSource works with mini-css-extract-plugin but due to how
-            // mini-css emits assets, assets are not emitted on repeated builds with
-            // mini-css and hard-source together. Ignoring the mini-css loader
-            // modules, but not the other css loader modules, excludes the modules
-            // that mini-css needs rebuilt to output assets every time.
-            test: /mini-css-extract-plugin[\\/]dist[\\/]loader/
-        })
-    );
+    let webpackPlugin = [];
     !isServer &&
         pages.forEach(function (pathname) {
             let entryName = pathname.split('/')[0];

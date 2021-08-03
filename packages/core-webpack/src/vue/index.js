@@ -3,6 +3,7 @@ import { getProconfig } from './prod';
 import { getDevConfig } from './dev';
 import { getServerconfig } from './server';
 import { Logger } from '@srejs/common';
+import { spinner } from './../spinnerProcess';
 
 export class Webpack {
     /**
@@ -29,8 +30,14 @@ export class Webpack {
         return this.dev ? this.watching() : this.compilerRun();
     }
     static async build(page) {
+        spinner.start();
+        spinner.color('yellow');
+        spinner.text('客户端构建');
         await new Webpack(page, false, false).compilerRun();
+        spinner.text('服务端构建');
+        spinner.color('blue');
         await new Webpack(page, false, true).compilerRun();
+        spinner.stop();
     }
     compilerRun() {
         return new Promise((resove, reject) => {
