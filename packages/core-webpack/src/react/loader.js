@@ -1,4 +1,4 @@
-import ExtractTextPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import common from '@srejs/common';
 
 export const possLoader = {
@@ -67,7 +67,7 @@ export const loaderRules = (isServer = false) => {
             test: /\.css$/,
             use: [
                 'css-hot-loader',
-                ExtractTextPlugin.loader,
+                MiniCssExtractPlugin.loader,
                 cssLoader,
                 possLoader,
                 'sass-loader' // 兼容历史方案，老版本css和scss一样的配置
@@ -75,11 +75,23 @@ export const loaderRules = (isServer = false) => {
         },
         {
             test: /\.scss$/,
-            use: ['css-hot-loader', ExtractTextPlugin.loader, cssLoader, possLoader, 'sass-loader']
+            use: [
+                'css-hot-loader',
+                MiniCssExtractPlugin.loader,
+                cssLoader,
+                possLoader,
+                'sass-loader'
+            ]
         },
         {
             test: /\.less$/,
-            use: ['css-hot-loader', ExtractTextPlugin.loader, cssLoader, possLoader, 'less-loader']
+            use: [
+                'css-hot-loader',
+                MiniCssExtractPlugin.loader,
+                cssLoader,
+                possLoader,
+                'less-loader'
+            ]
         },
         {
             test: /\.(png|jpg|jpeg|gif|svg)$/,

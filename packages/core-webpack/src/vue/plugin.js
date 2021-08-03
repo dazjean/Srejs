@@ -1,16 +1,19 @@
 import path from 'path';
 import fs from 'fs';
-import common, { getEntryDir } from '@srejs/common';
+import { getEntryDir, getRootDir } from '@srejs/common';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
-import ExtractTextPlugin from 'mini-css-extract-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import AutoDllPlugin from 'autodll-webpack-plugin';
 import HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { VueLoaderPlugin } from 'vue-loader';
 
 const entryDir = getEntryDir();
-const rootDir = path.join(process.cwd() + '/' + common.getOptions('rootDir'));
+const rootDir = getRootDir();
+
 const global_local = `${rootDir}/index.html`;
+const favicon_local = `${rootDir}/favicon.ico`;
+
 function loadPluginHtml(page) {
     const htmlList = ['index.html', `${page}.html`];
     let template_local;
@@ -51,8 +54,10 @@ function getPlugin(entryObj, isServer) {
             let conf = {
                 filename: entryName + '/' + entryName + '.html', //生成的html存放路径，相对于path
                 template: template_local, //html模板路径
+                favicon: fs.existsSync(favicon_local) ? favicon_local : '',
                 title: entryName,
                 inject: true, //js插入的位置，true/'head'/'body'/false
+                scriptLoading: 'defer',
                 hash: false, //为静态资源生成hash值
                 chunks: [pathname], //需要引入的chunk，不配置就会引入所有页面的资源
                 minify: {
@@ -81,7 +86,7 @@ function getPlugin(entryObj, isServer) {
         );
     }
     webpackPlugin.push(
-        new ExtractTextPlugin({
+        new MiniCssExtractPlugin({
             filename: '[name].css' + (!isServer ? '?v=[hash:8]' : '')
         })
     );

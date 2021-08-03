@@ -21,7 +21,7 @@ const writeFile = async (path, Content) => {
             } else {
                 resolve(true);
                 Logger.info(
-                    `srejs:Page component ${path} successfully writes the server rendering cache`
+                    `SSR:Page component ${path} successfully writes the server rendering cache`
                 );
             }
         });
@@ -65,7 +65,7 @@ const writeFileHander = (cacheDir, cacheUrl, Content) => {
         } else {
             fs.mkdir(cacheDir, { recursive: true }, (err) => {
                 if (err) {
-                    Logger.error(`srejs:${err.stack}`);
+                    Logger.error(`SSR:${err.stack}`);
                 } else {
                     writeFile(cacheUrl, Content);
                 }
@@ -112,8 +112,8 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
-            `srejs: ${page} Remove browser feature keywords such as windows/location from the vue component, 
-            or move into the real component didmount lifecycle for use`
+            `SSR: ${page}Please check whether there are APIs in the code that the server does not support when rendering,
+             such as window, locaction, navigator, etc`
         );
         Logger.error(error.stack);
     }
@@ -139,7 +139,8 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
             const App = await createApp(context);
             Html = await renderTostring(App, context, page);
         } catch (error) {
-            Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + JSON.stringify(error));
+            ctx[SSRKEY].options.ssr = false;
+            Logger.warn('SSR:服务端渲染异常，降级使用客户端渲染！' + JSON.stringify(error));
             Html = await readPageString(page, context);
         }
     } else {
@@ -174,7 +175,9 @@ const renderTostring = async (App, context, page) => {
 const injectScriptInitProps = (temp, context) => {
     const contents = temp.split('<!--vue-ssr-outlet-->');
     if (contents.length == 1) {
-        console.error('srejs:警告！自定义html文件中请在body下追加<!--vue-ssr-outlet-->占位符！');
+        console.error(
+            'SSR:警告！自定义html文件中请在body下追加<!--vue-ssr-outlet-->占位符！https://ssr.vuejs.org/zh/guide/#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E6%A8%A1%E6%9D%BF'
+        );
     }
     const data = Object.assign({}, context);
     const ssrData = data.ssrData;

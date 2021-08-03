@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 var commander = require('commander');
 commander
-    .version('0.0.1')
+    .version('1.0.0')
     .option('-d, --dev [page]', '启动客户端渲染开发模式')
     .option('-b, --build [page]', '生成环境构建编译，输出目录默认dist/')
     .option('-a, --analyzer [page]', '编译构建打包分析');

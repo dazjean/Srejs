@@ -78,9 +78,14 @@ export function setCoreConfig(options) {
 }
 
 export function getEntryDir() {
+    const rootDirPath = getRootDir();
+    return path.join(rootDirPath + `/pages/`);
+}
+
+export function getRootDir() {
     const options = getCoreConfig();
     const { rootDir } = options;
-    return path.join(process.cwd() + `/${rootDir}/pages/`);
+    return path.join(cwd, rootDir);
 }
 
 export const parseQuery = (req) => {

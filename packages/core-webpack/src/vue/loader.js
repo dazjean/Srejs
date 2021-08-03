@@ -1,4 +1,4 @@
-import * as ExtractTextPlugin from 'mini-css-extract-plugin';
+import * as MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import common from '@srejs/common';
 
 export const possLoader = {
@@ -39,7 +39,7 @@ const getCssModuleLoader = () => {
 
 const getCommonLoader = () => {
     const commonDevLoader = ['vue-style-loader'];
-    const commonProdLoader = [ExtractTextPlugin.loader];
+    const commonProdLoader = [MiniCssExtractPlugin.loader];
     return common.isDev() ? commonDevLoader : commonProdLoader;
 };
 

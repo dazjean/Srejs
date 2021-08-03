@@ -19,7 +19,7 @@ const writeFile = async (path, Content) => {
             } else {
                 resolve(true);
                 Logger.info(
-                    `srejs:Page component ${path} successfully writes the server rendering cache`
+                    `SSR:Page component ${path} successfully writes the server rendering cache`
                 );
             }
         });
@@ -74,7 +74,7 @@ const writeFileHander = (cacheDir, cacheUrl, Content) => {
         } else {
             fs.mkdir(cacheDir, { recursive: true }, (err) => {
                 if (err) {
-                    Logger.error(`srejs:${err.stack}`);
+                    Logger.error(`SSR:${err.stack}`);
                 } else {
                     writeFile(cacheUrl, Content);
                 }
@@ -122,8 +122,8 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
-            `srejs: ${page} Remove browser feature keywords such as windows/location from the react component, 
-            or move into the real component didmount lifecycle for use`
+            `SSR: ${page}Please check whether there are APIs in the code that the server does not support when rendering,
+             such as window, locaction, navigator, etc`
         );
         Logger.error(error.stack);
     }
@@ -145,11 +145,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
             );
         } catch (error) {
             ctx[SSRKEY].options.ssr = false;
-            Logger.warn('srejs:服务端渲染异常，降级使用客户端渲染！' + error.stack);
-            Logger.warn(
-                `srejs: ${page} Remove browser feature keywords such as windows/location from the react component, 
-                or move into the real component didmount lifecycle for use`
-            );
+            Logger.warn('SSR:服务端渲染异常，降级使用客户端渲染！' + error.stack);
         }
     }
     if (context.url) {
