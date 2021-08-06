@@ -2,16 +2,16 @@ import fs from 'fs';
 import path, { join } from 'path';
 import { parse as parseUrl } from 'url';
 
-export const tempDir = join(process.cwd() + '/.ssr');
-export const cacheDir = join(process.cwd() + '/.ssr/cache');
-export const outPutDir = join(process.cwd() + '/.ssr/output');
-export const serverDir = join(process.cwd() + '/dist/server');
-export const clientDir = join(process.cwd() + '/dist/client');
-export const webpackConfigPath = join(process.cwd() + './webpack.config.js');
 export const cwd = process.cwd();
+export const tempDir = join(cwd + '/.ssr');
+export const cacheDir = join(cwd + '/.ssr/cache');
+export const outPutDir = join(cwd + '/.ssr/output');
+export const serverDir = join(cwd + '/dist/server');
+export const clientDir = join(cwd + '/dist/client');
+export const webpackConfigPath = join(cwd + './webpack.config.js');
 export const SSRKEY = Symbol('SSR');
 
-const newOptionsPath = path.resolve(process.cwd(), './config/ssr.config.js');
+const newOptionsPath = path.resolve(cwd, './config/ssr.config.js');
 const defaultOptions = {
     ssr: true, // 全局开启服务端渲染
     cache: false, //  全局使用服务端渲染缓存
@@ -23,8 +23,8 @@ const defaultOptions = {
 };
 let coreOptions = null;
 
-/**umajs-react-ssr方案时，生成前部署构建时扫描其配置文件
- * 兼容@umajs/plugin-react-ssr配置
+/**
+ * 兼容@umajs/plugin-react/vue-ssr配置
  * @returns
  */
 function umajs_plugin_options() {
@@ -34,8 +34,16 @@ function umajs_plugin_options() {
         Uma.instance({ ROOT: './app' }).loadConfig();
         opt = Uma.config?.ssr || {}; // ssr.config.ts
         const reactSsrPlugin = Uma.config?.plugin['react-ssr'];
+        const vueSsrPlugin = Uma.config?.plugin['vue-ssr'];
+        const ssrPlugin = Uma.config?.plugin['ssr'];
         if (reactSsrPlugin?.options) {
             opt = reactSsrPlugin.options;
+        }
+        if (vueSsrPlugin?.options) {
+            opt = vueSsrPlugin.options;
+        }
+        if (ssrPlugin?.options) {
+            opt = ssrPlugin.options;
         }
     } catch (_error) {}
     return opt;

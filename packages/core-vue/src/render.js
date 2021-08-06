@@ -1,6 +1,13 @@
 import fs from 'fs';
 import { createRenderer } from 'vue-server-renderer';
-import common, { clientDir, serverDir, cacheDir, SSRKEY, Logger } from '@srejs/common';
+import common, {
+    clientDir,
+    serverDir,
+    cacheDir,
+    SSRKEY,
+    Logger,
+    filterXssByJson
+} from '@srejs/common';
 import serialize from 'serialize-javascript';
 import {
     VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
@@ -97,6 +104,7 @@ export const checkModules = async (page) => {
 export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     let context = { url: ctx.req.url };
     var { page, query } = ctx[SSRKEY];
+    query = filterXssByJson(query);
     if (!getVueEntryList().has(page)) {
         return false;
     }

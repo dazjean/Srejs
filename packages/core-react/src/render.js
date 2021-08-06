@@ -1,8 +1,16 @@
 import fs from 'fs';
 import React from 'react';
+import serialize from 'serialize-javascript';
 import ReactDOMServer from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
-import common, { clientDir, serverDir, cacheDir, SSRKEY, Logger } from '@srejs/common';
+import common, {
+    clientDir,
+    serverDir,
+    cacheDir,
+    SSRKEY,
+    Logger,
+    filterXssByJson
+} from '@srejs/common';
 import { loadGetInitialProps } from './initialProps';
 import { DevMiddlewareFileSystem, getEntryList, WebpackReact as webPack } from '@srejs/webpack';
 
@@ -56,17 +64,6 @@ export const readPageHtml = (page) => {
     });
 };
 
-const filterXss = (str) => {
-    var s = '';
-    s = str.replace(/&/g, '&amp;');
-    s = s.replace(/</g, '&lt;');
-    s = s.replace(/>/g, '&gt;');
-    s = s.replace(/ /g, '&nbsp;');
-    s = s.replace("'", '&#39;');
-    s = s.replace('"', '&quot;');
-    return s;
-};
-
 const writeFileHander = (cacheDir, cacheUrl, Content) => {
     fs.exists(cacheUrl, (exists) => {
         if (exists) {
@@ -107,6 +104,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     const context = {};
     let props = {};
     var { page, query } = ctx[SSRKEY];
+    query = filterXssByJson(query);
     if (!getEntryList().has(page)) {
         return false;
     }
@@ -154,32 +152,21 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         });
         ctx.res.end();
     } else {
-        // 加载 index.html 的内容
         let data = await readPageHtml(page);
-        //进行xss过滤
-        for (let key in query) {
-            if (query[key] instanceof Array) {
-                query[key] = query[key].map((item) => {
-                    return filterXss(item);
-                });
-            } else {
-                query[key] = filterXss(query[key]);
-            }
-        }
+        const ssrData = {
+            initProps: props,
+            page,
+            path: ctx[SSRKEY].path,
+            query,
+            options: ctx[SSRKEY].options
+        };
         let rootNode = ctx[SSRKEY].options.rootNode;
         let replaceReg = new RegExp(`<div id="${rootNode}"><\/div>`);
         // 把渲染后的 React HTML 插入到 div 中
         let document = data.replace(
             replaceReg,
             `<div id="${rootNode}">${Html}</div>
-             <script>var __SSR_DATA__ = 
-                {
-                    initProps:${JSON.stringify(props || {})},
-                    page: "${page}",
-                    path:"${ctx[SSRKEY].path}",
-                    query:${JSON.stringify(query || {})},
-                    options:${JSON.stringify(ctx[SSRKEY].options || {})}
-                }
+             <script>var __SSR_DATA__ = ${serialize(ssrData, { isJSON: true })}
              </script>`
         );
         document = renderDocumentHead(document, props);
