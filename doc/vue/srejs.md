@@ -14,6 +14,8 @@ const Srejs = new srejs(app，process.env.NODE_ENV != 'production'，false,optio
 ## API 
  - constructor(app: Koa, dev?: boolean, defaultRouter?: boolean, options?: TcoreOptions)
 > 当defaultRouter开启时，框架扫描页面组件，按照命名自动映射成路由。比如`index`页面组件，自动映射为`localhost://port/index`。框架默认关闭文件默认路由方式，Srejs提供了实例方法`render`方便在koa中间件和koa-router中进行页面渲染和调用。
+
+
 |  参数    |   说明   |   默认值   |
 | ---- | ---- | ---- |
 |  app    |   koa实例对象   |   必传   |
