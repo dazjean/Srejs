@@ -53,6 +53,8 @@ app.use(async (ctx, next) => {
         ctx.body = html;
     } else {
         await next();
+        ctx.type = 'text/html';
+        ctx.body = '404 not found';
     }
 });
 app.listen(8001);

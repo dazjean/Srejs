@@ -106,7 +106,7 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     var { page, query } = ctx[SSRKEY];
     query = filterXssByJson(query);
     if (!getVueEntryList().has(page)) {
-        return false;
+        return `Page component ${page} does not exist, please check the pages folder`;
     }
     let createApp;
     let jspath = await checkModules(page);

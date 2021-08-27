@@ -2,7 +2,11 @@ import fs from 'fs';
 import path, { join } from 'path';
 import { parse as parseUrl } from 'url';
 
-export const cwd = process.cwd();
+/*兼容electron process.cwd为用户目录 mac /Users/xxx  srejs根目录为向上寻找到node_modules的目录*/
+export const cwd =
+    process?.versions?.electron === undefined
+        ? join(process.cwd())
+        : join(__dirname, './../../../../');
 export const tempDir = join(cwd + '/.ssr');
 export const cacheDir = join(cwd + '/.ssr/cache');
 export const outPutDir = join(cwd + '/.ssr/output');
