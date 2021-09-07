@@ -66,7 +66,7 @@ function getPlugin(entryObj, isServer) {
         webpackPlugin.push(
             new AutoDllPlugin({
                 inject: true,
-                filename: '[name].js',
+                filename: '[name]_[hash].js',
                 entry: {
                     vendor: ['vue', 'vue-router', 'vuex']
                 }
