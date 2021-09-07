@@ -46,7 +46,6 @@ function createEntry(page) {
 
         if (exists && entryName) {
             data = data.replace('$injectApp$', `../${rootDir}/pages/${page}/${entryName}`);
-            data = data.replace('__SSR_DATA__pathname', page);
             data = data.replace('$rootNode$', rootNode);
             let exists = fs.existsSync(tempDir);
             if (!exists) {

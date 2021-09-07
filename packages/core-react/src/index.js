@@ -96,7 +96,12 @@ export default class Srejs {
     setContext(ctx, viewName, options = {}) {
         let { prefixRouter } = this.options;
         ctx[SSRKEY] = ctx[SSRKEY] || {};
-        ctx[SSRKEY].options = Object.assign({}, this.options, options);
+        ctx[SSRKEY].options = Object.assign(
+            {},
+            this.options,
+            { baseName: `/${viewName}` },
+            options
+        );
         const parseQ = parseQuery(ctx);
         const page = parseQ.pathname
             .replace('/' + prefixRouter, '')

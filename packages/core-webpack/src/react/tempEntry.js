@@ -16,10 +16,10 @@ if (inBrowser) {
         rootDom.id = `${rootNode}`;
         document.body.prepend(rootDom);
     }
-    const ssr = window.__SSR_DATA__?.options?.ssr;
+    const { ssr, baseName } = window.__SSR_DATA__?.options;
     const Render = ssr ? ReactDom.hydrate : ReactDom.render;
     Render(
-        <Router basename="/__SSR_DATA__pathname">
+        <Router basename={`${baseName}`}>
             <App
                 {...window.__SSR_DATA__.initProps}
                 path={window.__SSR_DATA__.path || ''}

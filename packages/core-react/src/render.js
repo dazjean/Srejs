@@ -103,7 +103,9 @@ export const checkModules = async (page) => {
 export const renderServer = async (ctx, initProps, ssr = true) => {
     const context = {};
     let props = {};
-    var { page, query } = ctx[SSRKEY];
+    let { query } = ctx[SSRKEY];
+    const { page, options, path } = ctx[SSRKEY];
+    const { rootNode, baseName } = options; // baseName默认为page
     query = filterXssByJson(query);
     if (!getEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
@@ -133,12 +135,12 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         props = Object.assign(props || {}, initProps);
     }
     let Html = '';
-    let location = ctx.url.split(page)[1];
+    let location = ctx.url.split(baseName)[1];
     if (ssr) {
         try {
             Html = ReactDOMServer.renderToString(
                 <StaticRouter location={location || '/'} context={context}>
-                    <App page={page} path={ctx[SSRKEY].path} query={query} {...props} />
+                    <App page={page} path={path} query={query} {...props} />
                 </StaticRouter>
             );
         } catch (error) {
@@ -158,9 +160,8 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
             page,
             path: ctx[SSRKEY].path,
             query,
-            options: ctx[SSRKEY].options
+            options
         };
-        let rootNode = ctx[SSRKEY].options.rootNode;
         let replaceReg = new RegExp(`<div id="${rootNode}"><\/div>`);
         // 把渲染后的 React HTML 插入到 div 中
         let document = data.replace(

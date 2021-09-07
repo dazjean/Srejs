@@ -54,6 +54,7 @@ type TcoreOptions = {
 type TssrOptions = {
     ssr: boolean; // 开启服务端渲染
     cache?: boolean; // 开启缓存
+    baseName?: string; // (仅react-router嵌套路由页面时生效)
 };
 ```
 

@@ -44,8 +44,12 @@ app.use(async (ctx, next) => {
         const html = await Sre.render(ctx, 'redux', { count: 100 });
         ctx.type = 'text/html';
         ctx.body = html;
+    } else if (ctx.path.startsWith('/router1')) {
+        const html = await Sre.render(ctx, 'router', {}, { baseName: '/router1' });
+        ctx.type = 'text/html';
+        ctx.body = html;
     } else if (ctx.path.startsWith('/router')) {
-        const html = await Sre.render(ctx, 'router');
+        const html = await Sre.render(ctx, 'router', {}, { baseName: '/router' });
         ctx.type = 'text/html';
         ctx.body = html;
     } else if (ctx.path.startsWith('/detail')) {

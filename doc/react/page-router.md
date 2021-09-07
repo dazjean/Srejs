@@ -54,7 +54,7 @@ export default class APP extends Component {
 }
 ```
 
-使用react-router-dom时服务端路由需要和客户端路由保持一致；
+使用react-router-dom时服务端路由需要和客户端路由保持一致；默认baseName为页面组件名称 eg:`router`嵌套路由组件，默认`baseName`为`/router`。可通过运行期支持动态传递修改`baseName`值。
 
 ```js
 import Koa from 'koa';

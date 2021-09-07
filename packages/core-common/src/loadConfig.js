@@ -23,6 +23,7 @@ const defaultOptions = {
     rootNode: 'app', // 客户端页面挂载根元素ID
     prefixCDN: '/', // 构建后静态资源CDN地址前缀
     prefixRouter: '', // 默认页面路由前缀(在defaultRouter设置为true时有效)
+    baseName: '', // react-router设置baseName 默认为页面page名称
     log: true // 开发环境日志
 };
 let coreOptions = null;
