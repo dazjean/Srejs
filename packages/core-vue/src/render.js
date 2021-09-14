@@ -47,6 +47,9 @@ export const readPageHtml = (page) => {
             fs.readFile(viewUrl, 'utf8', (err, htmlString) => {
                 if (err) {
                     reject(err);
+                    Logger.error(
+                        'SSR: The client code is being compiled, please refresh the browser later...'
+                    );
                 } else {
                     resolve(htmlString);
                 }

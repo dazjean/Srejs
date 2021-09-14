@@ -20,7 +20,7 @@ export default function (props: typeProps) {
                     <a href="/router">2.router嵌套路由</a>
                 </li>
                 <li>
-                    <a href="/serverList">3.服务端渲染列表2</a>
+                    <a href="/serverList">3.服务端渲染列表</a>
                 </li>
                 <li>
                     <a href="/clientList">3.客户端渲染列表</a>

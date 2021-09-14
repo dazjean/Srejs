@@ -1,8 +1,8 @@
 import webpack from 'webpack';
+import { Logger } from '@srejs/common';
 import { getProconfig } from './prod';
 import { getDevConfig } from './dev';
 import { getServerconfig } from './server';
-import { Logger } from '@srejs/common';
 import { spinner } from './../spinnerProcess';
 
 export class Webpack {
@@ -81,3 +81,7 @@ export class Webpack {
         );
     }
 }
+
+process.on('message', function ({ page, dev, server }) {
+    new Webpack(page, dev, server).run(); // 启动时只提取构建服务端所需资源
+});
