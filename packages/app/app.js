@@ -65,5 +65,8 @@ app.use(async (ctx, next) => {
         await next();
     }
 });
-app.listen(8001);
-console.log('8001端口启动成功！');
+
+Promise.resolve(true).then(() => {
+    app.listen(8001);
+    console.log('8001端口启动成功！');
+});

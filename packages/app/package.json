@@ -30,9 +30,9 @@
     "less": "^4.1.1",
     "less-loader": "^4.0.5",
     "lodash": "^4.17.21",
-    "node-sass": "^4.10.0",
     "postcss-loader": "^4.0.4",
     "react-sticky": "^6.0.3",
+    "sass": "^1.39.2",
     "sass-loader": "^7.2.0",
     "url-loader": "^4.1.1",
     "webpack-hot-middleware": "^2.25.0"
