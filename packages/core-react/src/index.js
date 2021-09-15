@@ -1,9 +1,12 @@
+import { fork } from 'child_process';
 import send from 'koa-send';
 import common, { clientDir, SSRKEY, parseQuery, Logger } from '@srejs/common';
-import { Hotwebpack, getEntryList, WebpackReact } from '@srejs/webpack';
+import { Hotwebpack, getEntryList } from '@srejs/webpack';
 import { sendHTML } from './send-html';
 import { render as ReactRender } from './render';
 
+// 创建server端webpack构建进程监听文件变化
+var childWebpack = fork(require.resolve('@srejs/webpack/lib/react/index.js'));
 export default class Srejs {
     /**
      *
@@ -141,7 +144,7 @@ export default class Srejs {
         if (this.dev) {
             const page = process.argv.splice(2)[0] || true;
             new Hotwebpack(this.app, page);
-            new WebpackReact(page, true, true).run(); // 启动时只提取构建服务端所需资源
+            childWebpack.send({ page, dev: true, server: true });
         }
     }
 }
