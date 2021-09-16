@@ -108,7 +108,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     let props = {};
     let { query } = ctx[SSRKEY];
     const { page, options, path } = ctx[SSRKEY];
-    const { rootNode, baseName } = options; // baseName默认为page
+    const { rootNode, baseName, layout = true  } = options; // baseName默认为page
     query = filterXssByJson(query);
     if (!getEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
@@ -143,7 +143,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         try {
             Html = ReactDOMServer.renderToString(
                 <StaticRouter location={location || '/'} context={context}>
-                    <App page={page} path={path} query={query} {...props} />
+                    <App params={{ page, path, query, ...props }} layout={layout} />
                 </StaticRouter>
             );
         } catch (error) {

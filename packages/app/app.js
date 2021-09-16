@@ -15,7 +15,7 @@ app.use(async (ctx, next) => {
                 keywords: 'srejs react ssr',
                 description: '简单好用的服务端渲染引擎工具！'
             },
-            { ssr: true }
+            { ssr: true, layout: false }
         );
         ctx.type = 'text/html';
         ctx.body = html;

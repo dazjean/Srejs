@@ -95,6 +95,11 @@ export function getEntryDir() {
     return path.join(rootDirPath + `/pages/`);
 }
 
+export function getLayoutDir() {
+    const rootDirPath = getRootDir();
+    return path.join(rootDirPath + `/layout/`);
+}
+
 export function getRootDir() {
     const options = getCoreConfig();
     const { rootDir } = options;
