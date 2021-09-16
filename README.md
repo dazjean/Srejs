@@ -29,18 +29,28 @@ cd packages/app-vue && npm start // 开发调试vue
 - 🚀 vue2.0
 - vue3.0+vite
 
-## 初始化Srejs
-```js
-import srejs from '@srejs/react';
-// import srejs from '@srejs/vue'; 
-const SrejsInstace = new srejs(app，process.env.NODE_ENV != 'production',false); 
+## web组件开发
+```ts
+//web/pages/index/index.ts
+import React from 'react'
+export default function (props:any) {
+  const { title } = props
+  return <div className="ts-demo">{title}</div>
+}
 ```
 
 ## 在koa中间件中使用
 ```js
-(ctx,next)=>{
-    SrejsInstace.render(ctx,'index')
-}
+import koa from 'koa';
+import srejs from '@srejs/react';
+// import srejs from '@srejs/vue'; 
+
+const app = new koa();
+const Sre = new srejs(app，process.env.NODE_ENV != 'production',false); 
+app.use((ctx,next)=>{
+    Sre.render(ctx,'index',{title:'标题'})
+})
+app.listen(8001);
 ```
 
 ## 文档
