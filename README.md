@@ -17,19 +17,28 @@
 
 > Server rendering engine 缩写为 Srejs, 即服务器端渲染引擎，为各个node开发框架提供最简单，最灵活的React，Vue轻量级服务端渲染骨架工具，支持在任何koa框架中使用。
 
-## 开发
+## Development
 ```shell
 yarn install
 cd packages/app && npm start   // 开发调试react
 cd packages/app-vue && npm start // 开发调试vue
 ```
 
-## feature
-- 🚀 react
+## Feature
+- 🚀 支持SSR和CSR模式切换
+- 🚀 数据管理支持redux,useContext+useReducer
+- 🚀 服务端数据初始化
+- 🚀 搭配react-router使用，不局限服务端路由，可动态修改baseName
+- 🚀 自定义HTML和SEO
 - 🚀 vue2.0
+- 🚀 vuex
+- 🚀 vue-router
+- 🚀 单页面应用和多页面应用
+- 🚀 页面级构建更新
+- layout
 - vue3.0+vite
 
-## web组件开发
+## Client
 ```ts
 //web/pages/index/index.ts
 import React from 'react'
@@ -39,7 +48,7 @@ export default function (props:any) {
 }
 ```
 
-## 在koa中间件中使用
+## Server
 ```js
 import koa from 'koa';
 import srejs from '@srejs/react';
@@ -53,7 +62,8 @@ app.use((ctx,next)=>{
 app.listen(8001);
 ```
 
-## 文档
+## Quikstart
 - [react](https://github.com/dazjean/Srejs/tree/main/packages/core-react)
 - [vue](https://github.com/dazjean/Srejs/tree/main/packages/core-vue)
 
+## [MIT License](./LICENSE)
