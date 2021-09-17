@@ -28,7 +28,6 @@ function createEntry(page) {
         const rootNode = getOptions('rootNode');
         let data = fs.readFileSync(path.join(__dirname, './', 'tempEntry.js'), 'utf8');
         let entryName = false;
-        let layoutName = false;
         const entrysFileList = [
             'index.js',
             'index.ts',
@@ -45,12 +44,9 @@ function createEntry(page) {
                 return true; // 存在任意一个返回true
             }
         });
-        const layoutExists = entrysFileList.some((file) => {
+        const layoutName = entrysFileList.find((file) => {
             const entryjs = path.join(layoutDir, `${file}`);
-            if (fs.existsSync(entryjs)) {
-                layoutName = file;
-                return true; // 存在任意一个返回true
-            }
+            return fs.existsSync(entryjs)
         });
 
         if (exists && entryName) {
@@ -58,10 +54,14 @@ function createEntry(page) {
                 "'$injectApp$'",
                 `require('../${rootDir}/pages/${page}/${entryName}')`
             );
-            data = data.replace(
-                "'$injectLayout$'",
-                `require('../${rootDir}/layout/${layoutName}')`
-            )
+            if (layoutName) {
+                data = data.replace(
+                    "'$injectLayout$'",
+                    `require('../${rootDir}/layout/${layoutName}')`
+                )
+            } else {
+                data = data.replace(/(\/\/-layout-\s?[\n|\r|\s]?)([\s\S]*)([\n|\r|\s]?\/\/-layout-)/, '')
+            }
             data = data.replace('$rootNode$', rootNode);
             let exists = fs.existsSync(tempDir);
             if (!exists) {

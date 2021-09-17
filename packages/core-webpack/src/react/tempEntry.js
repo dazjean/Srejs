@@ -5,13 +5,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
 let App = '$injectApp$';
 App = App.default ? App.default : App;
-let Layout = null
-try {
-    Layout = '$injectLayout$';
-    Layout = Layout.default ? Layout.default : Layout;
-} catch (error) {
-    Layout = false
-}
+let Layout = false
+//-layout-
+Layout = '$injectLayout$';
+Layout = Layout.default ? Layout.default : Layout;
+//-layout-
 const rootNode = '$rootNode$';
 
 const Entry = ({params, layout}) => {
@@ -37,7 +35,7 @@ if (inBrowser) {
         rootDom.id = `${rootNode}`;
         document.body.prepend(rootDom);
     }
-    const { ssr, baseName, layout } = window.__SSR_DATA__?.options;
+    const { ssr, baseName, layout = true } = window.__SSR_DATA__?.options;
     const Render = ssr ? ReactDom.hydrate : ReactDom.render;
     const params = {
         ...window.__SSR_DATA__.initProps,
@@ -53,4 +51,5 @@ if (inBrowser) {
     );
 }
 
+export { App };
 export default hot(Entry);

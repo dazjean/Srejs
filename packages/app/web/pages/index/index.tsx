@@ -3,15 +3,16 @@ import React from 'react';
 import srejsLogo from '@/images/srejs.png';
 const commonjsLogo = require('@/images/srejs.png').default;
 type typeProps = {
-    title: string;
+    title: string,
+    userTitle: string
 };
-export default function (props: typeProps) {
-    const { title } = props;
+const Index = (props: typeProps) => {
+    const { title, userTitle } = props;
     return (
         <div className="home" style={{ textAlign: 'center' }}>
             <br />
             <br />
-            <p className="title">{title}</p>
+            <p className="title">{title}{userTitle}</p>
             <ul>
                 <li>
                     <a href="/detail/1">1.动态路由</a>
@@ -44,3 +45,19 @@ export default function (props: typeProps) {
         </div>
     );
 }
+
+function timeout () {
+    return new Promise((reslove) => {
+        setTimeout(() => {
+            reslove({
+                userTitle: '列表'
+            })
+        }, 500)
+    })
+}
+
+Index.getInitialProps = async () => {
+    return await timeout()
+}
+
+export default Index

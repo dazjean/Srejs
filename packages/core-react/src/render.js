@@ -113,6 +113,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     if (!getEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
     }
+    let Entry = {};
     let App = {};
     let jspath = await checkModules(page);
     try {
@@ -120,8 +121,9 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         if (common.isDev()) {
             delete require.cache[require.resolve(jspath)];
         }
-        App = require(jspath);
-        App = App.default ? App.default : App;
+        Entry = require(jspath);
+        App = Entry.App ? Entry.App : Entry;
+        Entry = Entry.default ? Entry.default : Entry;
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
@@ -143,7 +145,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         try {
             Html = ReactDOMServer.renderToString(
                 <StaticRouter location={location || '/'} context={context}>
-                    <App params={{ page, path, query, ...props }} layout={layout} />
+                    <Entry params={{ page, path, query, ...props }} layout={layout} />
                 </StaticRouter>
             );
         } catch (error) {
