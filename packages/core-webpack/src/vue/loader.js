@@ -13,6 +13,14 @@ export const possLoader = {
     }
 };
 
+const sassLoader = {
+    loader: 'sass-loader',
+    options: {
+        // Prefer `dart-sass`
+        implementation: require('sass')
+    }
+};
+
 const getCssLoader = () => {
     return {
         loader: 'css-loader',
@@ -121,10 +129,10 @@ export const loaderRules = (isServer = false) => {
             oneOf: [
                 {
                     resourceQuery: /module/,
-                    use: [...commonLoader, cssModuleLoader, possLoader, 'sass-loader']
+                    use: [...commonLoader, cssModuleLoader, possLoader, sassLoader]
                 },
                 {
-                    use: [...commonLoader, cssLoader, possLoader, 'sass-loader']
+                    use: [...commonLoader, cssLoader, possLoader, sassLoader]
                 }
             ]
         },

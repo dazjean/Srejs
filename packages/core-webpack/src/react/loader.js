@@ -13,6 +13,14 @@ export const possLoader = {
     }
 };
 
+const sassLoader = {
+    loader: 'sass-loader',
+    options: {
+        // Prefer `dart-sass`
+        implementation: require('sass')
+    }
+};
+
 const getCssLoader = () => {
     return {
         loader: 'css-loader',
@@ -70,28 +78,16 @@ export const loaderRules = (isServer = false) => {
                 MiniCssExtractPlugin.loader,
                 cssLoader,
                 possLoader,
-                'sass-loader' // 兼容历史方案，老版本css和scss一样的配置
+                sassLoader // 兼容历史方案，老版本css和scss一样的配置
             ]
         },
         {
             test: /\.scss$/,
-            use: [
-                'css-hot-loader',
-                MiniCssExtractPlugin.loader,
-                cssLoader,
-                possLoader,
-                'sass-loader'
-            ]
+            use: ['css-hot-loader', MiniCssExtractPlugin.loader, cssLoader, possLoader, sassLoader]
         },
         {
             test: /\.less$/,
-            use: [
-                'css-hot-loader',
-                MiniCssExtractPlugin.loader,
-                cssLoader,
-                possLoader,
-                'less-loader'
-            ]
+            use: ['css-hot-loader', MiniCssExtractPlugin.loader, cssLoader, possLoader, sassLoader]
         },
         {
             test: /\.(png|jpg|jpeg|gif|svg)$/,
