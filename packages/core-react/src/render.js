@@ -121,9 +121,9 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         if (common.isDev()) {
             delete require.cache[require.resolve(jspath)];
         }
-        Entry = require(jspath);
-        App = Entry.App ? Entry.App : Entry;
-        Entry = Entry.default ? Entry.default : Entry;
+        const Module = require(jspath);
+        App = Module.App;
+        Entry = Module.default;
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
