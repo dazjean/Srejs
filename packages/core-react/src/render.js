@@ -108,11 +108,12 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     let props = {};
     let { query } = ctx[SSRKEY];
     const { page, options, path } = ctx[SSRKEY];
-    const { rootNode, baseName } = options; // baseName默认为page
+    const { rootNode, baseName, layout = true  } = options; // baseName默认为page
     query = filterXssByJson(query);
     if (!getEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
     }
+    let Entry = {};
     let App = {};
     let jspath = await checkModules(page);
     try {
@@ -120,8 +121,9 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         if (common.isDev()) {
             delete require.cache[require.resolve(jspath)];
         }
-        App = require(jspath);
-        App = App.default ? App.default : App;
+        const Module = require(jspath);
+        App = Module.App;
+        Entry = Module.default;
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
@@ -143,7 +145,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         try {
             Html = ReactDOMServer.renderToString(
                 <StaticRouter location={location || '/'} context={context}>
-                    <App page={page} path={path} query={query} {...props} />
+                    <Entry params={{ page, path, query, ...props }} layout={layout} />
                 </StaticRouter>
             );
         } catch (error) {

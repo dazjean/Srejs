@@ -1,12 +1,13 @@
 import path from 'path';
 import fs from 'fs';
-import { getEntryDir, tempDir, getOptions } from '@srejs/common';
+import { getEntryDir, tempDir, getOptions, getLayoutDir } from '@srejs/common';
 export let EntryFilesMap = new Map();
 export let EntryList = new Set([]);
 export let webpackEntry = {};
 export let webpackEntryMap = new Map();
 
 const entryDir = getEntryDir();
+const layoutDir = getLayoutDir();
 export function getEntry(page) {
     if (page == true || page == 0 || typeof page == 'boolean') {
         return webpackEntry;
@@ -43,12 +44,24 @@ function createEntry(page) {
                 return true; // 存在任意一个返回true
             }
         });
+        const layoutName = entrysFileList.find((file) => {
+            const entryjs = path.join(layoutDir, `${file}`);
+            return fs.existsSync(entryjs)
+        });
 
         if (exists && entryName) {
             data = data.replace(
                 "'$injectApp$'",
                 `require('../${rootDir}/pages/${page}/${entryName}')`
             );
+            if (layoutName) {
+                data = data.replace(
+                    "'$injectLayout$'",
+                    `require('../${rootDir}/layout/${layoutName}')`
+                )
+            } else {
+                data = data.replace(/(\/\/-layout-\s?[\n|\r|\s]?)([\s\S]*)([\n|\r|\s]?\/\/-layout-)/, '')
+            }
             data = data.replace('$rootNode$', rootNode);
             let exists = fs.existsSync(tempDir);
             if (!exists) {
