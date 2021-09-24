@@ -108,7 +108,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     let props = {};
     let { query } = ctx[SSRKEY];
     const { page, options, path } = ctx[SSRKEY];
-    const { rootNode, baseName, layout = true  } = options; // baseName默认为page
+    const { rootNode, baseName, layout = true } = options; // baseName默认为page
     query = filterXssByJson(query);
     if (!getEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;

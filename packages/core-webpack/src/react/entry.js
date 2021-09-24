@@ -46,7 +46,7 @@ function createEntry(page) {
         });
         const layoutName = entrysFileList.find((file) => {
             const entryjs = path.join(layoutDir, `${file}`);
-            return fs.existsSync(entryjs)
+            return fs.existsSync(entryjs);
         });
 
         if (exists && entryName) {
@@ -58,9 +58,12 @@ function createEntry(page) {
                 data = data.replace(
                     "'$injectLayout$'",
                     `require('../${rootDir}/layout/${layoutName}')`
-                )
+                );
             } else {
-                data = data.replace(/(\/\/-layout-\s?[\n|\r|\s]?)([\s\S]*)([\n|\r|\s]?\/\/-layout-)/, '')
+                data = data.replace(
+                    /(\/\/-layout-\s?[\n|\r|\s]?)([\s\S]*)([\n|\r|\s]?\/\/-layout-)/,
+                    ''
+                );
             }
             data = data.replace('$rootNode$', rootNode);
             let exists = fs.existsSync(tempDir);
