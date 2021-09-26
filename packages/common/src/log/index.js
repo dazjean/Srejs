@@ -1,4 +1,4 @@
-import { getCoreConfig } from './../loadConfig';
+import { getCoreConfig } from '../config';
 const { log } = getCoreConfig();
 export let Logger = console;
 if (!log) {

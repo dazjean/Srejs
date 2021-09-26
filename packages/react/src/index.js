@@ -1,12 +1,12 @@
 import { fork } from 'child_process';
 import send from 'koa-send';
 import common, { clientDir, SSRKEY, parseQuery, Logger } from '@srejs/common';
-import { VueHotWebpack, getVueEntryList } from '@srejs/webpack';
+import { Hotwebpack, getEntryList } from '@srejs/react-webpack';
 import { sendHTML } from './send-html';
-import { render as VueRender } from './render';
+import { render as ReactRender } from './render';
 
 // 创建server端webpack构建进程监听文件变化
-var childWebpack = fork(require.resolve('@srejs/webpack/lib/vue/index.js'));
+var childWebpack = fork(require.resolve('@srejs/react-webpack/lib/react/index.js'));
 export default class Srejs {
     /**
      *
@@ -31,7 +31,7 @@ export default class Srejs {
     }
 
     async usePageRouter() {
-        getVueEntryList().forEach((page) => {
+        getEntryList().forEach((page) => {
             this.addRouter(page);
         });
         this.app.use(this.middleware());
@@ -79,7 +79,7 @@ export default class Srejs {
                 const regRouter = self.routes[i];
                 if (regRouter.test(ctx.path)) {
                     self.setContext(ctx);
-                    const document = await VueRender(ctx);
+                    const document = await ReactRender(ctx);
                     if (!document) {
                         return next();
                     }
@@ -124,7 +124,7 @@ export default class Srejs {
      */
     async render(ctx, viewName, initProps, options) {
         this.setContext(ctx, viewName, options);
-        const html = await VueRender(ctx, initProps);
+        const html = await ReactRender(ctx, initProps);
         return html;
     }
 
@@ -143,7 +143,7 @@ export default class Srejs {
     hmr() {
         if (this.dev) {
             const page = process.argv.splice(2)[0] || true;
-            new VueHotWebpack(this.app, page);
+            new Hotwebpack(this.app, page);
             childWebpack.send({ page, dev: true, server: true });
         }
     }

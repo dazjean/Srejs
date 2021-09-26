@@ -1,4 +1,4 @@
-import { getVueDevConfig as getDevConfig, Webpack, WebpackDevServer } from '@srejs/webpack';
+import { getDevConfig, Webpack, WebpackDevServer } from '@srejs/react-webpack';
 export const dev = (page = true) => {
     let webpackConfig = getDevConfig(page);
     const compiler = Webpack(webpackConfig);

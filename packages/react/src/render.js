@@ -12,7 +12,11 @@ import common, {
     filterXssByJson
 } from '@srejs/common';
 import { loadGetInitialProps } from './initialProps';
-import { DevMiddlewareFileSystem, getEntryList, WebpackReact as webPack } from '@srejs/webpack';
+import {
+    DevMiddlewareFileSystem,
+    getEntryList,
+    WebpackReact as webPack
+} from '@srejs/react-webpack';
 
 /**
  * 写入文件,存在则覆盖
@@ -122,12 +126,19 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
             delete require.cache[require.resolve(jspath)];
         }
         const Module = require(jspath);
-        App = Module.App;
+        App = Module.App; //
+        // 兼容1.2.7版本之前构建的.ssr缓存入口文件
+        if (!App) {
+            App = Module.default;
+            Logger.warn(
+                `SSR: 请手动删除项目根目录下的.ssr缓存目录后重新启动，否则layout将不会正常工作。`
+            );
+        }
         Entry = Module.default;
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
-            `SSR: ${page}Please check whether there are APIs in the code that the server does not support when rendering,
+            `SSR: ${page} import failed. Please check whether there are APIs in the code that the server does not support when rendering,
              such as window, locaction, navigator, etc`
         );
         Logger.error(error.stack);
@@ -150,7 +161,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
             );
         } catch (error) {
             ctx[SSRKEY].options.ssr = false;
-            Logger.warn('SSR:服务端渲染异常，降级使用客户端渲染！' + error.stack);
+            Logger.warn('SSR: 服务端渲染异常，降级使用客户端渲染！' + error.stack);
         }
     }
     if (context.url) {

@@ -1,7 +1,7 @@
 {
-	"name": "@srejs/webpack",
+	"name": "@srejs/vue-webpack",
 	"version": "1.2.7",
-	"description": "@srejs/react是一个轻量级服务端渲染骨架工具，为koa社区的nodejs开发框架提供具有服务端渲染能力的工具包，使得类似umajs类的web开发框架可以更方便实现前后端同构的服务端渲染能力。特点：轻量级，模板式调用页面进行服务端渲染，不限制后端路由。",
+	"description": "srejs vue技术栈webpack配置工具包",
 	"main": "lib/index.js",
 	"directories": {
 		"lib": "lib"
@@ -13,9 +13,9 @@
 	],
 	"keywords": [
 		"ssr",
-		"react",
-		"@umajs/plugin-react-ssr",
-		"umajs-react-ssr",
+		"vue",
+		"@umajs/plugin-vue-ssr",
+		"umajs-vue-ssr",
 		"@srejs"
 	],
 	"scripts": {
@@ -42,7 +42,6 @@
 		"@babel/plugin-transform-modules-commonjs": "^7.14.5",
 		"@babel/plugin-transform-runtime": "^7.14.5",
 		"@babel/preset-env": "^7.14.5",
-		"@babel/preset-react": "^7.14.5",
 		"@babel/preset-typescript": "^7.12.1",
 		"@babel/runtime": "^7.7.7",
 		"@srejs/common": "^1.2.7",

@@ -13,7 +13,7 @@ import {
     VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
     getVueEntryList,
     WebpackVue as webPack
-} from '@srejs/webpack';
+} from '@srejs/vue-webpack';
 
 /**
  * 写入文件,存在则覆盖
@@ -123,7 +123,7 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     } catch (error) {
         // eslint-disable-next-line no-console
         Logger.error(
-            `SSR: ${page}Please check whether there are APIs in the code that the server does not support when rendering,
+            `SSR: ${page} import failed. Please check whether there are APIs in the code that the server does not support when rendering,
              such as window, locaction, navigator, etc`
         );
         Logger.error(error.stack);

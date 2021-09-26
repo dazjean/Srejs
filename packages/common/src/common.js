@@ -1,4 +1,4 @@
-import { getCoreConfig, setCoreConfig } from './loadConfig';
+import { getCoreConfig, setCoreConfig } from './config';
 
 export const isDev = () => {
     const NODE_ENV = (process.env && process.env.NODE_ENV) || 'development';
