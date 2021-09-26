@@ -7,9 +7,9 @@
     "publish": "lerna publish",
     "watch":"lerna run watch",
     "postinstall": "npm run lint && npx checker-init && npm run init && npm run linkReact && npm run linkReactDom && npm run linkReactRouter && cd packages/app && npm run link",
-    "linkReact": "cd packages/core-react/node_modules/react && yarn link",
-    "linkReactDom": "cd packages/core-react/node_modules/react-dom && yarn link",
-    "linkReactRouter": "cd packages/core-react/node_modules/react-router-dom && yarn link",
+    "linkReact": "cd packages/react/node_modules/react && yarn link",
+    "linkReactDom": "cd packages/react/node_modules/react-dom && yarn link",
+    "linkReactRouter": "cd packages/react/node_modules/react-router-dom && yarn link",
     "lint": "eslint packages/*/src --fix"
   },
   "devDependencies": {
