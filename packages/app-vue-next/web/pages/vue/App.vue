@@ -1,8 +1,8 @@
 <template>
-  <div id = "app">
+  <div id = "home">
     <img :src="imgUrl" alt="">
     <br>
-      -------服务端初始化数据1-------
+      -------服务端初始化数据-------
       <h1>{{title}}</h1>
       <p> {{ say }}</p>
       <p> {{ msg }}</p>
@@ -32,17 +32,27 @@
   import  './index.less';
   import styles from './index.module.less';
   import imgUrl from "@/images/srejs.png";
+  import {useStore} from 'vuex';
+  import {computed} from 'vue';
   export default {
     name: 'home',
     props:['title'],
-    data () {
-		return {
-			'message' : 'hello word!!!',
-      styles,
-      'say':this.$store.state.say,
-      'msg':this.$store.state.msg,
-      imgUrl
-		}
+    setup () {
+            const store = useStore();
+            let say = computed(() => store.state.say);
+            let msg = computed(() => store.state.msg);
+        return {
+          message : 'hello word!!!',
+          styles,
+          say,
+          msg,
+          imgUrl
+      }
+    },
+    async asyncData({ store, route }) {
+      store.state.msg = '来自asyncData的数据'
+      // 触发 action 后，会返回 Promise
+      // return store.dispatch('fetchItem', route.params.id)
     },
   }
 </script>

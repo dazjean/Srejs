@@ -10,9 +10,6 @@ export const setOptions = (options) => {
     return setCoreConfig(coreOptions);
 };
 export const getOptions = (name) => {
-    let options = null;
-    return (() => {
-        options = options || getCoreConfig();
-        return options[name] || null;
-    })();
+    const options = getCoreConfig();
+    return options[name] || null;
 };

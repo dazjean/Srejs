@@ -10,6 +10,9 @@
     "linkReact": "cd packages/react/node_modules/react && yarn link",
     "linkReactDom": "cd packages/react/node_modules/react-dom && yarn link",
     "linkReactRouter": "cd packages/react/node_modules/react-router-dom && yarn link",
+    "linkVue": "cd packages/app-vue-next/node_modules/vue && yarn link",
+    "linkVuex": "cd packages/app-vue-next/node_modules/vuex && yarn link",
+    "linkVueRouter": "cd packages/app-vue-next/node_modules/vue-router && yarn link",
     "lint": "eslint packages/*/src --fix"
   },
   "devDependencies": {

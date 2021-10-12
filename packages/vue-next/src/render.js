@@ -1,11 +1,11 @@
 import fs from 'fs';
-import { createRenderer } from 'vue-server-renderer';
+import { renderToString } from '@vue/server-renderer';
 import serialize from 'serialize-javascript';
 import {
     VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
     getVueEntryList,
     WebpackVue as webPack
-} from '@srejs/vue-webpack';
+} from '@srejs/vue-next-webpack';
 import common, {
     clientDir,
     serverDir,
@@ -120,7 +120,7 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     if (ssr) {
         try {
             const App = await createApp(context);
-            Html = await renderTostring(App, context, page);
+            Html = await renderTostringVueNext(App, context, page);
         } catch (error) {
             ctx[SSRKEY].options.ssr = false;
             context.ssrData = {
@@ -152,26 +152,20 @@ const readPageString = async (page, context) => {
 };
 
 /**
- * vue2.0 服务端渲染renderToString解析DOM返回字符串
+ * vue3.0 服务端渲染解析DOM
  * @param {*} App
  * @param {*} context
  * @param {*} page
  * @returns
  */
-const renderTostring = async (App, context, page) => {
-    const template = await readPageString(page, context);
-    const renderer = createRenderer({
-        template
-    });
-    return new Promise((resove, reject) => {
-        renderer.renderToString(App, context, (err, html) => {
-            if (err) {
-                reject(err);
-                return;
-            }
-            resove(html);
-        });
-    });
+const renderTostringVueNext = async (App, context, page) => {
+    const { rootNode } = context.ssrData.options;
+
+    const html = await readPageString(page, context);
+    const appContent = await renderToString(App);
+    console.log(1, appContent, App);
+    html = html.toString().replace(`<div id="${rootNode}">`, `<div id="app">${appContent}`);
+    return html;
 };
 
 /**
@@ -189,6 +183,7 @@ const injectScriptInitProps = (temp, context) => {
     }
     const data = Object.assign({}, context);
     const ssrData = data.ssrData;
+    const initState = data.state;
     delete data.state;
     delete data.ssrData;
     delete context.ssrData;
@@ -197,6 +192,9 @@ const injectScriptInitProps = (temp, context) => {
     return (
         contents[0] +
         '<!--vue-ssr-outlet-->' +
+        '<script>window.__INITIAL_STATE__=' +
+        serialize(initState, { isJSON: true }) +
+        '</script>' +
         '<script>window.__SSR_DATA__=' +
         serialize(ssrData, { isJSON: true }) +
         '</script>' +
