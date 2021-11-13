@@ -1,11 +1,13 @@
 //sass style
 //-------------------------------                     
+@use "sass:math";
+
 $baseFontSize:      32px !default;
 
 
 // pixels to rems 
 @function pxToRem($px) {
-    @return $px / $baseFontSize * 1rem;
+    @return math.div($px, $baseFontSize) * 1rem;
 }
 html,body,#app{
     font-size: 16px;

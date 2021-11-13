@@ -135,14 +135,12 @@ a
     font-size: 36px;
   }
 </style>
-
 <style scoped>
 .scoped {
   color: red;
   font-size: 36px;
 }
 </style>
-
 <style  module>
 .red {
   color: red;

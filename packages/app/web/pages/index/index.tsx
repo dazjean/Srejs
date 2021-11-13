@@ -2,17 +2,22 @@ import './index.scss';
 import React from 'react';
 import srejsLogo from '@/images/srejs.png';
 const commonjsLogo = require('@/images/srejs.png').default;
+import { testTreeSharkingA } from './fool';
 type typeProps = {
-    title: string,
-    userTitle: string
+    title: string;
+    userTitle: string;
 };
 const Index = (props: typeProps) => {
     const { title, userTitle } = props;
+    testTreeSharkingA();
     return (
         <div className="home" style={{ textAlign: 'center' }}>
             <br />
             <br />
-            <p className="title">{title}{userTitle}</p>
+            <p className="title">
+                {title}
+                {userTitle}
+            </p>
             <ul>
                 <li>
                     <a href="/detail/1">1.动态路由</a>
@@ -44,20 +49,19 @@ const Index = (props: typeProps) => {
             </span>
         </div>
     );
-}
+};
 
-function timeout () {
+function timeout() {
     return new Promise((reslove) => {
         setTimeout(() => {
             reslove({
                 userTitle: '列表'
-            })
-        }, 500)
-    })
+            });
+        }, 500);
+    });
 }
 
 Index.getInitialProps = async () => {
-    return await timeout()
-}
-
-export default Index
+    return await timeout();
+};
+export default Index;
