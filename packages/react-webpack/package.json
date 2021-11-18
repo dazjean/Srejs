@@ -59,7 +59,6 @@
 		"less": "^4.1.1",
 		"less-loader": "^4.0.5",
 		"mini-css-extract-plugin": "^0.9.0",
-		"ora": "^5.4.1",
 		"postcss-loader": "^4.0.4",
 		"react-hot-loader": "^4.12.20",
 		"sass": "^1.39.2",

@@ -1,5 +1,6 @@
 import Koa from 'koa';
 import srejs from '@srejs/vue-next';
+
 const app = new Koa();
 const Sre = new srejs(app, process.env.NODE_ENV != 'production', false, { version: '3' });
 app.use(async (ctx, next) => {
@@ -25,7 +26,7 @@ app.use(async (ctx, next) => {
             ctx,
             'index',
             {
-                title: 'Vue-router',
+                title: 'Vue-Router',
                 keywords: 'srejs vue ssr',
                 description: '简单好用的服务端渲染引擎工具！',
                 home: '这是home页',

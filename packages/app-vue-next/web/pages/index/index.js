@@ -14,7 +14,7 @@ const createHistory = isServer ? createMemoryHistory : createWebHistory;
 export default {
     App,
     Router: {
-        history: createHistory(),
+        history: createHistory('/index/'),
         routes: [
             { path: '/about', props: true, component: About },
             { path: '/home', props: true, component: Home },

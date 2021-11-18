@@ -26,6 +26,7 @@
 		"srejs": "./bin/index.js"
 	},
 	"scripts": {
+		"link": "yarn link vue",
 		"build": "babel src  --out-dir lib  --copy-files",
 		"start": "babel src --watch  --out-dir lib  --source-maps inline --copy-files",
 		"watch": "babel src --watch  --out-dir lib  --source-maps inline --copy-files",
@@ -58,8 +59,7 @@
 		"@babel/core": "^7.14.6",
 		"@babel/plugin-transform-modules-commonjs": "^7.14.5",
 		"@babel/plugin-transform-runtime": "^7.14.5",
-		"@babel/preset-env": "^7.14.5",
-		"vue": "^3.2.19"
+		"@babel/preset-env": "^7.14.5"
 	},
 	"gitHead": "de066123d8736d4a989485a0b5fb30712c5c1607"
 }

@@ -1,9 +1,8 @@
 import path from 'path';
 import fs from 'fs';
-import { getEntryDir, getRootDir } from '@srejs/common';
+import { getEntryDir, getRootDir, isDev } from '@srejs/common';
 import HTMLWebpackPlugin from 'html-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
-import AutoDllPlugin from 'autodll-webpack-plugin';
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer';
 import { VueLoaderPlugin } from 'vue-loader';
 
@@ -43,7 +42,7 @@ function getPlugin(entryObj, isServer) {
                 template: template_local, //html模板路径
                 favicon: fs.existsSync(favicon_local) ? favicon_local : '',
                 title: entryName,
-                inject: true, //js插入的位置，true/'head'/'body'/false
+                inject: 'body', //js插入的位置，true/'head'/'body'/false
                 scriptLoading: 'defer',
                 hash: false, //为静态资源生成hash值
                 chunks: [pathname], //需要引入的chunk，不配置就会引入所有页面的资源
@@ -61,26 +60,15 @@ function getPlugin(entryObj, isServer) {
             };
             webpackPlugin.push(new HTMLWebpackPlugin(conf));
         });
-    if (!isServer) {
-        // webpackPlugin.push(
-        //     new AutoDllPlugin({
-        //         inject: true,
-        //         filename: '[name]_[hash].js',
-        //         entry: {
-        //             vendor: ['vue', 'vue-router', 'vuex']
-        //         }
-        //     })
-        // );
-        // ?为啥要删掉来的？
-    }
-    webpackPlugin.push(
-        new MiniCssExtractPlugin({
-            filename: '[name].css' + (!isServer ? '?v=[hash:8]' : '')
-        })
-    );
     webpackPlugin.push(new VueLoaderPlugin());
+    !isDev() &&
+        webpackPlugin.push(
+            new MiniCssExtractPlugin({
+                filename: '[name].css' + (!isServer ? '?v=[hash:8]' : '')
+            })
+        );
     if (process.argv.indexOf('--analyzer') > -1 && !isServer) {
-        webpackPlugin.push(new BundleAnalyzerPlugin());
+        !isDev() && webpackPlugin.push(new BundleAnalyzerPlugin());
     }
     return webpackPlugin;
 }

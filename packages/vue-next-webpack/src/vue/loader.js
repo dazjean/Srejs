@@ -45,6 +45,11 @@ const getCssModuleLoader = () => {
     };
 };
 
+/**
+ * 开发模式采用vue-style-loader 以开启css热加载
+ * 生产模式mini-css-extract-plugin提取css为单独文件
+ * @returns
+ */
 const getCommonLoader = () => {
     const commonDevLoader = ['vue-style-loader'];
     const commonProdLoader = [MiniCssExtractPlugin.loader];
@@ -93,7 +98,6 @@ export const loaderRules = (isServer = false) => {
                     presets: [['@babel/preset-env', envOptions], '@babel/preset-typescript'],
                     plugins: [
                         ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
-                        '@babel/plugin-transform-modules-commonjs',
                         '@babel/plugin-proposal-class-properties'
                     ]
                 }

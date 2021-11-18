@@ -41,13 +41,13 @@
             const store = useStore();
             let say = computed(() => store.state.say);
             let msg = computed(() => store.state.msg);
-        return {
-          message : 'hello word!!!',
-          styles,
-          say,
-          msg,
-          imgUrl
-      }
+            return {
+              message : 'setup 定义响应式数据message',
+              styles,
+              say,
+              msg,
+              imgUrl
+            }
     },
     async asyncData({ store, route }) {
       store.state.msg = '来自asyncData的数据'

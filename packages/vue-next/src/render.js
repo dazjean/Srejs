@@ -161,10 +161,11 @@ const readPageString = async (page, context) => {
 const renderTostringVueNext = async (App, context, page) => {
     const { rootNode } = context.ssrData.options;
 
-    const html = await readPageString(page, context);
-    const appContent = await renderToString(App);
-    console.log(1, appContent, App);
-    html = html.toString().replace(`<div id="${rootNode}">`, `<div id="app">${appContent}`);
+    let html = await readPageString(page, context);
+    const appContent = await renderToString(App).catch((e) => {
+        console.log(e.stack);
+    });
+    html = html.toString().replace(`<div id="${rootNode}">`, `<div id="${rootNode}">${appContent}`);
     return html;
 };
 
@@ -175,11 +176,9 @@ const renderTostringVueNext = async (App, context, page) => {
  * @returns
  */
 const injectScriptInitProps = (temp, context) => {
-    const contents = temp.split('<!--vue-ssr-outlet-->');
+    const contents = temp.split('</body>');
     if (contents.length == 1) {
-        console.error(
-            'SSR:警告！自定义html文件中请在body下追加<!--vue-ssr-outlet-->占位符！https://ssr.vuejs.org/zh/guide/#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E6%A8%A1%E6%9D%BF'
-        );
+        console.error('SSR:警告！vue3.0自定义html文件中必须包含</body>闭合标签。');
     }
     const data = Object.assign({}, context);
     const ssrData = data.ssrData;
@@ -191,13 +190,13 @@ const injectScriptInitProps = (temp, context) => {
 
     return (
         contents[0] +
-        '<!--vue-ssr-outlet-->' +
         '<script>window.__INITIAL_STATE__=' +
         serialize(initState, { isJSON: true }) +
         '</script>' +
         '<script>window.__SSR_DATA__=' +
         serialize(ssrData, { isJSON: true }) +
         '</script>' +
+        '</body>' +
         contents[1]
     );
 };

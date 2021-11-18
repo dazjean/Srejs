@@ -65,6 +65,7 @@ if (!isServer) {
         }
     });
     router.beforeResolve((to, from) => {
+        isDev && console.log('router.beforeResolve...');
         // vue-router V4 remove router.getMatchedComponents();
         const matched = to.matched.flatMap((record) => Object.values(record.components));
         const prevMatched = from.matched.flatMap((record) => Object.values(record.components));
@@ -80,7 +81,11 @@ if (!isServer) {
         asyncDataHooks.map((hook) => hook({ store, route: to }));
         return true;
     });
-    app.mount(`#${rootNode}`);
+    router.isReady().then(() => {
+        isDev && console.log('router.isReady...');
+        app.mount(`#${rootNode}`);
+    });
+    // app.mount(`#${rootNode}`);
 }
 export default (context) => {
     return new Promise((resolve, reject) => {
@@ -95,36 +100,39 @@ export default (context) => {
         }
         const { options } = router;
         const { base } = options.history;
-        // 服务端路由url注册到vue-router时 动态计算base属性。
+        if (options.base) {
+            return reject(
+                `Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递.请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
+            );
+        }
         if (base) {
             const validBase = new RegExp('^/.*/$').test(base);
             if (!validBase) {
-                return reject({
-                    error: '应用的基路径名称前后应该包括路径斜杠标识。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"'
-                });
+                return reject(
+                    `应用的基路径格式错误。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"。Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递。请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
+                );
             }
         }
         //入口文件中不包含router配置时，框架默认注册了一个router配置 base为'/';  在服务端无论路由链接为多少都将匹配根路径/ ，在客户端则需要将当前url设置为客户端的base根路径
         if (!Router) {
             url = '/';
-        } else {
+        } else if (base) {
             url = url.replace(base, '/');
         }
-        const { fullPath } = router.resolve(url).route;
+        const { fullPath } = router.resolve(url);
+        isDev && console.log('Server rendering route matching path:', fullPath);
         router.push(fullPath);
         router
             .isReady()
             .then(() => {
-                const matchedComponents = router.getMatchedComponents();
+                // matched routes
+                const matchedComponents = router.currentRoute.value.matched.flatMap((record) =>
+                    Object.values(record.components)
+                );
                 // no matched routes
                 if (!matchedComponents.length) {
                     return reject({ code: 404 });
                 }
-                // vue-router V4 remove router.getMatchedComponents();
-                router.currentRoute.value.matched.flatMap((record) =>
-                    console.log(Object.values(record.components))
-                );
-                // todo
                 Promise.all(
                     matchedComponents.map(
                         ({ asyncData }) =>
@@ -136,7 +144,7 @@ export default (context) => {
                     )
                 )
                     .then(() => {
-                        isDev && console.log(`data pre-fetch: ${Date.now() - s}ms`);
+                        isDev && console.log(`data pre-fetch asyncData: ${Date.now() - s}ms`);
                         context.state = store.state;
                         resolve(app);
                     })

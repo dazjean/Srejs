@@ -1,10 +1,8 @@
 import webpack from 'webpack';
-import { Logger } from '@srejs/common';
+import { Logger, spinner } from '@srejs/common';
 import { getProconfig } from './prod';
 import { getDevConfig } from './dev';
 import { getServerconfig } from './server';
-import { spinner } from './../spinnerProcess';
-
 export class Webpack {
     /**
      *
