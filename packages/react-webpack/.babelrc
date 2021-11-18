@@ -17,5 +17,5 @@
       "importInterop":"node"
     }]
   ],
-  "ignore":["src/vue/tempEntry.js","src/react/tempEntry.js"]
+  "ignore":["src/react/app.js"]
 }

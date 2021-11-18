@@ -67,17 +67,17 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "vue dev",
+            "name": "vue3 start",
             "runtimeExecutable": "npm",
             "runtimeArgs": [
                 "run-script",
-                "dev"
+                "start"
             ],
             "port": 9229,
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "cwd": "${workspaceRoot}/packages/app-vue",
+            "cwd": "${workspaceRoot}/packages/app-vue-next",
         },
     ]
 }

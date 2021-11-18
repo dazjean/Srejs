@@ -26,7 +26,7 @@ function createEntry(page) {
     try {
         const rootDir = getOptions('rootDir');
         const rootNode = getOptions('rootNode');
-        let data = fs.readFileSync(path.join(__dirname, './', 'tempEntry.js'), 'utf8');
+        let data = fs.readFileSync(path.join(__dirname, './', 'app.js'), 'utf8');
         let entryName = false;
         const entrysFileList = [
             'index.js',

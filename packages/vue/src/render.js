@@ -1,39 +1,21 @@
 import fs from 'fs';
 import { createRenderer } from 'vue-server-renderer';
-import common, {
-    clientDir,
-    serverDir,
-    cacheDir,
-    SSRKEY,
-    Logger,
-    filterXssByJson
-} from '@srejs/common';
 import serialize from 'serialize-javascript';
 import {
     VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
     getVueEntryList,
     WebpackVue as webPack
 } from '@srejs/vue-webpack';
-
-/**
- * 写入文件,存在则覆盖
- * @param {*} path 文件名称
- * @param {*} Content 内容
- */
-const writeFile = async (path, Content) => {
-    return new Promise((resolve) => {
-        fs.writeFile(path, Content, { encoding: 'utf8' }, function (err) {
-            if (err) {
-                resolve(false);
-            } else {
-                resolve(true);
-                Logger.info(
-                    `SSR:Page component ${path} successfully writes the server rendering cache`
-                );
-            }
-        });
-    });
-};
+import common, {
+    clientDir,
+    serverDir,
+    cacheDir,
+    SSRKEY,
+    Logger,
+    filterXssByJson,
+    writeCacheSsr,
+    renderDocumentHead
+} from '@srejs/common';
 
 /**
  * 用Promise封装异步读取文件方法
@@ -68,22 +50,11 @@ export const readPageHtml = (page) => {
     });
 };
 
-const writeFileHander = (cacheDir, cacheUrl, Content) => {
-    fs.exists(cacheUrl, (exists) => {
-        if (exists) {
-            writeFile(cacheUrl, Content);
-        } else {
-            fs.mkdir(cacheDir, { recursive: true }, (err) => {
-                if (err) {
-                    Logger.error(`SSR:${err.stack}`);
-                } else {
-                    writeFile(cacheUrl, Content);
-                }
-            });
-        }
-    });
-};
-
+/**
+ *  生成环境编译代码检查
+ * @param {*} page
+ * @returns
+ */
 export const checkModules = async (page) => {
     let jspath = `${serverDir}/${page}/${page}.js`;
     let jsClientdir = `${clientDir}/${page}`;
@@ -106,7 +77,8 @@ export const checkModules = async (page) => {
  */
 export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     let context = { url: ctx.req.url };
-    var { page, query } = ctx[SSRKEY];
+    let { page, query, path, options } = ctx[SSRKEY];
+
     query = filterXssByJson(query);
     if (!getVueEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
@@ -140,9 +112,9 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     }
     context.ssrData = {
         page,
-        path: ctx[SSRKEY].path,
+        path,
         query,
-        options: ctx[SSRKEY].options
+        options
     };
     let Html = '';
     if (ssr) {
@@ -151,6 +123,12 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
             Html = await renderTostring(App, context, page);
         } catch (error) {
             ctx[SSRKEY].options.ssr = false;
+            context.ssrData = {
+                page,
+                path,
+                query,
+                options
+            }; // 修正数据
             Logger.warn('SSR:服务端渲染异常，降级使用客户端渲染！' + JSON.stringify(error));
             Html = await readPageString(page, context);
         }
@@ -162,11 +140,24 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     return document;
 };
 
+/**
+ * 客户端渲染时直接读取HTML注入变量
+ * @param {*} page
+ * @param {*} context
+ * @returns
+ */
 const readPageString = async (page, context) => {
     let temp = await readPageHtml(page);
     return injectScriptInitProps(temp, context);
 };
 
+/**
+ * vue2.0 服务端渲染renderToString解析DOM返回字符串
+ * @param {*} App
+ * @param {*} context
+ * @param {*} page
+ * @returns
+ */
 const renderTostring = async (App, context, page) => {
     const template = await readPageString(page, context);
     const renderer = createRenderer({
@@ -183,6 +174,12 @@ const renderTostring = async (App, context, page) => {
     });
 };
 
+/**
+ * 在HTML中注入__SSR_DATA__
+ * @param {*} temp
+ * @param {*} context
+ * @returns
+ */
 const injectScriptInitProps = (temp, context) => {
     const contents = temp.split('<!--vue-ssr-outlet-->');
     if (contents.length == 1) {
@@ -234,43 +231,11 @@ export const render = async (ctx, initProps) => {
                 // ssr缓存模式,首次执行
                 let document = await renderServer(ctx, initProps, true);
                 process.nextTick(() => {
-                    writeFileHander(ssrCacheDir, ssrCacheUrl, document); //异步写入服务器缓存目录
+                    writeCacheSsr(ssrCacheDir, ssrCacheUrl, document); //异步写入服务器缓存目录
                 });
 
                 return resolve(document);
             }
         }
     });
-};
-/**
- * 从initprops中读取title,keyworkds desription写入到html中
- * @param {*} html
- * @param {*} initProps
- */
-const renderDocumentHead = (document, initProps) => {
-    let resStr = '';
-    ['title', 'keywords', 'description'].forEach((key) => {
-        if (initProps[key]) {
-            if (key == 'title') {
-                resStr = `<title>${initProps[key]}</title>`;
-                document = document.replace(/<title>.*<\/title>/, resStr);
-            } else {
-                let reg = new RegExp(
-                    `<meta\\s+name=[\\"']${key}[\\"'].*?content=[\\"']([\\S\\s]*?)[\\"'].*?[\\/]?>`
-                );
-                resStr = `<meta name="${key}" content="${initProps[key]}">`;
-                if (document.match(reg)) {
-                    //replace
-                    document = document.replace(reg, resStr);
-                } else {
-                    //add
-                    document = document.replace(
-                        '<title>',
-                        `<meta name="${key}" content="${initProps[key]}">\r\n    <title>`
-                    );
-                }
-            }
-        }
-    });
-    return document;
 };
