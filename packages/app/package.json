@@ -10,7 +10,11 @@
     "start": "node  start.js",
     "dev": "srejs dev"
   },
-  "sideEffects": ["*.less", "*.scss", "*.css"],
+  "sideEffects": [
+    "*.less",
+    "*.scss",
+    "*.css"
+  ],
   "dependencies": {
     "@babel/core": "^7.14.0",
     "@babel/plugin-transform-modules-commonjs": "^7.7.5",

@@ -37,10 +37,20 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
         optimization: {
             usedExports: true,
             minimize: common.isDev() ? false : true,
+            /**minimizer 提取css和js压缩 */
             minimizer: [
                 new CssMinimizerPlugin(),
                 new TerserPlugin({ extractComments: false, parallel: true, cache: true })
-            ]
+            ],
+            splitChunks: {
+                cacheGroups: {
+                    vendors: {
+                        test: /[\\/]node_modules[\\/](react|react-dom|react-router-dom)[\\/]/,
+                        name: 'vendor',
+                        chunks: 'all'
+                    }
+                }
+            }
         },
         entry: {
             ...tempObj
