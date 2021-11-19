@@ -1,5 +1,5 @@
 {
-	"name": "@srejs/vue-next-webpack",
+	"name": "@srejs/vue3-webpack",
 	"version": "1.2.8",
 	"description": "srejs vue技术栈webpack配置工具包",
 	"main": "lib/index.js",

@@ -5,7 +5,7 @@ import {
     VueDevMiddlewareFileSystem as DevMiddlewareFileSystem,
     getVueEntryList,
     WebpackVue as webPack
-} from '@srejs/vue-next-webpack';
+} from '@srejs/vue3-webpack';
 import common, {
     clientDir,
     serverDir,

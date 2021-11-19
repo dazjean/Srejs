@@ -1,34 +1,41 @@
 # 快速开始
 
 ## 安装下载和配置
+
 为你的项目安装`srejs` 和依赖使用的`react`,`react-dom`,`react-router-dom`的版本(不安装默认采用框架内置版本)
-```
+
+```shell
 yarn add @srejs/react react react-dom react-router-dom --save
 ```
 
 打开 `package.json` 文件并添加 `scripts` 配置段：
-```
+
+```shell
 "scripts": {
     "start":'node app.js',
     "build":"npx ssr build",
     "analyzer": "npx ssr analyzer",
 },
 ```
+
 - `start` 启动你的node项目
 - `build` 运行`npx ssr build`构建用于生产环境的应用程序，Srejs为多项目工程目录结构，可通过指定页面标识单独构建或者启动特定页面，命令为：`npm run build xxx`
 - `analyzer` 运行`npx ssr analyzer` 用于分析页面组件打包依赖分析 可通过 `npm run analyzer xxx` xxx为页面组件标识，可指定分析某个页面组件打包结果
 
-## 创建目录结构
+## 目录结构
+
 框架默认配置属性`rootDir`默认为根目录下`web`，pages下是页面组件入口，比如`list`页面，主入口文件为`list/index.tsx`
-```
-└── web
+
+```shell
+── web
     └── pages
         └── list
             ├── index.tsx
             └── index.scss
 ```
 
-## 创建页面组件(index.tsx)
+## 页面组件
+
 ```ts
 import React from 'react';
 type typeProps = {
@@ -52,6 +59,7 @@ export default function (props:typeProps){
     )
 }
 ```
+
 ## 服务端路由
 
 ```js
@@ -80,6 +88,7 @@ app.listen(8001);
 ```
 
 ## 启动
+
 ```shell
 node app.js
 ```

@@ -1,5 +1,5 @@
 import Koa from 'koa';
-import srejs from '@srejs/vue-next';
+import srejs from '@srejs/vue3';
 
 const app = new Koa();
 const Sre = new srejs(app, process.env.NODE_ENV != 'production', false, { version: '3' });

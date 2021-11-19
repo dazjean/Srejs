@@ -77,7 +77,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "cwd": "${workspaceRoot}/packages/app-vue-next",
+            "cwd": "${workspaceRoot}/packages/app-vue3",
         },
     ]
 }

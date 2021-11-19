@@ -1,8 +1,4 @@
-import {
-    getVueDevConfig as getDevConfig,
-    Webpack,
-    WebpackDevServer
-} from '@srejs/vue-next-webpack';
+import { getVueDevConfig as getDevConfig, Webpack, WebpackDevServer } from '@srejs/vue3-webpack';
 export const dev = (page = true) => {
     let webpackConfig = getDevConfig(page);
     const compiler = Webpack(webpackConfig);

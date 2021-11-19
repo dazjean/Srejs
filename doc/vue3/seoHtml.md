@@ -1,4 +1,5 @@
 # SEO和HTML
+
 在`initProps`中通过,默认接收`title,keywords,description`作为页面标题，关键字，网页描述填充字段。
 
 ```js
@@ -26,7 +27,7 @@ Sre.render(ctx,'list',{title:'xxx',keywords:'xxx',description:'xxxx'});
     <!-- 引入第三方组件库样式 -->
 </head>
 <body>
-   <!--vue-ssr-outlet-->
+  <div id='app'></div>
 </body>
 <!-- 引入第三方sdk脚本 -->
 </html>

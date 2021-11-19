@@ -18,27 +18,32 @@
 > Server rendering engine 缩写为 Srejs, 即服务器端渲染引擎，为各个node开发框架提供最简单，最灵活的React，Vue轻量级服务端渲染骨架工具，支持在任何koa框架中使用。
 
 ## Development
+
 ```shell
 yarn install
-cd packages/app && npm start   // 开发调试react
-cd packages/app-vue && npm start // 开发调试vue
+cd packages/app && npm start   // 开发调试React
+cd packages/app-vue && npm start // 开发调试Vue2.0
+cd packages/app-vue3 && npm start // 开发调试Vue3.0
 ```
 
 ## Feature
-- 🚀 支持SSR和CSR模式切换
-- 🚀 数据管理支持redux,useContext+useReducer
+
+- 🚀 支持SSR和CSR
+- 🚀 状态管理（redux/vuex）
 - 🚀 服务端数据初始化
-- 🚀 搭配react-router使用，不局限服务端路由，可动态修改baseName
+- 🚀 嵌套路由（React-Router/Vue-Router）
 - 🚀 自定义HTML和SEO
-- 🚀 vue2.0
-- 🚀 vuex
-- 🚀 vue-router
 - 🚀 单页面应用和多页面应用
 - 🚀 页面级构建更新
-- layout
-- vue3.0+vite
+- 🚀 layout(@srejs/react支持)
+- 🚀 React16+
+- 🚀 Vue2.0
+- 🚀 Vue3.0
 
-## Client
+## 使用
+
+### Client
+
 ```ts
 //web/pages/index/index.ts
 import React from 'react'
@@ -48,7 +53,8 @@ export default function (props:any) {
 }
 ```
 
-## Server
+### Server
+
 ```js
 import koa from 'koa';
 import srejs from '@srejs/react';
@@ -62,8 +68,22 @@ app.use((ctx,next)=>{
 app.listen(8001);
 ```
 
-## Quikstart
-- [react](https://github.com/dazjean/Srejs/tree/main/packages/core-react)
-- [vue](https://github.com/dazjean/Srejs/tree/main/packages/core-vue)
+### 编译
+
+打开 `package.json` 文件并添加 `scripts` 配置段：
+
+```shell
+"scripts": {
+    "build":"npx ssr build",
+    "analyzer": "npx ssr analyzer",
+},
+```
+
+## 快速开始
+
+- [React](https://github.com/dazjean/Srejs/tree/main/packages/react)
+- [Vue2.0](https://github.com/dazjean/Srejs/tree/main/packages/vue)
+- [Vue3.0](https://github.com/dazjean/Srejs/tree/main/packages/vue3)
+
 
 ## [MIT License](./LICENSE)

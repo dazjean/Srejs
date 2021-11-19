@@ -14,8 +14,7 @@ Sre.render(ctx,'list',{title:'xxx',keywords:'xxx',description:'xxxx','say':"hi!"
 
 ```vue
 <template>
- <!--vue2.0版本APP.vue必须要设置根元素-->
-  <div id ='app'>
+  <div>
     <h1>{{title}}</h1>
     <p>{{say}}</p>
   </div>
@@ -45,8 +44,7 @@ Sre.render(ctx,'list',{title:'xxx',keywords:'xxx',description:'xxxx',state:{
 
 ```vue
 <template>
- <!--vue2.0版本APP.vue必须要设置根元素-->
-  <div id ='app'>
+  <div>
     <h1>{{title}}</h1>
     <p>{{say}}</p>
   </div>

@@ -1,3 +1,5 @@
+# @srejs/react
+
 <div align="center">
   <img src="./../../doc/Srejs-react.png" width="300" />
 </div>
@@ -14,9 +16,10 @@
 </div>
 <br />
 
-> Server rendering engine 缩写为 Srejs, 即服务器端渲染引擎，为各个node开发框架提供最简单，最灵活，Vue轻量级服务端渲染骨架工具。 `Srejs`支持在`koa中间件`中使用，通过此能力我们可以对任何基于Koa的开发框架进行插件封装，比如`Umajs`,`egg`,`nest`,推荐使用[`@umajs/plugin-react-ssr`](https://github.com/Umajs/plugin-react-ssr#readme)提供的解决方案。
+> Server rendering engine 缩写为 Srejs, 即服务器端渲染引擎，为各个node开发框架提供最简单，最灵活，Vue轻量级服务端渲染骨架工具。 `Srejs`支持在`koa中间件`中使用，通过此能力我们可以对任何基于Koa的开发框架进行插件封装，比如`UMajs`,`egg`,`nest`,推荐使用[`@umajs/plugin-react-ssr`](https://github.com/Umajs/plugin-react-ssr#readme)提供的解决方案。
 
 ## Features
+
 - 🚀 支持SSR和CSR模式切换
 - 🚀 数据管理支持redux,useContext+useReducer
 - 🚀 支持服务端直出Props
@@ -26,6 +29,7 @@
 - webpack5.0
 
 ## 更多说明
+
 - [快速开始](https://github.com/dazjean/Srejs/tree/mian/doc/react/quickStart.md)
 - [Srejs实例](https://github.com/dazjean/Srejs/tree/mian/doc/vue/srejs.md)
 - [页面组件和路由](https://github.com/dazjean/Srejs/tree/mian/doc/react/page-router.md)
@@ -34,11 +38,13 @@
 - [自定义html](https://github.com/dazjean/Srejs/tree/mian/doc/react/htmlTemplate.md)
 - [typescript](https://github.com/dazjean/Srejs/tree/mian/doc/react/typescript.md)
 
-## example
+## 示例
+
 - [uma-css-module](https://github.com/dazjean/Srejs/tree/mian/example/uma-css-module)
 - [uma-react-redux](https://github.com/dazjean/Srejs/tree/mian/example/uma-react-redux)
 - [uma-useContext-useReducer](https://github.com/dazjean/Srejs/tree/mian/example/uma-useContext-useReducer)
 
-## 谁在使用
- - [umajs-react-ssr](https://github.com/Umajs/umajs-react-ssr)
- - [plugin-react-ssr](https://github.com/Umajs/plugin-react-ssr)
+## 开发框架集成
+
+- [umajs-react-ssr](https://github.com/Umajs/umajs-react-ssr)
+- [plugin-react-ssr](https://github.com/Umajs/plugin-react-ssr)

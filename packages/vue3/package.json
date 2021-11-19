@@ -1,5 +1,5 @@
 {
-	"name": "@srejs/vue-next",
+	"name": "@srejs/vue3",
 	"version": "1.2.8",
 	"description": "@srejs/vue是一个轻量级服务端渲染骨架工具，为koa社区的nodejs开发框架提供具有服务端渲染能力的工具包，使得类似umajs类的web开发框架可以更方便实现前后端同构的服务端渲染能力。特点：轻量级，模板式调用页面进行服务端渲染，不限制后端路由。",
 	"main": "lib/index.js",
@@ -14,11 +14,13 @@
 	"keywords": [
 		"ssr",
 		"vue",
+		"vue3.0",
 		"@umajs/plugin-vue-ssr",
 		"umajs-vue-ssr",
+		"umajs-vue3-ssr",
 		"@srejs",
 		"nuxtjs",
-		"vuessr"
+		"vue ssr"
 	],
 	"bin": {
 		"ssr": "./bin/index.js",
@@ -48,7 +50,7 @@
 	"dependencies": {
 		"@vue/server-renderer":"3.2.19",
 		"@srejs/common": "^1.2.8",
-		"@srejs/vue-next-webpack": "^1.2.8",
+		"@srejs/vue3-webpack": "^1.2.8",
 		"etag": "^1.8.1",
 		"fresh": "^0.5.2",
 		"koa-send": "^5.0.0",

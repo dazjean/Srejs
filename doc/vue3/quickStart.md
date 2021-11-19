@@ -38,8 +38,7 @@ yarn add @srejs/vue vue vuex vue-router --save
 
 ```vue
 <template>
- <!--vue2.0版本APP.vue必须要设置根元素-->
-  <div id ='app'>
+  <div>
     <h1>{{msg}}</h1>
   </div>
 </template>

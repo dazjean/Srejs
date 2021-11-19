@@ -1,12 +1,12 @@
 import { fork } from 'child_process';
 import send from 'koa-send';
 import common, { clientDir, SSRKEY, parseQuery, Logger } from '@srejs/common';
-import { VueHotWebpack, getVueEntryList } from '@srejs/vue-next-webpack';
+import { VueHotWebpack, getVueEntryList } from '@srejs/vue3-webpack';
 import { sendHTML } from './send-html';
 import { render as VueRender } from './render';
 
 // 创建server端webpack构建进程监听文件变化
-var childWebpack = fork(require.resolve('@srejs/vue-next-webpack/lib/vue/index.js'));
+var childWebpack = fork(require.resolve('@srejs/vue3-webpack/lib/vue/index.js'));
 export default class Srejs {
     /**
      *

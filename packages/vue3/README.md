@@ -1,4 +1,4 @@
-# @srejs/vue
+# @srejs/vue3
 
 <div align="center">
   <img src="./../../doc/Srejs-vue.png" width="300" />
@@ -25,27 +25,27 @@
 - 🚀 支持服务端直出Props
 - 🚀 和vue-router使用，支持asyncData钩子函数获取数据。
 - 🚀 自定义HTML和动态设置页面title,keyworlds,discription
-- 🚀 vue3.0【请使用@srejs/vue3】
+- 🚀 vue3.0
 - 支持vue-meta
 - webpack5.0
 - vite
 
 ## 文档
 
-- [快速开始](https://github.com/dazjean/Srejs/tree/mian/doc/vue/quickStart.md)
-- [Srejs实例](https://github.com/dazjean/Srejs/tree/mian/doc/vue/srejs.md)
-- [数据获取](https://github.com/dazjean/Srejs/tree/mian/doc/vue/initState.md)
-- [内置CSS支持](https://github.com/dazjean/Srejs/tree/mian/doc/vue/suport-css.md)
-- [SEO&HTML](https://github.com/dazjean/Srejs/tree/mian/doc/vue/seoHtml.md)
-- [使用vuex](https://github.com/dazjean/Srejs/tree/mian/doc/vue/vuex.md)
-- [使用vue-router路由](https://github.com/dazjean/Srejs/tree/mian/doc/vue/vue-router.md)
+- [快速开始](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/quickStart.md)
+- [Srejs实例](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/srejs.md)
+- [数据获取](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/initState.md)
+- [内置CSS支持](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/suport-css.md)
+- [SEO&HTML](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/seoHtml.md)
+- [使用vuex](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/vuex.md)
+- [使用vue-router路由](https://github.com/dazjean/Srejs/tree/mian/doc/vue3/vue-router.md)
 
 ## 示例
 
-- [使用vuex](https://github.com/Umajs/umajs-vue-ssr/tree/main/web/pages/vuex)
-- [使用vue-router路由](https://github.com/Umajs/umajs-vue-ssr/tree/main/web/pages/router)
+- [使用vuex](https://github.com/Umajs/umajs-vue3-ssr/tree/main/web/pages/vuex)
+- [使用vue-router路由](https://github.com/Umajs/umajs-vue3-ssr/tree/main/web/pages/router)
 
 ## 开发框架集成
 
-- [umajs-react-ssr](https://github.com/Umajs/umajs-vue-ssr)
-- [plugin-react-ssr](https://github.com/Umajs/plugin-vue-ssr)
+- [umajs-react-ssr](https://github.com/Umajs/umajs-vue3-ssr)
+- [plugin-react-ssr](https://github.com/Umajs/plugin-vue3-ssr)

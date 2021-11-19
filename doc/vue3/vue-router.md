@@ -9,13 +9,14 @@ import App from './App.vue';
 import About from './about.vue';
 import Home from './home.vue';
 
+const isServer = typeof window === 'undefined';
+
+const createHistory = isServer ? createMemoryHistory : createWebHistory;
+
 export default {
     App,
     Router: {
-        mode: 'history',
-        fallback: false,
-        base: '/index/',
-        scrollBehavior: () => ({ y: 0 }),
+        history: createHistory('/index/'),
         routes: [
             { path: '/about', props: true, component: About },
             { path: '/home', props: true, component: Home },
@@ -24,8 +25,6 @@ export default {
     }
 };
 ```
-
-**注意：服务端渲染模式下不支持使用import动态导入组件方式进行路由懒加载**
 
 - 服务端路由
 
