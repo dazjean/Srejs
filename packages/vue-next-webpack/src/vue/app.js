@@ -105,19 +105,19 @@ export default (context) => {
                 `Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递.请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
             );
         }
-        if (base) {
-            const validBase = new RegExp('^/.*/$').test(base);
-            if (!validBase) {
-                return reject(
-                    `应用的基路径格式错误。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"。Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递。请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
-                );
-            }
-        }
+        // if (base) {
+        //     const validBase = new RegExp('^/.*/$').test(base);
+        //     if (!validBase) {
+        //         return reject(
+        //             `应用的基路径格式错误。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"。Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递。请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
+        //         );
+        //     }
+        // }
         //入口文件中不包含router配置时，框架默认注册了一个router配置 base为'/';  在服务端无论路由链接为多少都将匹配根路径/ ，在客户端则需要将当前url设置为客户端的base根路径
         if (!Router) {
             url = '/';
         } else if (base) {
-            url = url.replace(base, '/');
+            url = url.replace(base, '');
         }
         const { fullPath } = router.resolve(url);
         isDev && console.log('Server rendering route matching path:', fullPath);

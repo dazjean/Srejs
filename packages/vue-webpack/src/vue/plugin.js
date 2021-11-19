@@ -47,10 +47,10 @@ function getPlugin(entryObj, isServer) {
                 hash: false, //为静态资源生成hash值
                 chunks: [pathname], //需要引入的chunk，不配置就会引入所有页面的资源
                 minify: {
-                    minifyCSS: true,
-                    minifyJS: true,
-                    collapseWhitespace: true,
-                    keepClosingSlash: true,
+                    minifyCSS: isDev() ? false : true,
+                    minifyJS: isDev() ? false : true,
+                    collapseWhitespace: isDev() ? false : true,
+                    keepClosingSlash: isDev() ? false : true,
                     removeComments: false,
                     removeRedundantAttributes: true,
                     removeScriptTypeAttributes: true,
@@ -64,7 +64,7 @@ function getPlugin(entryObj, isServer) {
     !isDev() &&
         webpackPlugin.push(
             new MiniCssExtractPlugin({
-                filename: '[name].css' + (!isServer ? '?v=[hash:8]' : '')
+                filename: isServer ? '[name].css' : '[name]_[hash:8].css'
             })
         );
     if (process.argv.indexOf('--analyzer') > -1 && !isServer) {
