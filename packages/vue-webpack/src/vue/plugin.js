@@ -64,7 +64,7 @@ function getPlugin(entryObj, isServer) {
     !isDev() &&
         webpackPlugin.push(
             new MiniCssExtractPlugin({
-                filename: isServer ? '[name].css' : '[name]_[hash:8].css'
+                filename: isDev() || isServer ? '[name].css' : '[name]_[hash:8].css'
             })
         );
     if (process.argv.indexOf('--analyzer') > -1 && !isServer) {
