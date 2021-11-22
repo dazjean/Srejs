@@ -29,7 +29,7 @@
 		"url": "git@github.com:dazjean/srejs.git"
 	},
 	"publishConfig": {
-		"registry": "http://registry.npmjs.org",
+		"registry": "https://registry.npmjs.org",
 		"access": "public"
 	},
 	"bugs": {
@@ -75,5 +75,5 @@
 	"devDependencies": {
 		"@babel/cli": "^7.14.5"
 	},
-	"gitHead": "de066123d8736d4a989485a0b5fb30712c5c1607"
+	"gitHead": "da596c6a49044e00ebdbb45cb25841e2fbeb3b83"
 }
