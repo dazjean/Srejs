@@ -12,7 +12,7 @@ export const cacheDir = join(cwd + '/.ssr/cache');
 export const outPutDir = join(cwd + '/.ssr/output');
 export const serverDir = join(cwd + '/dist/server');
 export const clientDir = join(cwd + '/dist/client');
-export const webpackConfigPath = join(cwd + './webpack.config.js');
+export const webpackConfigPath = join(cwd + '/webpack.config.js');
 export const SSRKEY = Symbol('SSR');
 
 const newOptionsPath = path.resolve(cwd, './config/ssr.config.js');

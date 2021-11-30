@@ -1,7 +1,10 @@
 
 # webpack
+
 srejs基于webpack@4.0+,Bable@7.0+进行项目编译,默认集成配置项如下
+
 ## loader
+
 - babel-loader
 - less-loader
 - css-loader
@@ -9,51 +12,55 @@ srejs基于webpack@4.0+,Bable@7.0+进行项目编译,默认集成配置项如下
 - postcss-loader
 - url-loader
 
-## alias
+## alias默认别名
 
 ```js
 alias: {
+        @: rootDir,
         components: rootDir + '/components',
         images: rootDir + '/images',
-        mock: rootDir + '/mock',
-        skin: rootDir + '/skin',
-        utils: rootDir + '/utils',
-        config: rootDir + '/config'
     }
 ```
 
 ## DefinePlugin
+
 开发者在js中通过`process.env.NODE_ENV`可以进行环境的区分。
-```
+
+```shell
 'process.env': NODE_ENV: JSON.stringify(dev ? 'development' : 'production')
 ```
 
-## devServer
-- `port:8080`
-- `hot:true`
-- `contentBase: ${rootDir}`
+# 覆盖或者新增webpack配置
 
-# 自定义webpack
-srejs支持自定义webpack中的指定配置项 
+srejs支持自定义webpack配置，在项目根目录下创建webpack.config.js。文件支持导出对象或者函数。
 
-## 支持的配置项
+- 函数 【推荐】
+函数接受两个参数，第一个为框架内置webpack配置对象;第二个参数可区分ssr和csr模式。
+
+```js
+module.exports = (configureWebpack, type) => {
+    if (type == 'ssr') {
+        //服务端渲染配置
+    } else if (type === 'csr') {
+        //客户端构建配置
+        // configureWebpack.module.rules[0].exclude = /\/node_module\/!(antd.*)/;
+    }
+
+    return configureWebpack;
+};
 ```
-// webpack.config.js
+
+- 对象
+对象配置属性将通过webpack-merge和框架内置属性进行合并。此方法适用于同时设置客户端和服务端渲染模式相同的配置。
+
+```js
 module.exports = {
-    loader: {
-        js: [],
-        jsx: [],
-        css: [],
-        scss: [],
-        less: [],
-        img: []
-    }, // 新增的loader框架默认loader配置之后执行
-    externals: {
-    }, 
-    extensions: [],
-    alias: {
-        images: path.join(process.cwd() + '/src/images')
-    },
-    plugins: []
- };
+    // module
+    module:{
+        rules:[
+            // other loader
+        ]
+    }
+}
+
 ```
