@@ -1,6 +1,6 @@
 {
 	"name": "app-vue3",
-	"version": "1.3.0",
+	"version": "1.3.1",
 	"description": "",
 	"private": true,
 	"main": "app.js",
@@ -18,7 +18,7 @@
 		"@babel/preset-typescript": "^7.12.1",
 		"@babel/register": "^7.13.16",
 		"@babel/runtime": "^7.7.7",
-		"@srejs/vue3": "^1.3.0",
+		"@srejs/vue3": "^1.3.1",
 		"babel-loader": "^8.2.2",
 		"core-js": "^3.11.0",
 		"css-hot-loader": "^1.4.4",
