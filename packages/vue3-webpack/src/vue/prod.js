@@ -1,5 +1,6 @@
 import { getBaseconfig } from './base';
 import { getPlugin } from './plugin';
+import combine from './combine';
 
 function getProconfig(page, isServer) {
     let config = getBaseconfig(page);
@@ -9,7 +10,7 @@ function getProconfig(page, isServer) {
         mode: 'production',
         plugins: [...getPlugin(config.entry, isServer)]
     });
-    return buildConfig;
+    return combine(buildConfig, false);
 }
 
 module.exports = {
