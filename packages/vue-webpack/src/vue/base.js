@@ -7,7 +7,6 @@ import { cwd, clientDir, getCoreConfig, getOptions, isDev } from '@srejs/common'
 import { loaderRules } from './loader';
 import { getPlugin } from './plugin';
 import { getEntry, initEntry } from './entry';
-import combine from './combine';
 
 const { prefixCDN } = getCoreConfig();
 const rootDir = getOptions('rootDir');
@@ -97,5 +96,5 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
             }
         }
     };
-    return combine(config);
+    return config;
 }

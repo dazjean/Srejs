@@ -12,7 +12,7 @@ export const cacheDir = join(cwd + '/.ssr/cache');
 export const outPutDir = join(cwd + '/.ssr/output');
 export const serverDir = join(cwd + '/dist/server');
 export const clientDir = join(cwd + '/dist/client');
-export const webpackConfigPath = join(cwd + './webpack.config.js');
+export const webpackConfigPath = join(cwd + '/webpack.config.js');
 export const SSRKEY = Symbol('SSR');
 
 const newOptionsPath = path.resolve(cwd, './config/ssr.config.js');
@@ -37,16 +37,25 @@ function umajs_plugin_options() {
     try {
         let { Uma } = require('@umajs/core');
         Uma.instance({ ROOT: './app' }).loadConfig();
-        opt = Uma.config?.ssr || {}; // ssr.config.ts
+        opt = Uma.config?.ssr || {};
         const reactSsrPlugin = Uma.config?.plugin['react-ssr'];
+        const reactPlugin = Uma.config?.plugin['react'];
         const vueSsrPlugin = Uma.config?.plugin['vue-ssr'];
+        const vue3SsrPlugin = Uma.config?.plugin['vue3-ssr'];
+        const vuePlugin = Uma.config?.plugin['vue'];
         const ssrPlugin = Uma.config?.plugin['ssr'];
-        if (reactSsrPlugin?.options) {
+        if (reactPlugin?.options) {
+            opt = reactPlugin.options;
+        } else if (vuePlugin?.options) {
+            opt = vuePlugin.options;
+        } else if (reactSsrPlugin?.options) {
             opt = reactSsrPlugin.options;
-        }
-        if (vueSsrPlugin?.options) {
+        } else if (vueSsrPlugin?.options) {
+            opt = vueSsrPlugin.options;
+        } else if (vue3SsrPlugin?.options) {
             opt = vueSsrPlugin.options;
         }
+
         if (ssrPlugin?.options) {
             opt = ssrPlugin.options;
         }

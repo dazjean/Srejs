@@ -171,22 +171,28 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
         ctx.res.end();
     } else {
         let data = await readPageHtml(page);
-        const ssrData = {
-            initProps: props,
-            page,
-            path: ctx[SSRKEY].path,
-            query,
-            options
+        Html = data.replace(`<div id="${rootNode}">`, `<div id="${rootNode}">${Html}`);
+
+        const ssrData = { initProps: props, page, path: ctx[SSRKEY].path, query, options };
+        const injectScriptInitProps = (temp, ssrData) => {
+            const contents = temp.split('</body>');
+            if (contents.length == 1) {
+                console.error('SSR:警告！自定义html文件中必须包含</body>闭合标签。');
+            }
+
+            return (
+                contents[0] +
+                '<script>window.__SSR_DATA__=' +
+                serialize(ssrData, { isJSON: true }) +
+                '</script>' +
+                '</body>' +
+                contents[1]
+            );
         };
-        let replaceReg = new RegExp(`<div id="${rootNode}"><\/div>`);
-        // 把渲染后的 React HTML 插入到 div 中
-        let document = data.replace(
-            replaceReg,
-            `<div id="${rootNode}">${Html}</div>
-             <script>var __SSR_DATA__ = ${serialize(ssrData, { isJSON: true })}
-             </script>`
-        );
+
+        let document = injectScriptInitProps(Html, ssrData);
         document = renderDocumentHead(document, props);
+
         return document;
     }
 };
