@@ -58,7 +58,7 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
             publicPath: !isDev() ? prefixCDN : '/',
             libraryTarget: 'umd',
             globalObject: 'this', //webpack4之后如果umd构建在浏览器和node环境中均可使用需要设置成this
-            filename: isDev() || isServer ? '[name].js' : `[name]_[hash:8].js`, //打包后输出文件的文件名
+            filename: isDev() || isServer ? '[name].js' : `[name]_[contenthash:8].js`, //打包后输出文件的文件名
             path: clientDir //打包后的文件存放的地方
         },
         stats: {

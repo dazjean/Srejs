@@ -94,7 +94,7 @@ export const loaderRules = (isServer = false) => {
                 {
                     loader: 'url-loader',
                     options: {
-                        name: '[hash:8].[name].[ext]',
+                        name: '[contenthash:8].[name].[ext]',
                         limit: 8192,
                         outputPath: 'images/'
                     }
@@ -107,7 +107,7 @@ export const loaderRules = (isServer = false) => {
                 {
                     loader: 'url-loader',
                     options: {
-                        name: '[hash:8].[name].[ext]',
+                        name: '[contenthash:8].[name].[ext]',
                         outputPath: 'fonts/'
                     }
                 }

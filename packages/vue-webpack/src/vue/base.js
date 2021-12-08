@@ -58,7 +58,7 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
             publicPath: !isDev() ? prefixCDN : '/',
             libraryTarget: 'umd',
             globalObject: 'this',
-            filename: isDev() || isServer ? '[name].js' : `[name]_[hash:8].js`, //打包后输出文件的文件名
+            filename: isDev() || isServer ? '[name].js' : `[name]_[contenthash:8].js`, //打包后输出文件的文件名
             path: clientDir //打包后的文件存放的地方
         },
         stats: {

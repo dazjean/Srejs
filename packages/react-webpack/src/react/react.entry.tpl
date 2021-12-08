@@ -3,8 +3,10 @@ import React from 'react';
 import ReactDom from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { hot } from 'react-hot-loader/root';
+
 let App = '$injectApp$';
 App = App.default ? App.default : App;
+
 let Layout = false;
 //-layout-
 Layout = '$injectLayout$';
@@ -12,7 +14,7 @@ Layout = Layout.default ? Layout.default : Layout;
 //-layout-
 const rootNode = '$rootNode$';
 
-const Entry = ({ params, layout }) => {
+const RootComponent = ({ params, layout }) => {
     return Layout && layout ? (
         <Layout {...params}>
             <App {...params} />
@@ -41,11 +43,17 @@ if (inBrowser) {
     };
     Render(
         <Router basename={`${baseName}`}>
-            <Entry params={params} layout={layout} />
+            <RootComponent params={params} layout={layout} />
         </Router>,
         document.getElementById(`${rootNode}`)
     );
 }
 
+let exportApp =  hot(RootComponent);
+
+if(process.env.NODE_ENV==="production"){
+    exportApp = RootComponent;
+}
+
 export { App };
-export default hot(Entry);
+export default exportApp;
