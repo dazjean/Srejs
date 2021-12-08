@@ -17,32 +17,37 @@
 
 > Server rendering engine 缩写为 Srejs, 即服务器端渲染引擎，为各个node开发框架提供最简单，最灵活的React，Vue轻量级服务端渲染骨架工具，支持在任何koa框架中使用。
 
-## Development
+## Development and debugging
 
 ```shell
 yarn install
-cd packages/app && npm start   // 开发调试React
-cd packages/app-vue && npm start // 开发调试Vue2.0
-cd packages/app-vue3 && npm start // 开发调试Vue3.0
+## debugg React
+cd packages/app && npm start  
+
+## debugg Vue2.0 
+cd packages/app-vue && npm start 
+
+## debugg Vue3.0
+cd packages/app-vue3 && npm start 
 ```
 
 ## Feature
 
-- 🚀 支持SSR和CSR
-- 🚀 状态管理（redux/vuex）
-- 🚀 服务端数据初始化
-- 🚀 嵌套路由（React-Router/Vue-Router）
-- 🚀 自定义HTML和SEO
-- 🚀 单页面应用和多页面应用
-- 🚀 页面级构建更新
-- 🚀 layout(@srejs/react支持)
+- 🚀 Support SSR and CSR(支持SSR和CSR)
+- 🚀 State management（redux/vuex）
+- 🚀 Initialize the component props on the server side(在服务端初始化组件Props)
+- 🚀 Nested Route（React-Router/Vue-Router）
+- 🚀 Customize HTML and SEO
+- 🚀 Support spa and mpa(单页面应用和多页面应用)
+- 🚀 Support page level build updates（按需构建指定页面编译）
+- 🚀 Support layout(@srejs/react支持)
 - 🚀 React16+
 - 🚀 Vue2.0
 - 🚀 Vue3.0
 
-## 使用
+## How to Use
 
-### Client
+### Develop page components（React/Vue）
 
 ```ts
 //web/pages/index/index.ts
@@ -53,7 +58,7 @@ export default function (props:any) {
 }
 ```
 
-### Server
+### Use in koa Middleware
 
 ```js
 import koa from 'koa';
@@ -63,14 +68,15 @@ import srejs from '@srejs/react';
 const app = new koa();
 const Sre = new srejs(app，process.env.NODE_ENV != 'production',false); 
 app.use((ctx,next)=>{
-    Sre.render(ctx,'index',{title:'标题'})
+    Sre.render(ctx,'index',{title:'The page title'})
 })
 app.listen(8001);
 ```
 
-### 编译
+### Production
 
-打开 `package.json` 文件并添加 `scripts` 配置段：
+Page components need to be compiled in advance before deployment in the production environment
+Add `scripts` configuration to the `package.json`
 
 ```shell
 "scripts": {
@@ -79,11 +85,18 @@ app.listen(8001);
 },
 ```
 
-## 快速开始
+## QuickStart
 
 - [React](https://github.com/dazjean/Srejs/tree/main/packages/react)
 - [Vue2.0](https://github.com/dazjean/Srejs/tree/main/packages/vue)
 - [Vue3.0](https://github.com/dazjean/Srejs/tree/main/packages/vue3)
 
+## Questions
 
-## [MIT License](./LICENSE)
+Please open an [issue](https://github.com/dazjean/Srejs/issues/new/choose)
+
+## License
+
+[MIT License](./LICENSE)
+
+Copyright (c) 2021 dazjean
