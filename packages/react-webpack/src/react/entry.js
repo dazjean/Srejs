@@ -26,7 +26,7 @@ function createEntry(page) {
     try {
         const rootDir = getOptions('rootDir');
         const rootNode = getOptions('rootNode');
-        let data = fs.readFileSync(path.join(__dirname, './', 'app.js'), 'utf8');
+        let data = fs.readFileSync(path.join(__dirname, './', 'react.entry.tpl'), 'utf8');
         let entryName = false;
         const entrysFileList = [
             'index.js',
@@ -70,9 +70,11 @@ function createEntry(page) {
             if (!exists) {
                 fs.mkdirSync(tempDir);
             }
-            if (!fs.existsSync(`${tempDir}/${page}.js`)) {
-                fs.writeFileSync(`${tempDir}/${page}.js`, data);
-            }
+            // if (!fs.existsSync(`${tempDir}/${page}.js`)) {
+            //     fs.writeFileSync(`${tempDir}/${page}.js`, data);
+            // }
+            fs.writeFileSync(`${tempDir}/${page}.js`, data);
+
             return true;
         } else {
             return false;
