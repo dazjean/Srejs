@@ -21,6 +21,13 @@ const sassLoader = {
     }
 };
 
+const lessLoader = {
+    loader: 'less-loader',
+    options: {
+        // https://webpack.docschina.org/loaders/less-loader/#options
+    }
+};
+
 const getCssLoader = () => {
     return {
         loader: 'css-loader',
@@ -86,7 +93,7 @@ export const loaderRules = (isServer = false) => {
         },
         {
             test: /\.less$/,
-            use: ['css-hot-loader', MiniCssExtractPlugin.loader, cssLoader, possLoader, sassLoader]
+            use: ['css-hot-loader', MiniCssExtractPlugin.loader, cssLoader, possLoader, lessLoader]
         },
         {
             test: /\.(png|jpg|jpeg|gif|svg)$/,
