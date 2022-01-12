@@ -76,6 +76,7 @@ app.listen(8001);
 ### Production
 
 Page components need to be compiled in advance before deployment in the production environment
+
 Add `scripts` configuration to the `package.json`
 
 ```shell
@@ -85,7 +86,7 @@ Add `scripts` configuration to the `package.json`
 },
 ```
 
-## QuickStart
+## Quick start
 
 - [React](https://github.com/dazjean/Srejs/tree/main/packages/react)
 - [Vue2.0](https://github.com/dazjean/Srejs/tree/main/packages/vue)
