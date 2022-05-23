@@ -37,13 +37,14 @@
 - [数据获取](https://github.com/dazjean/Srejs/tree/mian/doc/vue/initState.md)
 - [内置CSS支持](https://github.com/dazjean/Srejs/tree/mian/doc/vue/suport-css.md)
 - [SEO&HTML](https://github.com/dazjean/Srejs/tree/mian/doc/vue/seoHtml.md)
-- [使用vuex](https://github.com/dazjean/Srejs/tree/mian/doc/vue/vuex.md)
-- [使用vue-router路由](https://github.com/dazjean/Srejs/tree/mian/doc/vue/vue-router.md)
+- [vuex](https://github.com/dazjean/Srejs/tree/mian/doc/vue/vuex.md)
+- [vue-router](https://github.com/dazjean/Srejs/tree/mian/doc/vue/vue-router.md)
+- [个性化webpack](https://github.com/dazjean/Srejs/blob/main/doc/react/webpackconfig.md)
 
 ## 示例
 
-- [使用vuex](https://github.com/Umajs/umajs-vue-ssr/tree/main/web/pages/vuex)
-- [使用vue-router路由](https://github.com/Umajs/umajs-vue-ssr/tree/main/web/pages/router)
+- [vuex](https://github.com/Umajs/umajs-vue-ssr/tree/main/web/pages/vuex)
+- [vue-router](https://github.com/Umajs/umajs-vue-ssr/tree/main/web/pages/router)
 
 ## 开发框架集成
 
