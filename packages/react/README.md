@@ -25,6 +25,7 @@
 - 🚀 支持服务端直出Props
 - 🚀 和react-router使用
 - 🚀 自定义HTML和动态设置页面title,keyworlds,discription
+- 
 - 嵌套路由时路由组件支持getInitialProps钩子函数获取数据
 - webpack5.0
 
@@ -35,8 +36,9 @@
 - [页面组件和路由](https://github.com/dazjean/Srejs/tree/mian/doc/react/page-router.md)
 - [数据获取](https://github.com/dazjean/Srejs/tree/mian/doc/react/initprops.md)
 - [css-modules](https://github.com/dazjean/Srejs/tree/mian/doc/react/cssModules.md)
-- [自定义html](https://github.com/dazjean/Srejs/tree/mian/doc/react/htmlTemplate.md)
-- [typescript](https://github.com/dazjean/Srejs/tree/mian/doc/react/typescript.md)
+- [个性化html](https://github.com/dazjean/Srejs/tree/mian/doc/react/htmlTemplate.md)
+- [支持typescript](https://github.com/dazjean/Srejs/tree/mian/doc/react/typescript.md)
+- [个性化webpack](https://github.com/dazjean/Srejs/blob/main/doc/react/webpackconfig.md)
 
 ## 示例
 
