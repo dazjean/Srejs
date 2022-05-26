@@ -26,7 +26,7 @@ function createEntry(page) {
     try {
         const rootDir = getOptions('rootDir');
         const rootNode = getOptions('rootNode');
-        const entryTpl = getOptions('isQiankun') ? 'qiankun.entry.tpl' : 'react.entry.tpl';
+        const entryTpl = (getOptions('isQiankun') && window.__POWERED_BY_QIANKUN__) ? 'qiankun.entry.tpl' : 'react.entry.tpl';
         let data = fs.readFileSync(path.join(__dirname, './', entryTpl), 'utf8');
         let entryName = false;
         const entrysFileList = [

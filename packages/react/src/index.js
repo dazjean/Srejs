@@ -14,7 +14,7 @@ export default class Srejs {
      * @param {*} defaultRouter 是否使用默认文件路由
      * @param options 框架配置属性
      */
-    constructor(app, dev = true, defaultRouter = false, options = {qiankun: false}) {
+    constructor(app, dev = true, defaultRouter = false, options = {isQiankun: false}) {
         this.routes = [];
         this.app = app;
         if (dev) {
