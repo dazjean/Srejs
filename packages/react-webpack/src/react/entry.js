@@ -26,7 +26,8 @@ function createEntry(page) {
     try {
         const rootDir = getOptions('rootDir');
         const rootNode = getOptions('rootNode');
-        let data = fs.readFileSync(path.join(__dirname, './', 'react.entry.tpl'), 'utf8');
+        const entryTpl = !getOptions('isQiankun') ? 'qiankun.entry.tpl' : 'react.entry.tpl';
+        let data = fs.readFileSync(path.join(__dirname, './', entryTpl), 'utf8');
         let entryName = false;
         const entrysFileList = [
             'index.js',

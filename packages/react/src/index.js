@@ -9,13 +9,12 @@ import { render as ReactRender } from './render';
 var childWebpack = fork(require.resolve('@srejs/react-webpack/lib/react/index.js'));
 export default class Srejs {
     /**
-     *
      * @param {*} app koa实例对象
      * @param {*} dev 是否开发环境
      * @param {*} defaultRouter 是否使用默认文件路由
      * @param options 框架配置属性
      */
-    constructor(app, dev = true, defaultRouter = false, options = {}) {
+    constructor(app, dev = true, defaultRouter = false, options = {qiankun: false}) {
         this.routes = [];
         this.app = app;
         if (dev) {
