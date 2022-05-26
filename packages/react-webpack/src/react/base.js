@@ -99,7 +99,7 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
         }
     };
 
-    if (!getOptions('isQiankun')) {
+    if (getOptions('isQiankun')) {
         let appName = 'qiankunApp';
         try {
             const info = fs.readFileSync(path.join(cwd + `/package.json`));
