@@ -175,9 +175,9 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
 
         const ssrData = { initProps: props, page, path: ctx[SSRKEY].path, query, options };
         const injectScriptInitProps = (temp, ssrData) => {
-            const contents = temp.split('</body>');
+            const contents = temp.split('</head>');
             if (contents.length == 1) {
-                console.error('SSR:警告！自定义html文件中必须包含</body>闭合标签。');
+                console.error('SSR:警告！自定义html文件中必须包含</head>闭合标签。');
             }
 
             return (
@@ -185,7 +185,7 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
                 '<script>window.__SSR_DATA__=' +
                 serialize(ssrData, { isJSON: true }) +
                 '</script>' +
-                '</body>' +
+                '</head>' +
                 contents[1]
             );
         };

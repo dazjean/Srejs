@@ -1,5 +1,6 @@
 import webpack from 'webpack';
 import * as path from 'path';
+import * as fs from 'fs';
 import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import { cwd, clientDir, getCoreConfig, getOptions, isDev } from '@srejs/common';
@@ -97,5 +98,22 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
             }
         }
     };
+
+    if (getOptions('isQiankun')) {
+        let appName = 'qiankunApp';
+        try {
+            const info = fs.readFileSync(path.join(cwd + `/package.json`));
+            appName = JSON.parse(info).name;
+        } catch (error) {
+            console.log(error);
+        }
+
+        config.output = Object.assign(config.output, {
+            library: `${appName}_[name]`,
+            libraryTarget: 'umd',
+            jsonpFunction: `webpackJsonp_${appName}`,
+            globalObject: 'window',
+        })
+    }
     return config;
 }
