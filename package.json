@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "init": "del -f packages/*/node_modules && del -f packages/*/lib && lerna bootstrap",
-    "prepublish": "npm run test && lerna run lint && lerna run build",
+    "prepublish": "lerna run test && lerna run lint && lerna run build",
     "publish": "lerna publish",
     "watch":"lerna run watch",
     "postinstall": "npm run lint && npx checker-init && npm run init && npm run linkReact && npm run linkReactDom && npm run linkReactRouter && npm run linkVue  && npm run linkApp && npm run linkVueNext",
@@ -18,7 +18,7 @@
     "lint": "eslint packages/*/src --fix"
   },
   "devDependencies": {
-    "commit-msg-checker": "^1.0.7",
+    "commit-msg-checker": "^1.0.8",
     "del-cli": "^3.0.1",
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.2",
@@ -31,6 +31,6 @@
     "eslint": "^7.26.0"
   },
   "msgChecker":{
-    "check":false
+    "ignore": "^v([1-9])"
   }
 }

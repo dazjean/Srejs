@@ -112,8 +112,8 @@ export function getBaseconfig(page, isServer = false, hotReload = false) {
             library: `${appName}_[name]`,
             libraryTarget: 'umd',
             jsonpFunction: `webpackJsonp_${appName}`,
-            globalObject: 'window',
-        })
+            globalObject: 'window'
+        });
     }
     return config;
 }
