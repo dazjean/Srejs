@@ -25,7 +25,7 @@ const RootComponent = ({ params, layout }) => {
 };
 
 const inBrowser = typeof window !== 'undefined';
-if (inBrowser) {
+if (inBrowser && !window.__POWERED_BY_QIANKUN__) {
     window.__SSR_DATA__ = window.__SSR_DATA__ || {};
     const root = document.getElementById(`${rootNode}`);
     if (!root) {
@@ -57,3 +57,41 @@ if(process.env.NODE_ENV==="production"){
 
 export { App };
 export default exportApp;
+
+export async function bootstrap() {
+    console.log('[react16] react app bootstraped');
+}
+export async function mount(props) {
+    console.log('[react16] props from main framework', props, window.__SSR_DATA__);
+    let {baseRouter = '', baseRequest = ''} = props;
+    if(baseRequest) { window.__baseRequest = baseRequest; }
+    window.__SSR_DATA__ = window.__SSR_DATA__ || {};
+    const root = document.getElementById(`${rootNode}`);
+    if (!root) {
+        let rootDom = document.createElement('div');
+        rootDom.id = `${rootNode}`;
+        document.body.prepend(rootDom);
+    }
+    const { ssr, baseName, layout = true } = window.__SSR_DATA__?.options;
+    const Render = ssr ? ReactDom.hydrate : ReactDom.render;
+    const params = {
+        ...window.__SSR_DATA__.initProps,
+        path: window.__SSR_DATA__.path || '',
+        page: window.__SSR_DATA__.page || '',
+        query: window.__SSR_DATA__.query || ''
+    };
+    Render(
+        <Router basename={`${baseRouter}${baseName}`}>
+            <RootComponent params={params} layout={layout} />
+        </Router>,
+        document.getElementById(`${rootNode}`)
+    );
+}
+export async function unmount(props) {
+    console.log('[react16] props from main unmount', props);
+    const { container } = props;
+    ReactDom.unmountComponentAtNode(container ? container.querySelector(`#${rootNode}`) : document.querySelector(`#${rootNode}`));
+}
+export async function update(props) {
+    console.log('[react16] props from main update', props);
+}
