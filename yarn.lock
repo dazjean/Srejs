@@ -1514,10 +1514,10 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commit-msg-checker@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/commit-msg-checker/-/commit-msg-checker-1.0.7.tgz#2e30b9818ec3acb9206236b3671e09e417476465"
-  integrity sha512-0GAMgx2+2NO7LimWu9/YpoOaTrY6qnnGZTbXycmFVL94UJOPfOsqujrT9hF4L5n9wWGvgczzRKf8ra1kJ1yCaA==
+commit-msg-checker@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/commit-msg-checker/-/commit-msg-checker-1.0.8.tgz#85f8769fa45f8a37eebb75f0e82b5a86e5b2ed33"
+  integrity sha512-mKJnB9264sR6Al3iCdhtTGuYj8jXxQOji2VJQ5ASGw+1fPZb3hBi+LQ/rjoqiB5bMJxNDuJFLVBKQ08baq5ubQ==
 
 compare-func@^2.0.0:
   version "2.0.0"
