@@ -1,6 +1,6 @@
 {
 	"name": "@srejs/vue3-webpack",
-	"version": "1.3.2",
+	"version": "1.3.5",
 	"description": "srejs vue技术栈webpack配置工具包",
 	"main": "lib/index.js",
 	"directories": {
