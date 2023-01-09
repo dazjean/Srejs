@@ -1,5 +1,5 @@
 import fs from 'fs';
-import merger from 'webpack-merge';
+import { merge } from 'webpack-merge';
 import { webpackConfigPath } from '@srejs/common';
 
 module.exports = function (config, isServer) {
@@ -16,7 +16,7 @@ module.exports = function (config, isServer) {
 
     if (typeof configureWebpack === 'object') {
         // webpack-merge
-        customConfig = merger(config, configureWebpack);
+        customConfig = merge(config, configureWebpack);
     }
 
     return customConfig;

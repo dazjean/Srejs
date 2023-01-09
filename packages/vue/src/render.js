@@ -83,23 +83,6 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     if (!getVueEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
     }
-    let createApp;
-    let jspath = await checkModules(page);
-    try {
-        // eslint-disable-next-line no-undef
-        if (common.isDev()) {
-            delete require.cache[require.resolve(jspath)];
-        }
-        createApp = require(jspath);
-        createApp = createApp.default ? createApp.default : createApp;
-    } catch (error) {
-        // eslint-disable-next-line no-console
-        Logger.error(
-            `SSR: ${page} import failed. Please check whether there are APIs in the code that the server does not support when rendering,
-             such as window, locaction, navigator, etc`
-        );
-        Logger.error(error.stack);
-    }
     if (typeof initProps === 'object') {
         context = Object.assign(
             {
@@ -118,6 +101,24 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     };
     let Html = '';
     if (ssr) {
+        let createApp;
+        let jspath = await checkModules(page);
+        try {
+            // eslint-disable-next-line no-undef
+            if (common.isDev()) {
+                delete require.cache[require.resolve(jspath)];
+            }
+            createApp = require(jspath);
+            createApp = createApp.default ? createApp.default : createApp;
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            Logger.error(
+                `SSR: ${page}页面服务端加载入口文件异常，请检查是否在代码程序中使用到浏览器宿主对象特定的API(包括第三方模块需支持SSR模式安装)
+             Please check whether there are api in the code that the server does not support when rendering,
+             such as window, locaction, navigator, etc`
+            );
+            Logger.error(error.stack);
+        }
         try {
             const App = await createApp(context);
             Html = await renderTostring(App, context, page);
@@ -129,7 +130,7 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
                 query,
                 options
             }; // 修正数据
-            Logger.warn('SSR:服务端渲染异常，降级使用客户端渲染！' + JSON.stringify(error));
+            Logger.warn(`SSR: 服务端渲染异常，降级使用客户端渲染:${error.stack}`);
             Html = await readPageString(page, context);
         }
     } else {
