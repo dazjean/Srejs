@@ -107,9 +107,9 @@ export const checkModules = async (page) => {
  * @param {*} ctx
  * @param {*} next
  */
-export const renderServer = async (ctx, initProps, ssr = true) => {
+export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     const context = {};
-    let props = {};
+    let props = Object.assign({}, initProps);
     let { query } = ctx[SSRKEY];
     const { page, options, path } = ctx[SSRKEY];
     const { rootNode, baseName, layout = true } = options; // baseName默认为page
@@ -119,41 +119,36 @@ export const renderServer = async (ctx, initProps, ssr = true) => {
     }
     let Entry = {};
     let App = {};
-    if (typeof initProps === 'object') {
-        props = Object.assign(props || {}, initProps);
-    }
     let Html = '';
     let location = ctx.url.split(baseName)[1];
     if (ssr) {
         let jspath = await checkModules(page);
         // 静态方法只在ssr模式下在node服务端被调用。
-        if (ssr) {
-            try {
-                // eslint-disable-next-line no-undef
-                if (common.isDev()) {
-                    delete require.cache[require.resolve(jspath)];
-                }
-                const Module = require(jspath);
-                App = Module.App; //
-                // 兼容1.2.7版本之前构建的.ssr缓存入口文件
-                if (!App) {
-                    App = Module.default;
-                    Logger.warn(
-                        `SSR: 请手动删除项目根目录下的.ssr缓存目录后重新启动，否则layout将不会正常工作。`
-                    );
-                }
-                Entry = Module.default;
-            } catch (error) {
-                // eslint-disable-next-line no-console
-                Logger.error(
-                    `SSR: ${page}页面服务端加载入口文件异常，请检查是否在代码程序中使用到浏览器宿主对象特定的API(包括第三方模块需支持SSR模式安装)
+        try {
+            // eslint-disable-next-line no-undef
+            if (common.isDev()) {
+                delete require.cache[require.resolve(jspath)];
+            }
+            const Module = require(jspath);
+            App = Module.App; //
+            // 兼容1.2.7版本之前构建的.ssr缓存入口文件
+            if (!App) {
+                App = Module.default;
+                Logger.warn(
+                    `SSR: 请手动删除项目根目录下的.ssr缓存目录后重新启动，否则layout将不会正常工作。`
+                );
+            }
+            Entry = Module.default;
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            Logger.error(
+                `SSR: ${page}页面服务端加载入口文件异常，请检查是否在代码程序中使用到浏览器宿主对象特定的API(包括第三方模块需支持SSR模式安装)
                  Please check whether there are api in the code that the server does not support when rendering,
                  such as window, locaction, navigator, etc`
-                );
-                Logger.error(error.stack);
-            }
-            props = await loadGetInitialProps(App, ctx);
+            );
+            Logger.error(error.stack);
         }
+        props = Object.assign((await loadGetInitialProps(App, ctx)) || {}, initProps);
         try {
             Html = ReactDOMServer.renderToString(
                 <StaticRouter location={location || '/'} context={context}>
