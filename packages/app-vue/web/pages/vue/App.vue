@@ -6,6 +6,7 @@
       <h1>{{title}}</h1>
       <p> {{ say }}</p>
       <p> {{ msg }}</p>
+      <p>inject: {{ keywords }} </p>
       -------服务端初始化数据-------
       <div class="home">
         {{ message }}
@@ -35,6 +36,7 @@
   export default {
     name: 'home',
     props:['title'],
+    inject: ['keywords'],
     data () {
 		return {
 			'message' : 'hello word!!!',

@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import Main from '$injectApp$';
 const Mainjs = Main.default ? Main.default : Main;
-const { Router, App, Store } = Mainjs;
+const { Router, App, Store, BeforeInit } = Mainjs;
 Vue.use(VueRouter);
 Vue.use(Vuex);
 const inBrowser = typeof window !== 'undefined';
@@ -18,6 +18,9 @@ const createApp = (props) => {
     const store = createStore(Store);
     const router = createRouter(props);
     let mainOpt = {
+        provide:{
+            ...props
+        },
         store,
         render: (h) =>
             h(App, {
@@ -49,6 +52,13 @@ const createRouter = (props) => {
     );
 };
 
+// 在app实例被创建之前调用,用于全局组件注册等逻辑处理
+const beforeInitFunc = ($app,$router,$store) => {
+    if(BeforeInit && typeof BeforeInit ==='function'){
+        BeforeInit($app,$router,$store);
+    }
+}
+
 if (inBrowser) {
     initProps = window.__SSR_DATA__?.initProps || {};
     const root = document.getElementById(`${rootNode}`);
@@ -61,6 +71,7 @@ if (inBrowser) {
     if (window.__INITIAL_STATE__) {
         store.replaceState(window.__INITIAL_STATE__);
     }
+    beforeInitFunc(app,router,store);
     if (Router) {
         // a global mixin that calls `asyncData` when a route component's params change
         Vue.mixin({
@@ -109,6 +120,7 @@ export default (context) => {
         if (store.state) {
             context.state = Object.assign(store.state, context.state || {});
         }
+        beforeInitFunc(app,router,store);
         if (Router) {
             let { url } = context;
             if (!url.endsWith('/')) {

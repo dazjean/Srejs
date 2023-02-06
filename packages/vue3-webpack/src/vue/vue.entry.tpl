@@ -20,7 +20,7 @@ const createNextApp = (props) => {
     const app = createSSRApp(App, props);
     app.use(storeInstance);
     app.use(routerInstance);
-    app.provide('INITIAL_STATE', props) // 支持所有后代组件中通过注入inject使用读取数据
+    app.provide('INITIAL_STATE', props); // 支持所有后代组件中通过注入inject使用读取数据
 
     return { app, store: storeInstance, router: routerInstance };
 };
@@ -43,9 +43,8 @@ const createRouterNext = (props) => {
 
 // 在app实例被创建之前调用,用于全局组件注册等逻辑处理
 const beforeInitFunc = (app,router,store) => {
-    app.provide('message', 'hello')
     if(BeforeInit && typeof BeforeInit ==='function'){
-        BeforeInit(app,router,store)
+        BeforeInit(app,router,store);
     }
 }
 
