@@ -4,7 +4,7 @@ import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import Main from '$injectApp$';
 
 const Mainjs = Main.default ? Main.default : Main;
-const { Router, App, Store } = Mainjs;
+const { Router, App, Store, BeferInit } = Mainjs;
 const isServer = typeof window === 'undefined';
 const isDev = process.env.NODE_ENV !== 'production';
 const rootNode = '$rootNode$';
@@ -20,6 +20,7 @@ const createNextApp = (props) => {
     const app = createSSRApp(App, props);
     app.use(storeInstance);
     app.use(routerInstance);
+    app.provide('INITIAL_STATE', props) // 支持所有后代组件中通过注入inject使用读取数据
 
     return { app, store: storeInstance, router: routerInstance };
 };
@@ -40,6 +41,14 @@ const createRouterNext = (props) => {
     );
 };
 
+// 在app实例被创建之前调用,用于全局组件注册等逻辑处理
+const beforeInitFunc = (app,router,store) => {
+    app.provide('message', 'hello')
+    if(BeferInit && typeof BeferInit ==='function'){
+        BeferInit(app,router,store)
+    }
+}
+
 if (!isServer) {
     initProps = window.__SSR_DATA__?.initProps || {};
     const root = document.getElementById(`${rootNode}`);
@@ -52,6 +61,7 @@ if (!isServer) {
     if (window.__INITIAL_STATE__) {
         store.replaceState(window.__INITIAL_STATE__);
     }
+    beforeInitFunc(app,router,store);
     // a global mixin that calls `asyncData` when a route component's params change
     app.mixin({
         beforeRouteUpdate(to) {
@@ -85,7 +95,6 @@ if (!isServer) {
         isDev && console.log('router.isReady...');
         app.mount(`#${rootNode}`);
     });
-    // app.mount(`#${rootNode}`);
 }
 export default (context) => {
     return new Promise((resolve, reject) => {
@@ -94,6 +103,7 @@ export default (context) => {
         if (store.state) {
             context.state = Object.assign(store.state, context.state || {});
         }
+        beforeInitFunc(app,router,store);
         let { url } = context;
         if (!url.endsWith('/')) {
             url = url + '/';
@@ -105,15 +115,9 @@ export default (context) => {
                 `Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递.请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
             );
         }
-        // if (base) {
-        //     const validBase = new RegExp('^/.*/$').test(base);
-        //     if (!validBase) {
-        //         return reject(
-        //             `应用的基路径格式错误。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"。Vue Router 4x现在移除了base属性，base 配置被作为 createWebHistory (其他 history 也一样)的第一个参数传递。请参考链接：https://next.router.vuejs.org/guide/migration/index.html#moved-the-base-option`
-        //         );
-        //     }
-        // }
-        //入口文件中不包含router配置时，框架默认注册了一个router配置 base为'/';  在服务端无论路由链接为多少都将匹配根路径/ ，在客户端则需要将当前url设置为客户端的base根路径
+        /* 入口文件中不包含router配置时，框架默认注册了一个router配置 base为'/'; 
+        ** 在服务端无论路由链接为多少都将匹配根路径/ ，在客户端则需要将当前url设置为客户端的base根路径
+        */
         if (!Router) {
             url = '/';
         } else if (base) {
