@@ -4,7 +4,7 @@ import { createRouter, createMemoryHistory, createWebHistory } from 'vue-router'
 import Main from '$injectApp$';
 
 const Mainjs = Main.default ? Main.default : Main;
-const { Router, App, Store, BeferInit } = Mainjs;
+const { Router, App, Store, BeforeInit } = Mainjs;
 const isServer = typeof window === 'undefined';
 const isDev = process.env.NODE_ENV !== 'production';
 const rootNode = '$rootNode$';
@@ -44,8 +44,8 @@ const createRouterNext = (props) => {
 // 在app实例被创建之前调用,用于全局组件注册等逻辑处理
 const beforeInitFunc = (app,router,store) => {
     app.provide('message', 'hello')
-    if(BeferInit && typeof BeferInit ==='function'){
-        BeferInit(app,router,store)
+    if(BeforeInit && typeof BeforeInit ==='function'){
+        BeforeInit(app,router,store)
     }
 }
 
