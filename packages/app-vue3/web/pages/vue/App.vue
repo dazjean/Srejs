@@ -33,7 +33,7 @@
   import styles from './index.module.less';
   import imgUrl from "@/images/srejs.png";
   import {useStore} from 'vuex';
-  import {computed} from 'vue';
+  import {computed, inject} from 'vue';
   export default {
     name: 'home',
     props:['title'],
@@ -41,6 +41,7 @@
             const store = useStore();
             let say = computed(() => store.state.say);
             let msg = computed(() => store.state.msg);
+            console.log('inject注入获取数据：',inject('INITIAL_STATE'))
             return {
               message : 'setup 定义响应式数据message',
               styles,
