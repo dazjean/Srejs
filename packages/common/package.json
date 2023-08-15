@@ -48,10 +48,10 @@
 	},
 	"gitHead": "da596c6a49044e00ebdbb45cb25841e2fbeb3b83",
 	"devDependencies": {
-		"@babel/cli": "^7.14.5",
-		"@babel/core": "^7.14.6",
+		"@babel/cli": "^7.22.10",
+		"@babel/core": "^7.22.10",
 		"@babel/plugin-transform-modules-commonjs": "^7.14.5",
-		"@babel/plugin-transform-runtime": "^7.14.5",
-		"@babel/preset-env": "^7.14.5"
+		"@babel/plugin-transform-runtime": "^7.22.10",
+		"@babel/preset-env": "^7.22.10"
 	}
 }

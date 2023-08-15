@@ -70,8 +70,7 @@ export const loaderRules = (isServer = false) => {
                     ],
                     plugins: [
                         '@babel/plugin-syntax-jsx',
-                        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
-                        '@babel/plugin-proposal-class-properties'
+                        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }]
                     ]
                 }
             },

@@ -75,6 +75,11 @@ export const loaderRules = (isServer = false) => {
 
     return [
         {
+            test: /\.mjs$/,
+            include: /node_modules/,
+            type: 'javascript/auto'
+        },
+        {
             test: /\.vue$/,
             loader: 'vue-loader',
             options: {
@@ -89,7 +94,7 @@ export const loaderRules = (isServer = false) => {
             }
         },
         {
-            test: /\.(js|jsx|mjs|ts|tsx)$/,
+            test: /\.(js|jsx|ts|tsx)$/,
             use: {
                 loader: 'babel-loader',
                 options: {
@@ -97,8 +102,7 @@ export const loaderRules = (isServer = false) => {
                     cacheCompression: false,
                     presets: [['@babel/preset-env', envOptions], '@babel/preset-typescript'],
                     plugins: [
-                        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
-                        '@babel/plugin-proposal-class-properties'
+                        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }]
                     ]
                 }
             },

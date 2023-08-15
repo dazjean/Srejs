@@ -97,8 +97,7 @@ export const loaderRules = (isServer = false) => {
                     cacheCompression: false,
                     presets: [['@babel/preset-env', envOptions], '@babel/preset-typescript'],
                     plugins: [
-                        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }],
-                        '@babel/plugin-proposal-class-properties'
+                        ['@babel/plugin-transform-runtime', { helpers: false, regenerator: true }]
                     ]
                 }
             },
