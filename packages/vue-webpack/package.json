@@ -1,6 +1,6 @@
 {
 	"name": "@srejs/vue-webpack",
-	"version": "1.3.9",
+	"version": "1.3.10",
 	"description": "srejs vue技术栈webpack配置工具包",
 	"main": "lib/index.js",
 	"directories": {
@@ -43,7 +43,7 @@
 		"@babel/preset-env": "^7.22.10",
 		"@babel/preset-typescript": "^7.22.5",
 		"@babel/runtime": "^7.7.7",
-		"@srejs/common": "^1.3.2",
+		"@srejs/common": "^1.3.10",
 		"autoprefixer": "^9.7.3",
 		"babel-loader": "^8.3.0",
 		"core-js": "^3.14.0",

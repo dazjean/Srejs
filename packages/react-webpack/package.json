@@ -1,6 +1,6 @@
 {
 	"name": "@srejs/react-webpack",
-	"version": "1.3.5",
+	"version": "1.3.10",
 	"description": "srejs react框架webpack配置工具包",
 	"main": "lib/index.js",
 	"directories": {
@@ -44,7 +44,7 @@
 		"@babel/preset-react": "^7.22.5",
 		"@babel/preset-typescript": "^7.22.5",
 		"@babel/runtime": "^7.22.10",
-		"@srejs/common": "^1.3.2",
+		"@srejs/common": "^1.3.10",
 		"autoprefixer": "^9.7.3",
 		"babel-loader": "^8.3.0",
 		"core-js": "^3.14.0",
