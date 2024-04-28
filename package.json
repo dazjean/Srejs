@@ -2,6 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
+    "clearn":"del -f packages/*/yarn.lock && del -f packages/*/node_modules && del -f packages/*/lib",
     "init": "del -f packages/*/yarn.lock && del -f packages/*/node_modules && del -f packages/*/lib && lerna bootstrap",
     "prepublish": "lerna run test && lerna run lint && lerna run build",
     "publish": "lerna publish",

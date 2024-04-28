@@ -169,7 +169,13 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
         let data = await readPageHtml(page);
         Html = data.replace(`<div id="${rootNode}">`, `<div id="${rootNode}">${Html}`);
 
-        const ssrData = { initProps: props, page, path: ctx[SSRKEY].path, query, options };
+        const ssrData = {
+            initProps: props,
+            page,
+            path: encodeURI(ctx[SSRKEY].path),
+            query,
+            options
+        };
         const injectScriptInitProps = (temp, ssrData) => {
             const contents = temp.split('</head>');
             if (contents.length == 1) {
