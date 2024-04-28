@@ -78,7 +78,7 @@ export const checkModules = async (page) => {
 export const renderServer = async (ctx, initProps = {}, ssr = true) => {
     let context = { url: ctx.req.url };
     let { page, query, path, options } = ctx[SSRKEY];
-
+    path = encodeURI(path);
     query = filterXssByJson(query);
     if (!getVueEntryList().has(page)) {
         return `Page component ${page} does not exist, please check the pages folder`;
