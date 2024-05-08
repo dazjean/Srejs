@@ -1,6 +1,6 @@
 {
   "name": "app-vue",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "",
   "private": true,
   "main": "app.js",
@@ -18,7 +18,7 @@
     "@babel/preset-typescript": "^7.22.5",
     "@babel/register": "^7.22.5",
     "@babel/runtime": "^7.22.10",
-    "@srejs/vue": "^1.4.1",
+    "@srejs/vue": "^1.4.2",
     "babel-loader": "^8.2.2",
     "core-js": "^3.11.0",
     "css-hot-loader": "^1.4.4",
