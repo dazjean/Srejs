@@ -131,13 +131,14 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
                 options
             }; // 修正数据
             Logger.warn(`SSR: 服务端渲染异常，降级使用客户端渲染:${error.stack}`);
-            Html = await readPageString(page, context);
+            Html = await readPageHtml(page);
         }
     } else {
-        Html = await readPageString(page, context);
+        Html = await readPageHtml(page);
     }
     let document = renderDocumentHead(Html, context);
-
+    // vue-server-renderer模板注入漏洞 将变量注入模板时机放在模板渲染之后
+    document = injectScriptInitProps(document, context);
     return document;
 };
 
@@ -147,10 +148,10 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
  * @param {*} context
  * @returns
  */
-const readPageString = async (page, context) => {
-    let temp = await readPageHtml(page);
-    return injectScriptInitProps(temp, context);
-};
+// const readPageString = async (page, context) => {
+//     let temp = await readPageHtml(page);
+//     return injectScriptInitProps(temp, context);
+// };
 
 /**
  * vue2.0 服务端渲染renderToString解析DOM返回字符串
@@ -160,7 +161,7 @@ const readPageString = async (page, context) => {
  * @returns
  */
 const renderTostring = async (App, context, page) => {
-    const template = await readPageString(page, context);
+    const template = await readPageHtml(page, context);
     const renderer = createRenderer({
         template
     });
@@ -182,27 +183,40 @@ const renderTostring = async (App, context, page) => {
  * @returns
  */
 const injectScriptInitProps = (temp, context) => {
-    const contents = temp.split('<!--vue-ssr-outlet-->');
-    if (contents.length == 1) {
-        console.error(
-            'SSR:警告！自定义html文件中请在body下追加<!--vue-ssr-outlet-->占位符！https://ssr.vuejs.org/zh/guide/#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E6%A8%A1%E6%9D%BF'
-        );
-    }
+    // const contents = temp.split('<!--vue-ssr-outlet-->');
+    // if (contents.length == 1) {
+    //     console.error(
+    //         'SSR:警告！自定义html文件中请在body下追加<!--vue-ssr-outlet-->占位符！https://ssr.vuejs.org/zh/guide/#%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E9%A1%B5%E9%9D%A2%E6%A8%A1%E6%9D%BF'
+    //     );
+    // }
     const data = Object.assign({}, context);
     const ssrData = data.ssrData;
     delete data.state;
     delete data.ssrData;
     delete context.ssrData;
     ssrData.initProps = data;
+    const contents = temp.split('</head>');
+    if (contents.length == 1) {
+        console.error('SSR:警告！自定义html文件中必须包含</head>闭合标签。');
+    }
 
     return (
         contents[0] +
-        '<!--vue-ssr-outlet-->' +
         '<script>window.__SSR_DATA__=' +
         serialize(ssrData, { isJSON: true }) +
         '</script>' +
+        '</head>' +
         contents[1]
     );
+
+    // return (
+    //     contents[0] +
+    //     '<!--vue-ssr-outlet-->' +
+    //     '<script>window.__SSR_DATA__=' +
+    //     serialize(ssrData, { isJSON: true }) +
+    //     '</script>' +
+    //     contents[1]
+    // );
 };
 /**
  * 获取服务端渲染直出资源
