@@ -129,7 +129,23 @@ export const renderServer = async (ctx, initProps = {}, ssr = true) => {
             if (common.isDev()) {
                 delete require.cache[require.resolve(jspath)];
             }
+
+            // 过滤服务端无法处理的文件类型, 重写模块加载函数, 增加过滤器
+            const NodeModule = require('module').Module
+            const loadBackend = NodeModule._load
+            NodeModule._load = (request, parent, isMain) => {
+                const isIgnore = request.match(/\.(css|scss|sass|less|styl)$/)
+                if (isIgnore) {
+                    return {}
+                }
+                return loadBackend(request, parent, isMain)
+            }
+
+            // 加载入口文件模块
             const Module = require(jspath);
+            // 还原模块加载函数, 防止影响其他函数运行
+            NodeModule._load = loadBackend
+
             App = Module.App; //
             // 兼容1.2.7版本之前构建的.ssr缓存入口文件
             if (!App) {
